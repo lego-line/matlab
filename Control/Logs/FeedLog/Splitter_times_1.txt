@@ -1,0 +1,6 @@
+Splitter Unit Pallet Log for Splitter1
+9 / 2 / 2015
+
+  Pallet Number   Time         Code Colour    
+              1  80.97   1   0   1        Red
+              2 111.62   1   1   0     Yellow

@@ -1,0 +1,98 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MAP_GetCommModule</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_MAP_GetCommModule.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>MAP_GetCommModule</h1><!--introduction--><p>Reads the IO map of the communication module</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#35">Examples</a></li><li><a href="#37">See also</a></li><li><a href="#39">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>map = MAP_GetCommModule()</tt></p><h2>Description<a name="4"></a></h2><p><tt>map = MAP_GetCommModule()</tt> returns the IO map of the communication module. The return value <tt>map</tt> is a struct variable. It contains all communication module information.</p><p><b>Output:</b></p><p><tt>map.PFunc</tt>              % ?</p><p><tt>map.PFuncTwo</tt>           % ?</p><p><tt>map.BTPort</tt>             % 1x4 cell array contains Bluetooth device information of each NXT Bluetooth port (i = 0..3)</p><p><tt>map.BTPort{i}.BtDeviceTableName</tt>            % name of the Bluetooth device</p><p><tt>map.BTPort{i}.BtDeviceTableClassOfDevice</tt>   % class of the Bluetooth device</p><p><tt>map.BTPort{i}.BtDeviceTableBdAddr</tt>          % MAC address of the Bluetooth device</p><p><tt>map.BTPort{i}.BtDeviceTableDeviceStatus</tt>    % status of the Bluetooth device</p><p><tt>map.BTPort{i}.BtConnectTableName</tt>           % name of the connected Bluetooth device</p><p><tt>map.BTPort{i}.BtConnectTableClassOfDevice</tt>  % class of the connected Bluetooth device</p><p><tt>map.BTPort{i}.BtConnectTablePinCode</tt>        % pin code of the connected Bluetooth device</p><p><tt>map.BTPort{i}.BtConnetTableBdAddr</tt>          % MAC address of the connected Bluetooth device</p><p><tt>map.BTPort{i}.BtConnectTableHandleNr</tt>       % handle nr of the connected Bluetooth device</p><p><tt>map.BTPort{i}.BtConnectTableStreamStatus</tt>   % stream status of the connected Bluetooth device</p><p><tt>map.BTPort{i}.BtConnectTableLinkQuality</tt>    % link quality of the connected Bluetooth device</p><p><tt>map.BrickDataName</tt>               % name of the NXT brick</p><p><tt>map.BrickDataBluecoreVersion</tt>    % Bluecore version number</p><p><tt>map.BrickDataBdAddr</tt>             % MAC address of the NXT brick</p><p><tt>map.BrickDataBtStateStatus</tt>      % Bluetooth state status</p><p><tt>map.BrickDataBtHwStatus</tt>         % NXT hardware status</p><p><tt>map.BrickDataTimeOutValue</tt>       % time out value</p><p><tt>map.BtDeviceCnt</tt>                 % number of devices defined within the Bluetooth device table</p><p><tt>map.BtDeviceNameCnt</tt>             % number of devices defined within the Bluetooth device table (usually equal to BtDeviceCnt)</p><p><tt>map.HsFlags</tt>                     % High Speed flags</p><p><tt>map.HsSpeed</tt>                     % High Speed speed</p><p><tt>map.HsState</tt>                     % High Speed state</p><p><tt>map.HsSpeed</tt>                     % High Speed speed</p><p><tt>map.UsbState</tt>                    % USB state</p><h2>Examples<a name="35"></a></h2><pre class="codeinput">   map = MAP_GetCommModule();
+</pre><h2>See also<a name="37"></a></h2><p><a href="NXT_ReadIOMap.html">NXT_ReadIOMap</a>, </p><h2>Signature<a name="39"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/23</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% MAP_GetCommModule
+% Reads the IO map of the communication module
+%%
+%% Syntax
+% |map = MAP_GetCommModule()|
+%%
+%% Description
+% |map = MAP_GetCommModule()| returns the IO map of the communication module. The return
+% value |map| is a struct variable. It contains all communication module information.
+%%
+%%
+% *Output:*
+%%
+% |map.PFunc|              % ?
+%%
+% |map.PFuncTwo|           % ?
+%%
+% |map.BTPort|             % 1x4 cell array contains Bluetooth device information of each
+% NXT Bluetooth port (i = 0..3)
+%%
+% |map.BTPort{i}.BtDeviceTableName|            % name of the Bluetooth device
+%%
+% |map.BTPort{i}.BtDeviceTableClassOfDevice|   % class of the Bluetooth device
+%%
+% |map.BTPort{i}.BtDeviceTableBdAddr|          % MAC address of the Bluetooth device
+%%
+% |map.BTPort{i}.BtDeviceTableDeviceStatus|    % status of the Bluetooth device
+%%
+% |map.BTPort{i}.BtConnectTableName|           % name of the connected Bluetooth device
+%%
+% |map.BTPort{i}.BtConnectTableClassOfDevice|  % class of the connected Bluetooth device
+%%
+% |map.BTPort{i}.BtConnectTablePinCode|        % pin code of the connected Bluetooth device
+%%
+% |map.BTPort{i}.BtConnetTableBdAddr|          % MAC address of the connected Bluetooth device
+%%
+% |map.BTPort{i}.BtConnectTableHandleNr|       % handle nr of the connected Bluetooth device
+%%
+% |map.BTPort{i}.BtConnectTableStreamStatus|   % stream status of the connected Bluetooth device
+%%
+% |map.BTPort{i}.BtConnectTableLinkQuality|    % link quality of the connected Bluetooth device
+%%
+% |map.BrickDataName|               % name of the NXT brick
+%%
+% |map.BrickDataBluecoreVersion|    % Bluecore version number
+%%
+% |map.BrickDataBdAddr|             % MAC address of the NXT brick
+%%
+% |map.BrickDataBtStateStatus|      % Bluetooth state status
+%%
+% |map.BrickDataBtHwStatus|         % NXT hardware status
+%%
+% |map.BrickDataTimeOutValue|       % time out value
+%%
+% |map.BtDeviceCnt|                 % number of devices defined within the Bluetooth device table
+%%
+% |map.BtDeviceNameCnt|             % number of devices defined within the Bluetooth device table
+% (usually equal to BtDeviceCnt)
+%%
+% |map.HsFlags|                     % High Speed flags
+%%
+% |map.HsSpeed|                     % High Speed speed
+%%
+% |map.HsState|                     % High Speed state
+%%
+% |map.HsSpeed|                     % High Speed speed
+%%
+% |map.UsbState|                    % USB state
+%%
+%% Examples
+   map = MAP_GetCommModule();
+%%
+%% See also
+% NXT_ReadIOMap
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/23
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

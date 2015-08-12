@@ -1,0 +1,52 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_StopProgram</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_StopProgram.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_StopProgram</h1><!--introduction--><p>Stops the currently running program on the NXT Brick</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Examples</a></li><li><a href="#13">See also</a></li><li><a href="#15">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>NXT_StopProgram()</tt></p><p><tt>NXT_StopProgram(handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>NXT_StopProgram()</tt> stops the current running embedded NXT Brick program.</p><p><tt>NXT_StopProgram(handle)</tt> uses the given NXT connection <tt>handle</tt>. This should be a struct containing a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><h2>Examples<a name="10"></a></h2><pre class="codeinput">   NXT_StopProgram();
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   NXT_StopProgram(handle);
+</pre><h2>See also<a name="13"></a></h2><p><a href="NXT_StartProgram.html">NXT_StartProgram</a>, <a href="NXT_GetCurrentProgramName.html">NXT_GetCurrentProgramName</a>, </p><h2>Signature<a name="15"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_StopProgram
+% Stops the currently running program on the NXT Brick
+%%
+%% Syntax
+% |NXT_StopProgram()|
+%%
+% |NXT_StopProgram(handle)|
+%%
+%% Description
+% |NXT_StopProgram()| stops the current running embedded NXT Brick program.
+%%
+% |NXT_StopProgram(handle)| uses the given NXT connection |handle|. This should be
+% a struct containing a serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%% Examples
+   NXT_StopProgram();
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   NXT_StopProgram(handle);
+%%
+%% See also
+% NXT_StartProgram, NXT_GetCurrentProgramName
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens, Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

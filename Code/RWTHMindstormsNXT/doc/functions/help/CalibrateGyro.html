@@ -1,0 +1,148 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>CalibrateGyro</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_CalibrateGyro.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>CalibrateGyro</h1><!--introduction--><p>Calibrates the HiTechnic Gyro sensor (measures/sets an offset while in rest)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#7">Description</a></li><li><a href="#18">Limitations</a></li><li><a href="#20">Examples</a></li><li><a href="#24">See also</a></li><li><a href="#26">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>offset = CalibrateGyro(port, 'AUTO')</tt></p><p><tt>offset = CalibrateGyro(port, 'AUTO', handle)</tt></p><p><tt>offset = CalibrateGyro(port, 'MANUAL', manualOffset)</tt></p><p><tt>offset = CalibrateGyro(port, 'MANUAL', manualOffset, handle)</tt></p><h2>Description<a name="7"></a></h2><p>In order to use the HiTechnic Gyro Sensor, it has first to be opened using <tt>OpenGyro</tt>. Then <tt>CalibrateGyro</tt> should be called (or a warning will be issued). Only after this you can safely use <tt>GetGyro</tt> to retrieve values.</p><p>This function will set (and return) the new offset (i.e. reading during rest) of the according Gyro sensor. Normally users should use the</p><p><b>automatic</b> calibration mode: <tt>offset = CalibrateGyro(port, 'AUTO')</tt></p><p>The offset will be calculated automatically. During this function the Gyro sensor value will be measured for at least 1 second (or for at least 5 times). During this period, the sensor must be at full rest!</p><p>If you want to save time during your program with a well-known Gyro sensor, or you cannot assure that the sensor is at rest during calibration, you can use the automatic calibration once in the command line and remember the determined offset value. Using manual calibration, you can then set a hardcoded value manually (saving you time and the calibration for this sensor in the future in that specific program).</p><p>Use <tt>CalibrateGyro(port, 'MANUAL', manualOffset)</tt> to achieve this, with a correct offset obtained from automatic calibration. This call won't require that the sensor doesn't move. Also the call is very fast (as compared to at least 1 second in automatic mode). Use integers for <tt>manualOffset</tt>, as the gyro sensor is only accurate to +/- 1 degree per second anyway.</p><p>The last optional argument (for both modes) can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p><b>Note:</b></p><p>Manual calibration only works for one specific sensor (i.e. one unique piece of hardware). Other sensors might have different offsets. Also it could be possible that the offset changes over time or is dependent on your working environment (humidity, temperature, etc).</p><h2>Limitations<a name="18"></a></h2><p>Calibration is stored inside the NXT handle, for a specific port. This means after closing the NXT handle, or when connecting the sensor to another port, calibration is lost. That is why you should either always run the calibration at the begin of your program, or restore the previous offset with the <tt>'MANUAL'</tt> calibration mode.</p><h2>Examples<a name="20"></a></h2><pre class="codeinput">   <span class="comment">% in this example the gyro is used with automatic</span>
+   <span class="comment">% calibration, very straight forward</span>
+
+   port = SENSOR_2;
+   OpenGyro(port);
+   CalibrateGyro(port, <span class="string">'AUTO'</span>);
+
+   <span class="comment">% now the gyro is ready to be used!</span>
+   <span class="comment">% do something, main program etc...</span>
+   speed = GetGyro(port);
+
+   <span class="comment">% do something else, loop etc...</span>
+   <span class="comment">% don't forget to clean up</span>
+   CloseSensor(port);
+</pre><pre class="codeinput">   <span class="comment">% in this example we save the time and effort of</span>
+   <span class="comment">% automatic calibration each time the main program is run...</span>
+   <span class="comment">% on a command window, type:</span>
+   h = COM_OpenNXT();
+   COM_SetDefaulNXT(h);
+   OpenGyro(SENSOR_1);
+   <span class="comment">% now, once the automatic calibration:</span>
+   offset = CalibrateGyro(SENSOR_1, <span class="string">'AUTO'</span>);
+   <span class="comment">% remember this value...</span>
+</pre><pre class="codeinput">   <span class="comment">% our main program looks like this:</span>
+   <span class="comment">% always open gyro first:</span>
+   OpenGyro(SENSOR_1);
+   <span class="comment">% now use the offset value determined earlier:</span>
+   CalibrateGyro(SENSOR_1, <span class="string">'MANUAL'</span>, offset);
+   <span class="comment">% ready to use GetGyro now...</span>
+</pre><h2>See also<a name="24"></a></h2><p><a href="OpenGyro.html">OpenGyro</a>, <a href="GetGyro.html">GetGyro</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, </p><h2>Signature<a name="26"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/04/14</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% CalibrateGyro
+% Calibrates the HiTechnic Gyro sensor (measures/sets an offset while in rest)
+%%
+%% Syntax
+% |offset = CalibrateGyro(port, 'AUTO')|
+%%
+% |offset = CalibrateGyro(port, 'AUTO', handle)|
+%%
+% |offset = CalibrateGyro(port, 'MANUAL', manualOffset)|
+%%
+% |offset = CalibrateGyro(port, 'MANUAL', manualOffset, handle)|
+%%
+%% Description
+% In order to use the HiTechnic Gyro Sensor, it has first to be opened
+% using |OpenGyro|. Then |CalibrateGyro| should be called (or a warning
+% will be issued). Only after this you can safely use |GetGyro| to
+% retrieve values.
+%%
+% This function will set (and return) the new offset (i.e. reading during
+% rest) of the according Gyro sensor. Normally users should use the
+%%
+% *automatic* calibration mode: |offset = CalibrateGyro(port, 'AUTO')|
+%%
+% The offset will be calculated automatically. During this function the Gyro sensor
+% value will be measured for at least 1 second (or for at least 5 times). During this
+% period, the sensor must be at full rest!
+%%
+% If you want to save time during your program with a well-known Gyro
+% sensor, or you cannot assure that the sensor is at rest during
+% calibration, you can use the automatic calibration once in the command
+% line and remember the determined offset value. Using manual
+% calibration, you can then set a hardcoded value manually (saving you
+% time and the calibration for this sensor in the future in that specific
+% program).
+%%
+% Use |CalibrateGyro(port, 'MANUAL', manualOffset)| to achieve this, with
+% a correct offset obtained from automatic calibration. This call won't
+% require that the sensor doesn't move. Also the call is very fast (as
+% compared to at least 1 second in automatic mode). Use integers for
+% |manualOffset|, as the gyro sensor is only accurate to +/- 1 degree per
+% second anyway.
+%%
+% The last optional argument (for both modes) can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%%
+% *Note:*
+%%
+% Manual calibration only works for one specific sensor (i.e. one unique
+% piece of hardware). Other sensors might have different offsets. Also it
+% could be possible that the offset changes over time or is dependent on
+% your working environment (humidity, temperature, etc).
+%%
+%% Limitations
+% Calibration is stored inside the NXT handle, for a specific port. This
+% means after closing the NXT handle, or when connecting the sensor to
+% another port, calibration is lost. That is why you should either always
+% run the calibration at the begin of your program, or restore the
+% previous offset with the |'MANUAL'| calibration mode.
+%%
+%% Examples
+   % in this example the gyro is used with automatic
+   % calibration, very straight forward
+
+   port = SENSOR_2;
+   OpenGyro(port);
+   CalibrateGyro(port, 'AUTO');
+
+   % now the gyro is ready to be used!
+   % do something, main program etc...
+   speed = GetGyro(port);
+
+   % do something else, loop etc...
+   % don't forget to clean up
+   CloseSensor(port);
+%%
+   % in this example we save the time and effort of
+   % automatic calibration each time the main program is run...
+   % on a command window, type:
+   h = COM_OpenNXT();
+   COM_SetDefaulNXT(h);
+   OpenGyro(SENSOR_1);
+   % now, once the automatic calibration:
+   offset = CalibrateGyro(SENSOR_1, 'AUTO');
+   % remember this value...
+%%
+   % our main program looks like this:
+   % always open gyro first:
+   OpenGyro(SENSOR_1);
+   % now use the offset value determined earlier:
+   CalibrateGyro(SENSOR_1, 'MANUAL', offset);
+   % ready to use GetGyro now...
+%%
+%% See also
+% OpenGyro, GetGyro, CloseSensor, NXT_SetInputMode, NXT_GetInputValues
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/04/14
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

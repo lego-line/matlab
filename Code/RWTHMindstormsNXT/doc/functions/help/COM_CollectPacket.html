@@ -1,0 +1,95 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_CollectPacket</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_CollectPacket.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_CollectPacket</h1><!--introduction--><p>Reads data from a USB or serial/Bluetooth port, retrieves exactly one packet</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#14">Example</a></li><li><a href="#16">See also</a></li><li><a href="#18">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[type cmd statusbyte content] = COM_CollectPacket(handle)</tt></p><p><tt>[type cmd statusbyte content] = COM_CollectPacket(handle, 'dontcheck')</tt></p><h2>Description<a name="5"></a></h2><p><tt>[type cmd statusbyte content] = COM_CollectPacket(handle)</tt> reads one packet on the communication channel specified by the <tt>handle</tt> struct (PC system: handle struct containing e.g. serial handle, Linux system: handle struct containing file handle). The USB / Bluetooth handle struct can be obtained by the <tt>COM_OpenNXT</tt> or <tt>COM_GetDefaultNXT</tt>  command. The return value <tt>type</tt> specifies the telegram type according to the LEGO Mindstorms communication protcol. The <tt>cmd</tt> value determines the specific command. <tt>status</tt> indicates if an error occured on the NXT brick. The function <tt>checkStatusByte</tt> is interpreting this information per default. The <tt>content</tt> column vector represents the remaining payload of the whole return packet. E.g. it contains the current battery level in milli volts, that then has to be converted to a valid integer from its byte representation (i.e. using <tt>wordbytes2dec</tt>).</p><p><tt>[type cmd statusbyte content] = COM_CollectPacket(handle, 'dontcheck')</tt> disables the validation check of the <tt>status</tt> value by function <tt>checkStatusBytes</tt>.</p><p>varargin : set to 'dontcheck' if the status byte should not automatically be checked. Only use this if you expect error messages. Possible usage is for LSGetStatus, where this can happen...</p><p>For more details about the syntax of the return packet see the LEGO Mindstorms communication protocol.</p><p><b>Note:</b></p><p>This function uses the specific Bluetooth settings from the ini-file that was specified when opening the handle. Parameters used here are <tt>SendSendPause</tt> and <tt>SendReceivePause</tt>, which will cause this function to wait a certain amount of milliseconds between each consecutive send or receive operation to avoid packet loss or buffer overflows inside the blutooth stack.</p><h2>Example<a name="14"></a></h2><pre class="codeinput">   COM_MakeBTConfigFile();
+
+   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+
+   [type cmd] = name2commandbytes(<span class="string">'KEEPALIVE'</span>);
+   content = [];  <span class="comment">% no payload in NXT command KEEPALIVE</span>
+   packet = COM_CreatePacket(type, cmd, <span class="string">'reply'</span>, content);
+
+   COM_SendPacket(packet, handle);
+
+   [type cmd statusbyte content] = COM_CollectPacket(handle);
+   <span class="comment">% Now you could check the statusbyte or interpret the content.</span>
+   <span class="comment">% Or maybe check for valid type and cmd before...</span>
+</pre><h2>See also<a name="16"></a></h2><p><a href="COM_CreatePacket.html">COM_CreatePacket</a>, <a href="COM_SendPacket.html">COM_SendPacket</a>, <a href="COM_OpenNXT.html">COM_OpenNXT</a>, <a href="COM_GetDefaultNXT.html">COM_GetDefaultNXT</a>, <a href="COM_MakeBTConfigFile.html">COM_MakeBTConfigFile</a>, <a href="checkStatusByte.html">checkStatusByte</a>, </p><h2>Signature<a name="18"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/08/31</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_CollectPacket
+% Reads data from a USB or serial/Bluetooth port, retrieves exactly one packet
+%%
+%% Syntax
+% |[type cmd statusbyte content] = COM_CollectPacket(handle)|
+%%
+% |[type cmd statusbyte content] = COM_CollectPacket(handle, 'dontcheck')|
+%%
+%% Description
+% |[type cmd statusbyte content] = COM_CollectPacket(handle)| reads one packet on the communication
+% channel specified by the |handle| struct (PC system: handle struct containing e.g. serial
+% handle, Linux system: handle struct containing file handle). The USB / Bluetooth handle
+% struct can be obtained by the |COM_OpenNXT| or |COM_GetDefaultNXT|  command. The return
+% value |type| specifies the telegram type according to the LEGO Mindstorms communication
+% protcol. The |cmd| value determines the specific command. |status| indicates if an error
+% occured on the NXT brick. The function |checkStatusByte| is interpreting this information
+% per default. The |content| column vector represents the remaining payload of the whole return packet. E.g. it
+% contains the current battery level in milli volts, that then has to be converted to a valid
+% integer from its byte representation (i.e. using |wordbytes2dec|).
+%%
+% |[type cmd statusbyte content] = COM_CollectPacket(handle, 'dontcheck')| disables the validation
+% check of the |status| value by function |checkStatusBytes|.
+%%
+% varargin : set to 'dontcheck' if the status byte should not
+% automatically be checked. Only use this if you
+% expect error messages. Possible usage is for
+% LSGetStatus, where this can happen...
+%%
+% For more details about the syntax of the return packet see the LEGO Mindstorms communication protocol.
+%%
+%%
+% *Note:*
+%%
+%%
+% This function uses the specific Bluetooth settings from the ini-file
+% that was specified when opening the handle. Parameters used here are
+% |SendSendPause| and |SendReceivePause|, which will cause this function
+% to wait a certain amount of milliseconds between each consecutive send
+% or receive operation to avoid packet loss or buffer overflows inside
+% the blutooth stack.
+%%
+%% Example
+   COM_MakeBTConfigFile();
+
+   handle = COM_OpenNXT('bluetooth.ini');
+
+   [type cmd] = name2commandbytes('KEEPALIVE');
+   content = [];  % no payload in NXT command KEEPALIVE
+   packet = COM_CreatePacket(type, cmd, 'reply', content);
+
+   COM_SendPacket(packet, handle);
+
+   [type cmd statusbyte content] = COM_CollectPacket(handle);
+   % Now you could check the statusbyte or interpret the content.
+   % Or maybe check for valid type and cmd before...
+%%
+%% See also
+% COM_CreatePacket, COM_SendPacket, COM_OpenNXT, COM_GetDefaultNXT,
+% COM_MakeBTConfigFile, checkStatusByte
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/08/31
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

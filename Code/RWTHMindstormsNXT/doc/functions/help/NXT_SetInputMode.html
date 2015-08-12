@@ -1,0 +1,130 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_SetInputMode</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_SetInputMode.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_SetInputMode</h1><!--introduction--><p>Sets a sensor mode, configures and initializes a sensor to be read out</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#45">Examples</a></li><li><a href="#48">See also</a></li><li><a href="#50">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>status = NXT_SetInputMode(port, SensorTypeDesc, SensorModeDesc, ReplyMode)</tt></p><p><tt>status = NXT_SetInputMode(port, SensorTypeDesc, SensorModeDesc, ReplyMode, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, ReplyMode)</tt> sets mode, configures and initializes the given sensor <tt>port</tt> to be ready to be read out. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. The value <tt>SensorTypeDesc</tt> determines the sensor type. See all valid types below. <tt>SensorModeDesc</tt> represents the sensor mode. It specifies what mode the <tt>.ScaledVal</tt> from <tt>NXT_GetInputValues</tt> should be. Valid parameters see below. By the <tt>ReplyMode</tt> one can request an acknowledgement for the packet transmission. The two strings <tt>'reply'</tt> and <tt>'dontreply'</tt> are valid. The return value <tt>status</tt> indicates if an error occures by the packet transmission.</p><p><tt>status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, ReplyMode, handle)</tt> uses the given NXT connection <tt>handle</tt>. This should be a struct containing a serial handle on a PC system and a file handle on a Linux system.</p><p>If no NXT handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p><b>Input:</b></p><p><b><tt>SensorTypeDesc</tt>:</b>  Valid types are (all strings):</p><p><tt>NO_SENSOR</tt>       (nothing, use to close sensor port)</p><p><tt>SWITCH</tt>          (NXT touch sensor, "binary")</p><p><tt>LIGHT_ACTIVE</tt>    (NXT light sensor, red LED is on)</p><p><tt>LIGHT_INACTIVE</tt>  (NXT light sensor, red LED is off)</p><p><tt>SOUND_DB</tt>        (NXT sound sensor, unit dB)</p><p><tt>SOUND_DBA</tt>       (NXT sound sensor, unit dBA)</p><p><tt>LOWSPEED</tt>        (NXT, passive digital sensor)</p><p><tt>LOWSPEED_9V</tt>     (NXT, active digital sensor, e.g. UltraSonic)</p><p><tt>HIGHSPEED</tt>       (NXT, probably digital sensor on highspeed port 4)</p><p><tt>TEMPERATURE</tt>     (old RCX sensor)</p><p><tt>REFLECTION</tt>      (old RCX sensor)</p><p><tt>ANGLE</tt>           (old RCX sensor)</p><p><tt>COLORFULL</tt>       (NXT 2.0 Color sensor, full RGB mode)</p><p><tt>COLORRED</tt>        (NXT 2.0 Color sensor, red LED only)</p><p><tt>COLORGREEN</tt>      (NXT 2.0 Color sensor, green LED only)</p><p><tt>COLORBLUE</tt>       (NXT 2.0 Color sensor, blue LED only)</p><p><tt>COLORNONE</tt>       (NXT 2.0 Color sensor, no LED)</p><p><b><tt>SensorModeDesc</tt>:</b>  Valid modes are (all strings):</p><p><tt>RAWMODE</tt>            (Fastest. RawADVal will be used)</p><p><tt>BOOLEANMODE</tt>        (1 if above 45% threshold, else 0)</p><p><tt>TRANSITIONCNTMODE</tt>  (count transitions of booleanmode)</p><p><tt>PERIODCOUNTERMODE</tt>  (count periods (up and down transition) of boolean mode)</p><p><tt>PCTFULLSCALEMODE</tt>   (normalized percentage between 0 and 100, use .NormalizedADVal instead!)</p><p>More exotic modes are: <tt>CELSIUSMODE</tt>        (RCX temperature only)</p><p><tt>FAHRENHEITMODE</tt>     (RCX temperature only)</p><p><tt>ANGLESTEPSMODE</tt>     (RCX rotation only)</p><p><tt>SLOPEMASK</tt>          (what's this???)</p><p><tt>MODEMASK</tt>           (what's this???)</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><h2>Examples<a name="45"></a></h2><pre class="codeinput">   status = NXT_SetInputMode(SENSOR_1, <span class="string">'SOUND_DB'</span>, <span class="string">'RAWMODE'</span>, <span class="string">'dontreply'</span>);
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   status = NXT_SetInputMode(SENSOR_3, <span class="string">'LIGHT_ACTIVE'</span>, <span class="string">'RAWMODE'</span>, <span class="string">'dontreply'</span>, handle);
+</pre><h2>See also<a name="48"></a></h2><p><a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, <a href="OpenLight.html">OpenLight</a>, <a href="OpenSound.html">OpenSound</a>, <a href="OpenSwitch.html">OpenSwitch</a>, <a href="OpenUltrasonic.html">OpenUltrasonic</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="50"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_SetInputMode
+% Sets a sensor mode, configures and initializes a sensor to be read out
+%%
+%% Syntax
+% |status = NXT_SetInputMode(port, SensorTypeDesc, SensorModeDesc, ReplyMode)|
+%%
+% |status = NXT_SetInputMode(port, SensorTypeDesc, SensorModeDesc, ReplyMode, handle)|
+%%
+%% Description
+% |status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, ReplyMode)| sets mode,
+% configures and initializes the given sensor |port| to be ready to be read out. The value |port|
+% can be addressed by the symbolic constants |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4|
+% analog to the labeling on the NXT Brick. The value |SensorTypeDesc| determines the sensor type.
+% See all valid types below. |SensorModeDesc| represents the sensor mode. It specifies what mode
+% the |.ScaledVal| from |NXT_GetInputValues| should be. Valid parameters see below. By the
+% |ReplyMode| one can request an acknowledgement for the packet transmission. The two strings
+% |'reply'| and |'dontreply'| are valid. The return value |status| indicates if an error occures
+% by the packet transmission.
+%%
+% |status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, ReplyMode, handle)|
+% uses the given NXT connection |handle|. This should be a struct containing a serial handle on a PC system and
+% a file handle on a Linux system.
+%%
+% If no NXT handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+%%
+% *Input:*
+%%
+% *|SensorTypeDesc|:*  Valid types are (all strings):
+%%
+% |NO_SENSOR|       (nothing, use to close sensor port)
+%%
+% |SWITCH|          (NXT touch sensor, "binary")
+%%
+% |LIGHT_ACTIVE|    (NXT light sensor, red LED is on)
+%%
+% |LIGHT_INACTIVE|  (NXT light sensor, red LED is off)
+%%
+% |SOUND_DB|        (NXT sound sensor, unit dB)
+%%
+% |SOUND_DBA|       (NXT sound sensor, unit dBA)
+%%
+% |LOWSPEED|        (NXT, passive digital sensor)
+%%
+% |LOWSPEED_9V|     (NXT, active digital sensor, e.g. UltraSonic)
+%%
+% |HIGHSPEED|       (NXT, probably digital sensor on highspeed port 4)
+%%
+% |TEMPERATURE|     (old RCX sensor)
+%%
+% |REFLECTION|      (old RCX sensor)
+%%
+% |ANGLE|           (old RCX sensor)
+%%
+% |COLORFULL|       (NXT 2.0 Color sensor, full RGB mode)
+%%
+% |COLORRED|        (NXT 2.0 Color sensor, red LED only)
+%%
+% |COLORGREEN|      (NXT 2.0 Color sensor, green LED only)
+%%
+% |COLORBLUE|       (NXT 2.0 Color sensor, blue LED only)
+%%
+% |COLORNONE|       (NXT 2.0 Color sensor, no LED)
+%%
+%%
+%%
+% *|SensorModeDesc|:*  Valid modes are (all strings):
+%%
+% |RAWMODE|            (Fastest. RawADVal will be used)
+%%
+% |BOOLEANMODE|        (1 if above 45% threshold, else 0)
+%%
+% |TRANSITIONCNTMODE|  (count transitions of booleanmode)
+%%
+% |PERIODCOUNTERMODE|  (count periods (up and down
+% transition) of boolean mode)
+%%
+% |PCTFULLSCALEMODE|   (normalized percentage between 0
+% and 100, use .NormalizedADVal
+% instead!)
+%%
+%%
+% More exotic modes are:
+% |CELSIUSMODE|        (RCX temperature only)
+%%
+% |FAHRENHEITMODE|     (RCX temperature only)
+%%
+% |ANGLESTEPSMODE|     (RCX rotation only)
+%%
+% |SLOPEMASK|          (what's this???)
+%%
+% |MODEMASK|           (what's this???)
+%%
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%% Examples
+   status = NXT_SetInputMode(SENSOR_1, 'SOUND_DB', 'RAWMODE', 'dontreply');
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   status = NXT_SetInputMode(SENSOR_3, 'LIGHT_ACTIVE', 'RAWMODE', 'dontreply', handle);
+%%
+%% See also
+% NXT_GetInputValues, OpenLight, OpenSound, OpenSwitch, OpenUltrasonic, CloseSensor, SENSOR_1, SENSOR_2, SENSOR_3, SENSOR_4
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

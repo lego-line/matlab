@@ -1,0 +1,90 @@
+% NXT MAC addresses for the various components, unit 1 is the furthest downstream unit and increasing towards the upstream feeder unit. 
+
+No_of_Feedlines 3
+No_of_Splitters 2
+
+Main1	0016530EE594
+Main2	001653118AC9
+Main3	001653118B91
+Main4	001653118AC9
+Main5	001653118B91
+Tran1	0016530AABDF
+Tran2	0016530EE129
+Tran3	0016530A6F56
+Tran4	0016530EE129
+Tran5	0016530A6F56
+Feed1   00165308EE03
+Feed2   001653118A50
+Feed3   0016530D6831 
+Feed4	0016530D6831
+Feed5	001653118A50
+Split1	0016530EE120
+Split2
+Upstr	001653132A78
+
+
+Speed Settings- S=splitter, F = feed, T= transfer and M=main
+SPEED_S = 15
+SPEED_T = 85
+SPEED_M = 15
+SPEED_F = 60
+SPEED_U = 60
+
+Light Sensor Values:
+	Differential sensors: 
+
+%The sensor reads with the inbuilt light on and off to create a differential reading that compensates for background light levels. The values set here are the difference between the "active" and "passive" readings.
+
+		Transfer Unit:
+mainlineclear = 300        % 300 for Loft, 300 for AM
+%This setting adjusts the sensors placed on the mainline which detect whenever a pallet passes underneath them.
+
+PalletAcceptHI = 300       % 260 for Loft, 330 for AM
+%When the value goes above this, there is a pallet waiting to go onto the transfer unit
+
+PalletAcceptLOW = 300      % 200 for Loft, 270 for AM
+%If value dips below this, then the pallet has just started to move on
+
+		Feed Unit:
+TransferClearHI = 300     % 230 for Loft,  330 for AM
+%When value is above this, a pallet is sitting at the end of the transfer unit ready to be placed onto the mainline
+TransferClearLOW = 300    % 170 for Loft,  270 for AM
+%When value drops below this the pallet has moved on to the mainline
+
+	Splitter Light Gate:
+
+ValueLow = 400
+%Below this value, pallet is obstructing light gate
+
+ValueHi =600
+%Above this value, light is shining through light gate
+
+Timing Values:
+
+MainlinePass = 14
+%Time in seconds which transfer unit waits before placing another pallet when it detects a pallet passing under the mainline sensors
+
+PalletUnloadPause = 5
+%Minimum time in seconds between which transfer unit will take before placing another pallet onto the mainline. Needs to be the time it takes for the previous pallet to just clear the "lift" on the mainline.
+
+FeedUnloadPause = 3
+%Time in seconds that feed unit pauses when end of transfer unit clears before passing on another pallet. This time needs to be greater than the time it takes for the transfer unit "swing" arm to unload a pallet and retract.
+
+TransientPause = 2
+%Time in seconds that pallet pauses at end of feed unit conveyor, before passing on to transfer unit. Needed to cope with circumstances where pallet is just being unloaded, but light sensor has yet to pick this up. In this situation, the pallet will be passed on while the transfer unit is feeding which is not allowed. Within 2 seconds, either the transfer unit will have began feeding and the feed unit will see the pallet state go to 0, or the transfer unit will not feed and wait for the feed unit.
+
+
+	Splitter Timings:
+% Splitter Timings for when the sensor is read
+% bit 1 is read between t1 and t2, bit 2 is read between t3 and t4, bit 3 is read between t5 and t6; these should only be chanegd if the belt running speed is read. 	
+
+T1 = 0.8
+T2 = 1.3
+T3 = 1.4
+T4 = 1.8
+T5 = 2.0
+T6 = 2.5
+% splitter Spike Threshold- the difference between the average and spiked light level that triggers the detection as a zero bit.  
+SPIKE = 1.5
+
+

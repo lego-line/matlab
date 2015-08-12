@@ -1,0 +1,102 @@
+<html>
+<head>
+<title>Command Layer Structure</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link type="text/css" rel="stylesheet" href="../style.css">
+</head>
+
+<body bgcolor="#FFFFFF" text="#000001">
+<p class="header">RWTH - Mindstorms NXT Toolbox</p>
+<p align="center">
+<h1>Command Layer Structure</h1>
+</p>
+<hr>
+<p>
+The functions of the RWTH - Mindstorms NXT Toolbox can be categorized into a multiple layer structure. On the lowest layer <b>Low Level and Helper Functions</b> are available,
+which mostly convert parameter modes to bytes words, determined by the LEGO direct commands documentation. The second layer includes <b>Direct NXT Commands</b> which are mapped
+from the LEGO direct command documentation without any limitations and can be identified by the <tt>NXT_*</tt> prefix. Also Bluetooth packet related functions can be found
+in this layer. Layer 3 provides <b>High Level Functions</b> for controlling the NXT motors, sensors and the Bluetooth connection. These functions are basically using the
+Direct NXT Commands of layer 2 to make the motor and sensor controlling more convenient and easily readable for the user. The top layer provides <b>High Level Regulation</b>
+functions for precise motor regulation and various utilities.
+</p>
+
+<br><br>
+<table  border="2" cellpadding="10" align="center">
+
+  <tr bgcolor="#EEEEEE">
+    <td align="center"><b>Layer</b></td>
+    <td><b>Description</b></td>
+    <td valign="top"><b>Output/Motors</b></td>
+    <td valign="top"><b>Input/Sensors</b></td>
+    <td valign="top"><b>General</b></td>
+    <td valign="top"><b>Bluetooth / USB</b></td>
+  </tr>
+
+  <!-- Layer 4 -->
+  <tr bgcolor="#DDDDFF">
+    <td align="center" width="40"><b>4</b></td>
+    <td><b>High Level Regulation / Utilities</b></td>
+    <td valign="top"><b>NXTMotor</b><br>.ReadFromNXT<br>.SendToNXT<br>.Stop<br>.WaitFor<br>.ResetPosition<br><br><b>NXC_MotorControl<br></td>
+    <td valign="top">&nbsp;</td>
+    <td valign="top">OptimizeToolboxPerformance<br><br><b>GUI_WatchMotorState</b><br><b>GUI_WatchSensor</b></td>
+    <td valign="top"><b>COM_MakeBTConfigFile</b></td>
+  </tr>
+
+  <!-- Layer 3 -->
+  <tr bgcolor="#BBBBFF">
+    <th align="center" rowspan="1"><b>3</b></th>
+    <th align="left" rowspan="1"><b>High Level Functions</b></th>
+    <td align="left" valign="top"><b>DirectMotorCommand</b><br><br><b>StopMotor</b><br><br><b>SwitchLamp</b><br><br>NXC_ResetErrorCorrection</td>
+    <td align="left" valign="top" rowspan="1"><b>OpenLight<br>GetLight<br><br>OpenSound<br>GetSound<br><br>OpenSwitch<br>GetSwitch<br><br>OpenUltrasonic<br>GetUltrasonic<br>USMakeSnapshot<br>USGetSnapshotResults<br><br>OpenAccelerator<br>GetAccelerator<br><br>OpenColor<br>CalibrateColor<br>GetColor<br><br>OpenNXT2Color<br>GetNXT2Color<br><br>OpenCompass<br>CalibrateCompass<br>GetCompass<br><br>OpenGyro<br>CalibrateGyro<br>GetGyro<br><br>OpenEOPD<br>CalibrateEOPD<br>GetEOPD<br><br>OpenInfrared<br>GetInfrared<br><br>OpenRFID<br>GetRFID<br><br>CloseSensor</b></td>
+    <td align="left" valign="top" rowspan="1"><b>readFromIniFile</b><br><br>MAP_GetCommModule<br>MAP_GetInputModule<br>MAP_GetOutputModule<br>MAP_GetSoundModule<br>MAP_GetUIModule<br><br>MAP_SetOutputModule<br><br>NXC_GetSensorMotorData</td>
+    <td align="left" valign="top" rowspan="1"><b>COM_OpenNXT</b><br><b>COM_OpenNXTEx</b><br><br><b>COM_CloseNXT</b><br><br>COM_ReadI2C<br></td>
+  </tr>
+
+  
+
+  <!-- Layer 2 -->
+  <tr bgcolor="#9999FF">
+    <td align="center"><b>2</b></td>
+    <td><b>Direct NXT Commands</b></td>
+    <td valign="top"><b>NXT_SetOutputState<br><br>NXT_GetOutputState<br><br>NXT_ResetMotorPosition</b></td>
+    <td valign="top"><b>NXT_SetInputMode<br><br>NXT_GetInputValues</b><br><br>NXT_ResetInputScaledValue<br><br>NXT_LSRead<br>NXT_LSWrite<br>NXT_LSGetStatus</td>
+    <td valign="top"><b>NXT_PlayTone</b><br>NXT_PlaySoundFile<br>NXT_StopSoundPlayback<br><br>NXT_StartProgram<br>NXT_GetCurrentProgramName<br>NXT_StopProgram<br><br>NXT_SendKeepAlive<br>NXT_GetBatteryLevel<br>NXT_GetFirmwareVersion<br>NXT_SetBrickName<br><br>NXT_ReadIOMap<br>NXT_WriteIOMap<br><br>NXT_MessageWrite<br>NXT_MessageRead</td>
+    <td valign="top">COM_CreatePacket<br>COM_SendPacket<br>COM_CollectPacket<br><br><b>COM_SetDefaultNXT</b><br>COM_GetDefaultNXT<br></td>
+  </tr>
+
+  <!-- Layer 1 -->
+  <tr bgcolor="#7777FF">
+    <td align="center"><b>1</b></td>
+    <td><b>Low Level Functions:<br>Helper, Conversion and<br> Lookup Functions</b></td>
+    <td valign="top"><b>MOTOR_A<br>MOTOR_B<br>MOTOR_C</b><br><br><i>SetMotor</i> (o)<br><i>SetPower</i> (o)<br><i>SetAngleLimit</i> (o)<br><i>SetRampMode</i> (o)<br><i>SetTurnRatio</i> (o)<br><i>SpeedRegulation</i> (o)<br><i>SyncToMotor</i> (o)<br><i>GetMotor</i> (o)<br><i>SetMemoryCount</i> (o)<br><i>GetMemoryCount</i> (o)<br>
+    <br><i>byte2outputmode<br>byte2regmode<br>byte2runstate<br>outputmode2byte<br>regmode2byte<br>runstate2byte</i><br><br><i>initializeGlobalMotorStateVar</i> (o)</td>
+    <td valign="top"><b>SENSOR_1<br>SENSOR_2<br>SENSOR_3<br>SENSOR_4</b><br><br><i>byte2sensortype<br>byte2sensormode<br>sensortype2byte<br>sensormode2byte</i><br><br><i>waitUntilI2CReady</i></td>
+    <td valign="top"><b>DebugMode</b><br><i>isdebug</i><br><br>textOut<br><br><i>dec2wordbytes<br>name2commandbytes<br>commandbyte2name<br>wordbytes2dec</i></td>
+    <td valign="top">checkStatusByte<br><br><i>createHandleStruct</i><br><i>checkHandleStruct</i><br><br><i>getLibusbErrorString</i><br><i>getVISAErrorString</i><br><i>getReplyLengthFromCmdByte</i><br><br><i>fantom_proto</i><br><i>libusb_proto</i><br><i>libusb0_32_proto</i><br><i>libusb0_64_proto</i></td>
+  </tr>
+
+  <!-- Legend -->
+  <tr bgcolor="#EEEEEE">
+    <td colspan="6" >legend: NXT_* = NXT Direct commands without any limitations (mapped to the LEGO direct command documentation)<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+COM_* = Functions related to the NXT communication<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+MAP_* = Functions related to the NXT module maps<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+NXC_* = Functions communicating with the embedded NXC program MotorControl<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<b>bold</b> = Main funcions or main group functions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<i>italic</i> = private functions<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+(o) = obsolete / deprecated functions (might be removed in a future release)
+    </td>
+  </tr>
+</table>
+<br><br>
+
+<!-- </font> -->
+
+
+</body>
+</html>

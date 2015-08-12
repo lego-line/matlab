@@ -1,0 +1,55 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_PlaySoundFile</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_PlaySoundFile.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_PlaySoundFile</h1><!--introduction--><p>Plays the given sound file on the NXT Brick</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Examples</a></li><li><a href="#13">See also</a></li><li><a href="#15">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>NXT_PlaySoundFile(filename, 'loop')</tt></p><p><tt>NXT_PlaySoundFile(filename, '', handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>NXT_PlaySoundFile(filename, loop)</tt> plays the soundfile stored on NXT Brick determined by the string <tt>filename</tt>. The maximum length is limited to 15 characters. The file extension '.rso' is added automatically if it was omitted. If the loop parameter is equal to <tt>'loop'</tt> the playback loop is activated.</p><p><tt>NXT_PlaySoundFile(name, loop, handle)</tt> uses the given NXT connection <tt>handle</tt>. This should be a a struct containing a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth <tt>handle</tt> is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><h2>Examples<a name="10"></a></h2><pre class="codeinput">   NXT_PlaySoundFile(<span class="string">'Goodmorning'</span>, 0);
+</pre><pre class="codeinput">   handle = NXT_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   NXT_StartProgram(<span class="string">'Goodmorning.rso'</span>, 1, handle);
+</pre><h2>See also<a name="13"></a></h2><p><a href="NXT_StopSoundPlayback.html">NXT_StopSoundPlayback</a>, </p><h2>Signature<a name="15"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/22</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_PlaySoundFile
+% Plays the given sound file on the NXT Brick
+%%
+%% Syntax
+% |NXT_PlaySoundFile(filename, 'loop')|
+%%
+% |NXT_PlaySoundFile(filename, '', handle)|
+%%
+%% Description
+% |NXT_PlaySoundFile(filename, loop)| plays the soundfile stored on NXT Brick determined by
+% the string |filename|. The maximum length is limited to 15 characters. The file
+% extension '.rso' is added automatically if it was omitted. If the loop
+% parameter is equal to |'loop'| the playback loop is activated.
+%%
+% |NXT_PlaySoundFile(name, loop, handle)| uses the given NXT connection |handle|.
+% This should be a a struct containing a serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth |handle| is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%% Examples
+   NXT_PlaySoundFile('Goodmorning', 0);
+%%
+   handle = NXT_OpenNXT('bluetooth.ini');
+   NXT_StartProgram('Goodmorning.rso', 1, handle);
+%%
+%% See also
+% NXT_StopSoundPlayback
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/22
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

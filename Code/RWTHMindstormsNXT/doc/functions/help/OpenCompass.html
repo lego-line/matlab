@@ -1,0 +1,56 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OpenCompass</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_OpenCompass.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>OpenCompass</h1><!--introduction--><p>Initializes the HiTechnic magnetic compass sensor, sets correct sensor mode</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#11">Examples</a></li><li><a href="#13">See also</a></li><li><a href="#15">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OpenCompass(port)</tt></p><p><tt>OpenCompass(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>OpenCompass(port)</tt> initializes the input mode of HiTechnic compass sensor specified by the sensor port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>With <tt>GetCompass(port)</tt> you can receive the heading value ranging from 0 to 359.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>Since the compass sensor is a digital sensor (that uses the I&sup2;C protocol), the function <tt>NXT_SetInputMode</tt> cannot be used as for analog sensors.</p><h2>Examples<a name="11"></a></h2><pre class="codeinput">   OpenCompass(SENSOR_2);
+   degree = GetCompass(SENSOR_2);
+   CloseSensor(SENSOR_2);
+</pre><h2>See also<a name="13"></a></h2><p><a href="GetCompass.html">GetCompass</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="COM_ReadI2C.html">COM_ReadI2C</a>, <a href="NXT_LSGetStatus.html">NXT_LSGetStatus</a>, <a href="NXT_LSRead.html">NXT_LSRead</a>, </p><h2>Signature<a name="15"></a></h2><div><ul><li><b>Author:</b> Rainer Schnitzler (see AUTHORS)</li><li><b>Date:</b> 2008/08/01</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% OpenCompass
+% Initializes the HiTechnic magnetic compass sensor, sets correct sensor mode
+%%
+%% Syntax
+% |OpenCompass(port)|
+%%
+% |OpenCompass(port, handle)|
+%%
+%% Description
+% |OpenCompass(port)| initializes the input mode of HiTechnic compass sensor specified by the sensor
+% port. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick.
+%%
+% With |GetCompass(port)| you can receive the heading value ranging from 0 to 359.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% Since the compass sensor is a digital sensor (that uses the I²C protocol),
+% the function |NXT_SetInputMode| cannot be used as for analog sensors.
+%%
+%%
+%% Examples
+   OpenCompass(SENSOR_2);
+   degree = GetCompass(SENSOR_2);
+   CloseSensor(SENSOR_2);
+%%
+%% See also
+% GetCompass, CloseSensor, COM_ReadI2C, NXT_LSGetStatus, NXT_LSRead
+%%
+%% Signature
+%%
+% * *Author:* Rainer Schnitzler (see AUTHORS)
+% * *Date:* 2008/08/01
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

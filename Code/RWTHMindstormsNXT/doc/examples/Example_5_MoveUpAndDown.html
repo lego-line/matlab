@@ -1,0 +1,192 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 5: Move up and down</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Example_5_MoveUpAndDown.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Example 5: Move up and down</h1><!--introduction--><p>Make a motor precisely move back and forth 10 times</p><p>Example which moves a motor (or robotic arm) 10 times back and forth (up and down), as precisely as possible without blindly trusting the motor commands. Very simple error compensation (i.e. trying absolute movements instead of always relative).</p><p>Signature</p><div><ul><li> Author: Linus Atorf</li><li> Date: 2009/10/05</li><li> License: BSD</li><li> RWTH - Mindstorms NXT Toolbox: <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Prepare</a></li><li><a href="#3">Connect to NXT, via USB or BT</a></li><li><a href="#4">Set params</a></li><li><a href="#5">Create motor objects</a></li><li><a href="#6">Prepare motor</a></li><li><a href="#7">Main movement (repeat 10 times)</a></li><li><a href="#8">Clean up</a></li></ul></div><pre class="codeinput"><span class="comment">% Now let's imagine we want to control a robotic arm. For the sake of this</span>
+<span class="comment">% example, we want it to move up and down, alternatingly for 10 times. Let</span>
+<span class="comment">% the arm just have one joint, so we only control one motor. A little</span>
+<span class="comment">% problem is gravity: The arm has a certain weight. So if we aren't</span>
+<span class="comment">% careful, moving it downwards will sometimes result in a little lower</span>
+<span class="comment">% position than we expect, and moving upwards won't move the motor as far</span>
+<span class="comment">% as we hope all the time. After all, the motor control is only accurate to</span>
+<span class="comment">% a couple of degrees (+/- 1 most of the time, but not necessarily equally</span>
+<span class="comment">% distributed). So without reading the motor's position and accounting for</span>
+<span class="comment">% those inaccuracies, the errors would accumulate over time and cause a</span>
+<span class="comment">% significant displacement of the arm. By simply retrieving the arm's</span>
+<span class="comment">% position and making sure that it moves a bit more upwards if necessary,</span>
+<span class="comment">% or a bit less downwards, we can avoid the accumulating errors and have</span>
+<span class="comment">% precise movement even after a long period of operation. Here is how its</span>
+<span class="comment">% done:</span>
+
+<span class="comment">% verify that the RWTH - Mindstorms NXT toolbox is installed.</span>
+<span class="keyword">if</span> verLessThan(<span class="string">'RWTHMindstormsNXT'</span>, <span class="string">'4.01'</span>);
+    error(strcat(<span class="string">'This program requires the RWTH - Mindstorms NXT Toolbox '</span> <span class="keyword">...</span>
+    ,<span class="string">'version 4.01 or greater. Go to http://www.mindstorms.rwth-aachen.de '</span> <span class="keyword">...</span>
+    ,<span class="string">'and follow the installation instructions!'</span>));
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><h2>Prepare<a name="2"></a></h2><pre class="codeinput">COM_CloseNXT <span class="string">all</span>
+close <span class="string">all</span>
+clear <span class="string">all</span>
+</pre><h2>Connect to NXT, via USB or BT<a name="3"></a></h2><pre class="codeinput">h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+COM_SetDefaultNXT(h);
+</pre><h2>Set params<a name="4"></a></h2><pre class="codeinput">power = 100;
+port  = MOTOR_A;
+dist  = 180;    <span class="comment">% distance to move in degrees</span>
+</pre><h2>Create motor objects<a name="5"></a></h2><p>we use holdbrake, make sense for robotic arms</p><pre class="codeinput">mUp    = NXTMotor(port, <span class="string">'Power'</span>,  power, <span class="string">'ActionAtTachoLimit'</span>, <span class="string">'HoldBrake'</span>);
+mDown  = NXTMotor(port, <span class="string">'Power'</span>, -power, <span class="string">'ActionAtTachoLimit'</span>, <span class="string">'HoldBrake'</span>);
+</pre><h2>Prepare motor<a name="6"></a></h2><pre class="codeinput">mUp.Stop(<span class="string">'off'</span>);
+mUp.ResetPosition();
+</pre><h2>Main movement (repeat 10 times)<a name="7"></a></h2><pre class="codeinput"><span class="keyword">for</span> j=1:10
+
+    <span class="comment">% where are we?</span>
+    data = mUp.ReadFromNXT();
+    pos  = data.Position;
+
+    <span class="comment">% where do we want to go?</span>
+    <span class="comment">% account for errors, i.e. if pos is not 0</span>
+    mDown.TachoLimit = dist + pos;
+
+    <span class="comment">% move</span>
+    mDown.SendToNXT();
+    mDown.WaitFor();
+
+    <span class="comment">% now we are at the bottom, repeat the game:</span>
+    <span class="comment">% where are we?</span>
+    data = mUp.ReadFromNXT(); <span class="comment">% doesn't matter which object we use to read!</span>
+    pos  = data.Position;
+
+    <span class="comment">% pos SHOULD be = dist in an ideal world</span>
+    <span class="comment">% but calculate new "real" distance to move</span>
+    <span class="comment">% based on current error...</span>
+    <span class="comment">% but avoid negative values!</span>
+    mUp.TachoLimit = abs(pos);
+    <span class="comment">% this looks very simple now, but it comes from</span>
+    <span class="comment">%   TachoLimit = dist + (pos - dist);</span>
+    <span class="comment">% i.e. real distance + error correction</span>
+    <span class="comment">% Imagine it this way: We are currently at pos,</span>
+    <span class="comment">% and want to go back to 0, so this is exactly the distance</span>
+    <span class="comment">% to go! And then only take abs, because power takes care of the sign</span>
+
+    mUp.SendToNXT();
+    mUp.WaitFor();
+
+<span class="keyword">end</span><span class="comment">%for</span>
+</pre><h2>Clean up<a name="8"></a></h2><p>mode was HOLDBRAKE, so don't forget this:</p><pre class="codeinput">mUp.Stop(<span class="string">'off'</span>);
+COM_CloseNXT(h);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 5: Move up and down
+% Make a motor precisely move back and forth 10 times
+%
+% Example which moves a motor (or robotic arm) 10 times back and
+% forth (up and down), as precisely as possible without blindly trusting
+% the motor commands. Very simple error compensation (i.e. trying absolute
+% movements instead of always relative).
+%
+% Signature
+%
+% *  Author: Linus Atorf
+% *  Date: 2009/10/05
+% *  License: BSD
+% *  RWTH - Mindstorms NXT Toolbox: http://www.mindstorms.rwth-aachen.de
+
+%%
+%
+
+% Now let's imagine we want to control a robotic arm. For the sake of this
+% example, we want it to move up and down, alternatingly for 10 times. Let
+% the arm just have one joint, so we only control one motor. A little
+% problem is gravity: The arm has a certain weight. So if we aren't
+% careful, moving it downwards will sometimes result in a little lower
+% position than we expect, and moving upwards won't move the motor as far
+% as we hope all the time. After all, the motor control is only accurate to
+% a couple of degrees (+/- 1 most of the time, but not necessarily equally
+% distributed). So without reading the motor's position and accounting for
+% those inaccuracies, the errors would accumulate over time and cause a
+% significant displacement of the arm. By simply retrieving the arm's
+% position and making sure that it moves a bit more upwards if necessary,
+% or a bit less downwards, we can avoid the accumulating errors and have
+% precise movement even after a long period of operation. Here is how its
+% done:
+
+% verify that the RWTH - Mindstorms NXT toolbox is installed.
+if verLessThan('RWTHMindstormsNXT', '4.01');
+    error(strcat('This program requires the RWTH - Mindstorms NXT Toolbox ' ...
+    ,'version 4.01 or greater. Go to http://www.mindstorms.rwth-aachen.de ' ...
+    ,'and follow the installation instructions!'));
+end%if
+
+
+%% Prepare
+COM_CloseNXT all
+close all
+clear all
+
+%% Connect to NXT, via USB or BT
+h = COM_OpenNXT('bluetooth.ini');
+COM_SetDefaultNXT(h);
+
+%% Set params
+power = 100;
+port  = MOTOR_A;
+dist  = 180;    % distance to move in degrees
+
+%% Create motor objects
+% we use holdbrake, make sense for robotic arms
+mUp    = NXTMotor(port, 'Power',  power, 'ActionAtTachoLimit', 'HoldBrake');
+mDown  = NXTMotor(port, 'Power', -power, 'ActionAtTachoLimit', 'HoldBrake');
+
+%% Prepare motor
+mUp.Stop('off');
+mUp.ResetPosition();
+
+%% Main movement (repeat 10 times)
+for j=1:10
+    
+    % where are we?
+    data = mUp.ReadFromNXT();
+    pos  = data.Position;
+    
+    % where do we want to go?
+    % account for errors, i.e. if pos is not 0
+    mDown.TachoLimit = dist + pos;
+    
+    % move
+    mDown.SendToNXT();
+    mDown.WaitFor();
+    
+    % now we are at the bottom, repeat the game:
+    % where are we?
+    data = mUp.ReadFromNXT(); % doesn't matter which object we use to read!
+    pos  = data.Position;
+    
+    % pos SHOULD be = dist in an ideal world
+    % but calculate new "real" distance to move
+    % based on current error...    
+    % but avoid negative values!
+    mUp.TachoLimit = abs(pos);
+    % this looks very simple now, but it comes from
+    %   TachoLimit = dist + (pos - dist);
+    % i.e. real distance + error correction
+    % Imagine it this way: We are currently at pos,
+    % and want to go back to 0, so this is exactly the distance
+    % to go! And then only take abs, because power takes care of the sign
+    
+    mUp.SendToNXT();
+    mUp.WaitFor();
+    
+end%for
+
+%% Clean up
+% mode was HOLDBRAKE, so don't forget this:
+mUp.Stop('off');
+COM_CloseNXT(h);
+##### SOURCE END #####
+--></body></html>

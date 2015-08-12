@@ -1,0 +1,30 @@
+<html>
+<head>
+<title>Watch Motor State GUI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link type="text/css" rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<p class="header">RWTH - Mindstorms NXT Toolbox</p>
+<h1>Watch Motor State GUI</h1>
+<hr>
+"Watch Motor State GUI" is a tool to analyze the current motor settings and its behavior.
+<br><br>
+<img src="GUI_WatchMotorState.png" alt="Watch Motor State GUI">
+<br><br>
+<h3>Select motor port</h3>
+At first one motor port (0,1,2) has to be selected in the group field "Select motor port" and the information polling should be startet with the "Start" button.
+<h3>Control current motor</h3>
+In the second group field a specific power and angle can be set and send to the motor by pressing the "SetOutputState()" button.
+<h3>GetOutputState Data</h3>
+The group field "GetOutputState Data" monitors the current settings of the selected motor. All data are read only. They display the result of <tt>NXT_GetOutputState()</tt>. Monitoring is only enabled after pressing the "Start" button, and only for the current motor. Before changing the motor port, press "Stop" first.
+<h3>Connection Data</h3>
+Information about the communication channel is given in group field "Connection Data".
+<h3>Synced Motors 1 and 2</h3>
+The group field "Synced Motors 1 and 2" is given to experiment with the synchronization options. Whenever a "Submit" button is pressed, the specified <tt>NXT_SetOutputState()</tt> packet will only be sent to the according motor (1 or 2).
+<br><br>
+To stop all motors one should press the "Release all motors" button. "Reset Memory Counter" starts an empty program on the NXT brick, which resets all counters, especially the otherwise unchangable <tt>TachoCount</tt>.
+<br><br>
+The other buttons are for testing purposes only.
+</body>

@@ -1,0 +1,99 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXC_ResetErrorCorrection</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXC_ResetErrorCorrection.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXC_ResetErrorCorrection</h1><!--introduction--><p>Sends reset error correction command to the NXC-program MotorControl on the NXT</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#15">Limitations</a></li><li><a href="#18">Example</a></li><li><a href="#21">See also</a></li><li><a href="#24">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>NXC_ResetErrorCorrection(port)</tt></p><p><tt>NXC_ResetErrorCorrection(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p>The NXC-program "MotorControl" must be running on the brick, otherwise this function will not work. It is used to sent advanced motor commands to the NXT that can perform better and more precise motor regulation than possible with only classic direct commands.</p><p>This function resets the "internal error correction memory" for the according motor. Usually, you cannot move the NXT motors by hand in between two commands that control the motors, since the modified motor position does not match the internal counters any more. This leads to unexpected motor behaviour (when the NXT firmware tries to correct the manual movements you just made). <i>The problem described here does not occur when working with the <tt>NXTMotor</tt> class.</i></p><p>To work around this problem, it is possible to reset the error correction counter by hand using this function. It will clear the counter <tt>TachoCount</tt>, since this counter is internally attached to the error correction. The counter <tt>BlockTachoCount</tt> (see direct commands specification of the LEGO Mindstorms Bluetooth Developer Kit) will also be reset (since it is used to coordinate multiple motors during synchronous driving).</p><p>It is recommended to call this function before using classic direct commands (i.e. like <tt>NXT_SetOutputState</tt>), to get the intuitively expected results.</p><p><b>Input:</b></p><p><tt>port</tt> has to be a port number between 0 and 2. It can also be an array of valid port-numbers, i.e. <tt>[0; 1]</tt>, <tt>[0; 2]</tt>, <tt>[1; 2]</tt> or <tt>[0; 1; 2]</tt>. The named constants <tt>MOTOR_A</tt> to <tt>MOTOR_C</tt> can be used for clarity (i.e. <tt>port = [MOTOR_A; MOTOR_B]</tt>.</p><p><tt>handle</tt> is optional and determines the NXT handle to be used, if specified. Otherwise the default handle will be used (set using <tt>COM_SetDefaultNXT</tt>).</p><h2>Limitations<a name="15"></a></h2><p>This function is intended for advanced users. It makes no sense to use it together with the <tt>NXTMotor</tt> class. It can however be useful in between certain <tt>DirectMotorCommand</tt> calls.</p><h2>Example<a name="18"></a></h2><pre class="codeinput"> <span class="comment">% This will reset the TachoCount counter for port A on the NXT, which</span>
+ <span class="comment">% also resets the error correction</span>
+ NXC_ResetErrorCorrection(MOTOR_A);
+ <span class="comment">% Now MOTOR_A behaves as if the NXT was freshly booted up...</span>
+ <span class="comment">% The "personal" position counter (field Position when calling</span>
+ <span class="comment">% a motor object's method ReadFromNXT()) won't be affected through this</span>
+ <span class="comment">% -- it will stay untouched until reset by a motor object's method</span>
+ <span class="comment">% ResetPosition())</span>
+</pre><h2>See also<a name="21"></a></h2><p><a href="NXTMotor.html">NXTMotor</a>, <a href="NXC_MotorControl.html">NXC_MotorControl</a>, <a href="NXT_SetOutputState.html">NXT_SetOutputState</a>, <a href="NXT_GetOutputState.html">NXT_GetOutputState</a>, <a href="NXT_ResetMotorPosition.html">NXT_ResetMotorPosition</a>, <a href="ReadFromNXT.html">ReadFromNXT</a>, </p><h2>Signature<a name="24"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/11/12</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXC_ResetErrorCorrection
+% Sends reset error correction command to the NXC-program MotorControl on the NXT
+%%
+%% Syntax
+% |NXC_ResetErrorCorrection(port)|
+%%
+% |NXC_ResetErrorCorrection(port, handle)|
+%%
+%% Description
+% The NXC-program "MotorControl" must be running on the brick, otherwise
+% this function will not work. It is used to sent advanced motor commands
+% to the NXT that can perform better and more precise motor regulation
+% than possible with only classic direct commands.
+%%
+% This function resets the "internal error correction memory" for the
+% according motor. Usually, you cannot move the NXT motors by hand in
+% between two commands that control the motors, since the modified motor
+% position does not match the internal counters any more. This leads to
+% unexpected motor behaviour (when the NXT firmware tries to correct the
+% manual movements you just made). _The problem described here does not occur when
+% working with the |NXTMotor| class._
+%%
+% To work around this problem, it is possible to reset the error
+% correction counter by hand using this function. It will clear the
+% counter |TachoCount|, since this counter is internally attached to the
+% error correction. The counter |BlockTachoCount| (see direct commands
+% specification of the LEGO Mindstorms Bluetooth Developer Kit) will also
+% be reset (since it is used to coordinate multiple motors during
+% synchronous driving).
+%%
+% It is recommended to call this function before using classic direct
+% commands (i.e. like |NXT_SetOutputState|), to get the intuitively
+% expected results.
+%%
+%%
+% *Input:*
+%%
+% |port| has to be a port number between 0 and 2. It can also be an array
+% of valid port-numbers, i.e. |[0; 1]|, |[0; 2]|, |[1; 2]| or |[0; 1;
+% 2]|. The named constants |MOTOR_A| to |MOTOR_C| can be used for clarity
+% (i.e. |port = [MOTOR_A; MOTOR_B]|.
+%%
+% |handle| is optional and determines the NXT handle to be used, if
+% specified. Otherwise the default handle will be used (set using
+% |COM_SetDefaultNXT|).
+%%
+%%
+%% Limitations
+% This function is intended for advanced users. It makes no sense to use
+% it together with the |NXTMotor| class. It can however be useful in
+% between certain |DirectMotorCommand| calls.
+%%
+%%
+%% Example
+ % This will reset the TachoCount counter for port A on the NXT, which
+ % also resets the error correction
+ NXC_ResetErrorCorrection(MOTOR_A);
+ % Now MOTOR_A behaves as if the NXT was freshly booted up...
+ % The "personal" position counter (field Position when calling
+ % a motor object's method ReadFromNXT()) won't be affected through this
+ % REPLACE_WITH_DASH_DASH it will stay untouched until reset by a motor object's method
+ % ResetPosition())
+%%
+%%
+%% See also
+% NXTMotor, NXC_MotorControl, NXT_SetOutputState,
+% NXT_GetOutputState, NXT_ResetMotorPosition, ReadFromNXT
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2008/11/12
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

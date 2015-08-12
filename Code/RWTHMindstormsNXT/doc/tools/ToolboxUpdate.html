@@ -1,0 +1,429 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ToolboxUpdate</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="ToolboxUpdate.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">init search pattern</a></li><li><a href="#4">web connection</a></li><li><a href="#5">find search pattern</a></li><li><a href="#6">start GUI</a></li><li><a href="#9">get version</a></li><li><a href="#10">fill data fields</a></li><li><a href="#11">init GUI</a></li><li><a href="#12">cell callback from table</a></li><li><a href="#13">cell edit callback from table</a></li><li><a href="#15">isVersionStable</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> ToolboxUpdate()
+</pre><pre class="codeinput"><span class="comment">% ToolboxUpdate</span>
+<span class="comment">% Shows the local installed toolbox version and gets remote update</span>
+<span class="comment">% information from the toolbox svn server.</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% Signature</span>
+<span class="comment">%   Author: Alexander Behrens, Linus Atorf (see AUTHORS)</span>
+<span class="comment">%   Date: 2009/10/07</span>
+<span class="comment">%   Copyright: 2007-2010, RWTH Aachen University</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% ***********************************************************************************************</span>
+<span class="comment">% *  This file is part of the RWTH - Mindstorms NXT Toolbox.                                    *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  The RWTH - Mindstorms NXT Toolbox is free software: you can redistribute it and/or modify  *</span>
+<span class="comment">% *  it under the terms of the GNU General Public License as published by the Free Software     *</span>
+<span class="comment">% *  Foundation, either version 3 of the License, or (at your option) any later version.        *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  The RWTH - Mindstorms NXT Toolbox is distributed in the hope that it will be useful,       *</span>
+<span class="comment">% *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  *</span>
+<span class="comment">% *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.             *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  You should have received a copy of the GNU General Public License along with the           *</span>
+<span class="comment">% *  RWTH - Mindstorms NXT Toolbox. If not, see &lt;http://www.gnu.org/licenses/&gt;.                 *</span>
+<span class="comment">% ***********************************************************************************************</span>
+</pre><h2>init search pattern<a name="3"></a></h2><pre class="codeinput">    startMarker = <span class="string">'a href="version-'</span>;
+    endMarker = <span class="string">'/"&gt;'</span>;
+    tagname = {};
+</pre><h2>web connection<a name="4"></a></h2><pre class="codeinput">    [text status] = urlread(<span class="string">'http://www.mindstorms.rwth-aachen.de/subversion/tags/'</span>);
+    <span class="keyword">if</span> ~status
+        error(<span class="string">'MATLAB:RWTHMindstormsNXT:CheckForUpdates'</span>,<span class="string">'Could not connect to server!'</span>);
+    <span class="keyword">end</span>
+</pre><h2>find search pattern<a name="5"></a></h2><pre class="codeinput">    indizes = findstr(text, startMarker);
+
+    <span class="comment">% select last version number</span>
+    <span class="keyword">for</span> idx = indizes
+        tmp = findstr(text(idx+length(startMarker):end), endMarker);
+        tagname{end+1} = text(idx+length(startMarker):idx+length(startMarker)+tmp(1)-2);
+    <span class="keyword">end</span><span class="comment">%for</span>
+</pre><h2>start GUI<a name="6"></a></h2><pre class="codeinput">    Version_GUI(tagname);
+</pre><pre class="codeinput"><span class="keyword">end</span>
+
+
+<span class="keyword">function</span> Version_GUI(tagnames)
+</pre><h2>get version<a name="9"></a></h2><pre class="codeinput">     v = ver(<span class="string">'RWTHMindstormsNXT'</span>);
+</pre><h2>fill data fields<a name="10"></a></h2><pre class="codeinput">    data = cell(length(tagnames), 5);
+    <span class="keyword">for</span> n = 1:1:length(tagnames)
+
+        data{n,1} = <span class="string">'RWTH - Mindstorms NXT Toolbox'</span>;
+        data{n,2} = tagnames{length(tagnames)-n+1};
+        data{n,3} = isVersionStable(tagnames{length(tagnames)-n+1});
+
+        <span class="comment">% data field 'Installed Version'</span>
+        <span class="keyword">for</span> m=1:length(v)
+            <span class="keyword">if</span> strcmpi(v(m).Version, tagnames{length(tagnames)-n+1})
+                data{n,4} = true;
+                <span class="keyword">break</span>;
+            <span class="keyword">else</span>
+                data{n,4} = false;
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+
+        data{n,5} = false;
+
+    <span class="keyword">end</span>
+</pre><h2>init GUI<a name="11"></a></h2><pre class="codeinput">    gray = [.8 .8 .8];
+
+    f = figure(<span class="string">'Position'</span>,[100 100 700 550], <span class="keyword">...</span>
+               <span class="string">'NumberTitle'</span>, <span class="string">'off'</span>, <span class="keyword">...</span>
+               <span class="string">'MenuBar'</span>, <span class="string">'none'</span>, <span class="keyword">...</span>
+               <span class="string">'Name'</span>, <span class="string">'RWTH - Mindstorms NXT / Check for Updates'</span>, <span class="keyword">...</span>
+               <span class="string">'Color'</span>, gray);
+
+    columnname     = {<span class="string">'Product'</span>, <span class="string">'Version'</span>, <span class="string">'Stable'</span>, <span class="string">'Installed Version'</span>, <span class="string">'Download'</span>};
+    columnformat   = {<span class="string">'char'</span>,<span class="string">'char'</span>,[],[],[]};
+    columnwidth    = {220, 50, 50, <span class="string">'auto'</span>, <span class="string">'auto'</span>};
+    columneditable = [false false false false true];
+
+    horz_off = .1;
+    width    = 1 - 2*horz_off;
+    vert_off = .1;
+    vline1 = 0.1;
+    vline2 = 0.4;
+    vline3 = 0.5;
+    vline4 = 0.8;
+    vline5 = 0.82;
+
+
+    ver_text = [];
+    <span class="keyword">for</span> k=1:1:numel(v)
+        ver_text = [ver_text, sprintf(<span class="string">'%s'</span>, v(k).Version)];
+        <span class="keyword">if</span> k &lt; numel(v)
+            ver_text = [ver_text, <span class="string">' and '</span>];
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> isempty(ver_text)
+        txt = <span class="string">'You currently have no Release'</span>;
+    <span class="keyword">else</span>
+        txt = [<span class="string">'You currently have Release '</span>, ver_text];
+    <span class="keyword">end</span>
+
+    txt = [txt , <span class="keyword">...</span>
+           sprintf([<span class="string">' installed.\n\n'</span>, <span class="keyword">...</span>
+                   <span class="string">'Updates for the RWTH - Mindstorms NXT Toolbox are listed below. '</span>, <span class="keyword">...</span>
+                   <span class="string">'You can download the\n specific toolbox versions by selecting the download fields\n\n'</span>, <span class="keyword">...</span>
+                   <span class="string">'or visiting the project page http://www.mindstorms.rwth-aachen.de'</span>])];
+    h_text = uicontrol(<span class="string">'Style'</span>, <span class="string">'text'</span>, <span class="keyword">...</span>
+                       <span class="string">'HorizontalAlignment'</span>, <span class="string">'left'</span>, <span class="keyword">...</span>
+                       <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Position'</span>,<span class="keyword">...</span>
+                       [horz_off, vline4,  width, (vline5 - vline4)*8], <span class="keyword">...</span>
+                       <span class="string">'String'</span>, txt, <span class="keyword">...</span>
+                       <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="keyword">...</span>
+                       <span class="string">'BackgroundColor'</span>, gray, <span class="keyword">...</span>
+                       <span class="string">'Parent'</span>, f);
+
+    h_table = uitable(<span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Position'</span>,<span class="keyword">...</span>
+                      [horz_off, vline3,  width, (vline4 - vline3)*0.9], <span class="keyword">...</span>
+                      <span class="string">'Data'</span>, data,<span class="keyword">...</span>
+                      <span class="string">'ColumnName'</span>, columnname,<span class="keyword">...</span>
+                      <span class="string">'ColumnFormat'</span>, columnformat,<span class="keyword">...</span>
+                      <span class="string">'ColumnEditable'</span>, columneditable, <span class="keyword">...</span>
+                      <span class="string">'RowName'</span>, [], <span class="keyword">...</span>
+                      <span class="string">'ColumnWidth'</span>, columnwidth, <span class="keyword">...</span>
+                      <span class="string">'Parent'</span>, f, <span class="keyword">...</span>
+                      <span class="string">'CellSelectionCallback'</span>, @cell_callback, <span class="keyword">...</span>
+                      <span class="string">'CellEditCallback'</span>, @cell_edit_callback);
+
+   h_text2 = uicontrol(<span class="string">'Style'</span>, <span class="string">'text'</span>, <span class="keyword">...</span>
+                        <span class="string">'HorizontalAlignment'</span>, <span class="string">'left'</span>, <span class="keyword">...</span>
+                        <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Position'</span>,<span class="keyword">...</span>
+                        [horz_off, vline2, width ,(vline3 - vline2)*0.5], <span class="keyword">...</span>
+                        <span class="string">'String'</span>, <span class="string">'What''s New:'</span>, <span class="keyword">...</span>
+                        <span class="string">'FontWeight'</span>, <span class="string">'bold'</span>, <span class="keyword">...</span>
+                        <span class="string">'BackgroundColor'</span>, gray, <span class="keyword">...</span>
+                        <span class="string">'Parent'</span>, f);
+
+    h_field = uicontrol(<span class="string">'Style'</span>, <span class="string">'edit'</span>, <span class="keyword">...</span>
+                        <span class="string">'HorizontalAlignment'</span>, <span class="string">'left'</span>, <span class="keyword">...</span>
+                        <span class="string">'Units'</span>,<span class="string">'normalized'</span>,<span class="string">'Position'</span>,<span class="keyword">...</span>
+                        [horz_off, vline1, width ,(vline2 - vline1)*0.9], <span class="keyword">...</span>
+                        <span class="string">'String'</span>, <span class="string">''</span>, <span class="keyword">...</span>
+                        <span class="string">'Max'</span>, 8, <span class="keyword">...</span>
+                        <span class="string">'BackgroundColor'</span>, gray, <span class="keyword">...</span>
+                        <span class="string">'Parent'</span>, f);
+</pre><h2>cell callback from table<a name="12"></a></h2><pre class="codeinput">    <span class="keyword">function</span> cell_callback(hObject, eventdata)
+
+        <span class="keyword">if</span> numel(eventdata.Indices) &gt; 0
+            c_ver = tagnames{length(tagnames)-eventdata.Indices(1)+1};
+            filename = [<span class="string">'/ChangeLogv'</span>, c_ver, <span class="string">'.txt'</span>];
+            urladdress = [<span class="string">'http://www.mindstorms.rwth-aachen.de/subversion/tags/version-'</span>, c_ver, filename];
+
+            <span class="comment">% read changelog from server</span>
+            A = urlread(urladdress);
+
+            <span class="comment">% update text field</span>
+            set(h_field, <span class="string">'String'</span>, A);
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+</pre><h2>cell edit callback from table<a name="13"></a></h2><pre class="codeinput">    <span class="keyword">function</span> cell_edit_callback(hObject, eventdata)
+        c_ver = tagnames{length(tagnames)-eventdata.Indices(1)+1};
+        filename = [<span class="string">'/RWTHMindstormsNXTv'</span>, c_ver, <span class="string">'.zip'</span>];
+        urladdress = [<span class="string">'http://www.mindstorms.rwth-aachen.de/subversion/tags/version-'</span>, c_ver, filename];
+
+        <span class="comment">% download zip file</span>
+        [stat h_web] = web(urladdress);
+
+        <span class="comment">% disable edit field</span>
+        data = get(hObject, <span class="string">'Data'</span>);
+        data(eventdata.Indices(1), 5) = {false};
+        set(hObject, <span class="string">'Data'</span>, data);
+    <span class="keyword">end</span>
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><h2>isVersionStable<a name="15"></a></h2><pre class="codeinput"><span class="keyword">function</span> stable = isVersionStable(version)
+    filename = [<span class="string">'/ChangeLogv'</span>, version, <span class="string">'.txt'</span>];
+    urladdress = [<span class="string">'http://www.mindstorms.rwth-aachen.de/subversion/tags/version-'</span>, version, filename];
+
+    <span class="comment">% read changelog from server</span>
+    A = urlread(urladdress);
+
+    <span class="comment">% select string to first endofline</span>
+    endofline = sprintf(<span class="string">'\r\n'</span>);
+
+    idx = strfind(A, endofline);
+    <span class="keyword">if</span> ~isempty(strfind(A(1:idx(1)), <span class="string">'(stable'</span>))
+        stable = true;
+    <span class="keyword">else</span>
+        stable = false;
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+function ToolboxUpdate()
+% ToolboxUpdate
+% Shows the local installed toolbox version and gets remote update
+% information from the toolbox svn server.
+%
+%
+%
+% Signature
+%   Author: Alexander Behrens, Linus Atorf (see AUTHORS)
+%   Date: 2009/10/07
+%   Copyright: 2007-2010, RWTH Aachen University
+%
+%
+% ***********************************************************************************************
+% *  This file is part of the RWTH - Mindstorms NXT Toolbox.                                    *
+% *                                                                                             *
+% *  The RWTH - Mindstorms NXT Toolbox is free software: you can redistribute it and/or modify  *
+% *  it under the terms of the GNU General Public License as published by the Free Software     *
+% *  Foundation, either version 3 of the License, or (at your option) any later version.        *
+% *                                                                                             *
+% *  The RWTH - Mindstorms NXT Toolbox is distributed in the hope that it will be useful,       *
+% *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  *
+% *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+% *                                                                                             *
+% *  You should have received a copy of the GNU General Public License along with the           *
+% *  RWTH - Mindstorms NXT Toolbox. If not, see <http://www.gnu.org/licenses/>.                 *
+% ***********************************************************************************************
+
+
+    %% init search pattern
+    startMarker = 'a href="version-';
+    endMarker = '/">';
+    tagname = {};
+
+
+    %% web connection
+    [text status] = urlread('http://www.mindstorms.rwth-aachen.de/subversion/tags/');
+    if ~status
+        error('MATLAB:RWTHMindstormsNXT:CheckForUpdates','Could not connect to server!');
+    end
+
+    %% find search pattern
+    indizes = findstr(text, startMarker);
+
+    % select last version number
+    for idx = indizes
+        tmp = findstr(text(idx+length(startMarker):end), endMarker);
+        tagname{end+1} = text(idx+length(startMarker):idx+length(startMarker)+tmp(1)-2);
+    end%for
+
+
+    %% start GUI
+    Version_GUI(tagname);
+    
+end
+
+
+function Version_GUI(tagnames)
+    
+    %% get version
+     v = ver('RWTHMindstormsNXT');
+ 
+     
+     %% fill data fields
+    data = cell(length(tagnames), 5);
+    for n = 1:1:length(tagnames)
+        
+        data{n,1} = 'RWTH - Mindstorms NXT Toolbox';
+        data{n,2} = tagnames{length(tagnames)-n+1};
+        data{n,3} = isVersionStable(tagnames{length(tagnames)-n+1});
+        
+        % data field 'Installed Version'
+        for m=1:length(v)
+            if strcmpi(v(m).Version, tagnames{length(tagnames)-n+1})
+                data{n,4} = true;
+                break;
+            else
+                data{n,4} = false;
+            end
+        end
+        
+        data{n,5} = false;
+        
+    end
+     
+    
+    %%  init GUI
+    gray = [.8 .8 .8];
+    
+    f = figure('Position',[100 100 700 550], ...
+               'NumberTitle', 'off', ...
+               'MenuBar', 'none', ...
+               'Name', 'RWTH - Mindstorms NXT / Check for Updates', ...
+               'Color', gray);
+    
+    columnname     = {'Product', 'Version', 'Stable', 'Installed Version', 'Download'};
+    columnformat   = {'char','char',[],[],[]};
+    columnwidth    = {220, 50, 50, 'auto', 'auto'};
+    columneditable = [false false false false true]; 
+    
+    horz_off = .1;
+    width    = 1 - 2*horz_off;
+    vert_off = .1;
+    vline1 = 0.1;
+    vline2 = 0.4;
+    vline3 = 0.5;
+    vline4 = 0.8;
+    vline5 = 0.82;
+
+    
+    ver_text = [];
+    for k=1:1:numel(v)
+        ver_text = [ver_text, sprintf('%s', v(k).Version)];
+        if k < numel(v)
+            ver_text = [ver_text, ' and '];
+        end
+    end
+    
+    if isempty(ver_text)
+        txt = 'You currently have no Release';
+    else
+        txt = ['You currently have Release ', ver_text];
+    end
+    
+    txt = [txt , ...
+           sprintf([' installed.\n\n', ...
+                   'Updates for the RWTH - Mindstorms NXT Toolbox are listed below. ', ...
+                   'You can download the\n specific toolbox versions by selecting the download fields\n\n', ... 
+                   'or visiting the project page http://www.mindstorms.rwth-aachen.de'])];
+    h_text = uicontrol('Style', 'text', ...
+                       'HorizontalAlignment', 'left', ...
+                       'Units','normalized','Position',...
+                       [horz_off, vline4,  width, (vline5 - vline4)*8], ...
+                       'String', txt, ...
+                       'FontWeight', 'bold', ...
+                       'BackgroundColor', gray, ...
+                       'Parent', f);
+    
+    h_table = uitable('Units','normalized','Position',...
+                      [horz_off, vline3,  width, (vline4 - vline3)*0.9], ...
+                      'Data', data,... 
+                      'ColumnName', columnname,...
+                      'ColumnFormat', columnformat,...
+                      'ColumnEditable', columneditable, ...
+                      'RowName', [], ...
+                      'ColumnWidth', columnwidth, ...
+                      'Parent', f, ...
+                      'CellSelectionCallback', @cell_callback, ...
+                      'CellEditCallback', @cell_edit_callback);
+            
+   h_text2 = uicontrol('Style', 'text', ...
+                        'HorizontalAlignment', 'left', ...
+                        'Units','normalized','Position',...
+                        [horz_off, vline2, width ,(vline3 - vline2)*0.5], ...
+                        'String', 'What''s New:', ...
+                        'FontWeight', 'bold', ...
+                        'BackgroundColor', gray, ...
+                        'Parent', f);
+                  
+    h_field = uicontrol('Style', 'edit', ...
+                        'HorizontalAlignment', 'left', ...
+                        'Units','normalized','Position',...
+                        [horz_off, vline1, width ,(vline2 - vline1)*0.9], ...
+                        'String', '', ...
+                        'Max', 8, ...
+                        'BackgroundColor', gray, ...
+                        'Parent', f);
+                    
+
+                    
+    %% cell callback from table
+    function cell_callback(hObject, eventdata)
+        
+        if numel(eventdata.Indices) > 0
+            c_ver = tagnames{length(tagnames)-eventdata.Indices(1)+1};
+            filename = ['/ChangeLogv', c_ver, '.txt'];
+            urladdress = ['http://www.mindstorms.rwth-aachen.de/subversion/tags/version-', c_ver, filename];
+        
+            % read changelog from server
+            A = urlread(urladdress);
+        
+            % update text field
+            set(h_field, 'String', A);
+        end
+    end
+    
+
+    %% cell edit callback from table
+    function cell_edit_callback(hObject, eventdata)
+        c_ver = tagnames{length(tagnames)-eventdata.Indices(1)+1};
+        filename = ['/RWTHMindstormsNXTv', c_ver, '.zip'];
+        urladdress = ['http://www.mindstorms.rwth-aachen.de/subversion/tags/version-', c_ver, filename];
+        
+        % download zip file
+        [stat h_web] = web(urladdress);
+
+        % disable edit field
+        data = get(hObject, 'Data');
+        data(eventdata.Indices(1), 5) = {false};
+        set(hObject, 'Data', data);
+    end
+end
+
+
+%% isVersionStable
+function stable = isVersionStable(version)
+    filename = ['/ChangeLogv', version, '.txt'];
+    urladdress = ['http://www.mindstorms.rwth-aachen.de/subversion/tags/version-', version, filename];
+        
+    % read changelog from server
+    A = urlread(urladdress);
+        
+    % select string to first endofline
+    endofline = sprintf('\r\n');
+        
+    idx = strfind(A, endofline);
+    if ~isempty(strfind(A(1:idx(1)), '(stable'))
+        stable = true;
+    else
+        stable = false;
+    end
+end
+##### SOURCE END #####
+--></body></html>

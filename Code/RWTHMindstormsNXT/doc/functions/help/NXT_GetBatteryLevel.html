@@ -1,0 +1,51 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_GetBatteryLevel</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_GetBatteryLevel.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_GetBatteryLevel</h1><!--introduction--><p>Returns the current battery level in milli volts</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#9">Examples</a></li><li><a href="#12">See also</a></li><li><a href="#14">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>voltage = NXT_GetBatteryLevel()</tt></p><p><tt>voltage = NXT_GetBatteryLevel(handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>voltage = NXT_GetBatteryLevel()</tt> returns the current battery level <tt>voltage</tt> of the NXT Brick in milli voltage.</p><p><tt>voltage = NXT_GetBatteryLevel(handle)</tt> uses the given Bluetooth connection <tt>handle</tt>. This should be a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><h2>Examples<a name="9"></a></h2><pre class="codeinput">   voltage = NXT_GetBatteryLevel();
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   voltage = NXT_GetBatteryLevel(handle);
+</pre><h2>See also<a name="12"></a></h2><p><a href="COM_GetDefaultNXT.html">COM_GetDefaultNXT</a>, <a href="NXT_SendKeepAlive.html">NXT_SendKeepAlive</a>, </p><h2>Signature<a name="14"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_GetBatteryLevel
+% Returns the current battery level in milli volts
+%%
+%% Syntax
+% |voltage = NXT_GetBatteryLevel()|
+%%
+% |voltage = NXT_GetBatteryLevel(handle)|
+%%
+%% Description
+% |voltage = NXT_GetBatteryLevel()| returns the current battery level |voltage| of the NXT Brick in milli
+% voltage.
+%%
+% |voltage = NXT_GetBatteryLevel(handle)| uses the given Bluetooth connection |handle|. This should be a
+% serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+%% Examples
+   voltage = NXT_GetBatteryLevel();
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   voltage = NXT_GetBatteryLevel(handle);
+%%
+%% See also
+% COM_GetDefaultNXT, NXT_SendKeepAlive
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

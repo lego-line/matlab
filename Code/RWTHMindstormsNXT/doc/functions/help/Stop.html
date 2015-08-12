@@ -1,0 +1,82 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Stop</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_Stop.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>Stop</h1><!--introduction--><p>Stops or brakes specified motor(s)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#6">Description</a></li><li><a href="#20">Example:</a></li><li><a href="#22">See also</a></li><li><a href="#25">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OBJ.Stop()</tt></p><p><tt>OBJ.Stop(BRAKEMODE)</tt></p><p><tt>OBJ.Stop(BRAKEMODE, HANDLE)</tt></p><h2>Description<a name="6"></a></h2><p><tt>OBJ.Stop()</tt> is the same as <tt>OBJ.Stop('off')</tt>.</p><p><tt>OBJ.Stop(BRAKEMODE)</tt> stops the motor specified in <tt>OBJ</tt> with the brakemode specified in <tt>BRAKEMODE</tt>:</p><p><tt>BRAKEMODE</tt> can take the following values:</p><p><tt>'nobrake'</tt>, <tt>'off'</tt>, 0, <tt>false</tt>: The electrical power to the specified motor is simply disconnected, the so-called "COAST" mode. Motor will keep spinning until it comes to a soft stop.</p><p><tt>'brake'</tt>,   <tt>'on'</tt>,  1, <tt>true</tt>: This will actively halt the motor at the current position (until the next movement command); it's a "hard brake".</p><p>Use <tt>HANDLE</tt> to identify the connection to use for this command (optional).</p><p><b>Note:</b></p><p>To stop all motors at precisely the same time, please see the command <tt>StopMotor</tt>. It can be called with the syntax <tt>StopMotor('all', 'off')</tt> or <tt>StopMotor('all', 'brake')</tt>. When comparing this to the <tt>obj.Stop</tt> method, it acts more precise when wanting to stop multiple motors at the same time...</p><p>Using the active brake (e.g. <tt>.Stop('brake')</tt>) can be very power consuming, so watch your battery level when using this functionality for long periods of time.</p><h2>Example:<a name="20"></a></h2><pre class="codeinput">      motorC = NXTMotor(<span class="string">'C'</span>, <span class="string">'Power'</span>, -100, <span class="string">'TachoLimit'</span>, 0);
+      motorC.SendToNXT();
+      pause(4);      <span class="comment">% wait 4 seconds</span>
+      motorC.Stop(<span class="string">'brake'</span>);
+</pre><h2>See also<a name="22"></a></h2><p><a href="NXTMotor.html">NXTMotor</a>, <a href="WaitFor.html">WaitFor</a>, <a href="StopMotor.html">StopMotor</a>, </p><h2>Signature<a name="25"></a></h2><div><ul><li><b>Author:</b> Aulis Telle, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/07/20</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Stop
+% Stops or brakes specified motor(s)
+%%
+%% Syntax
+% |OBJ.Stop()|
+%%
+% |OBJ.Stop(BRAKEMODE)|
+%%
+% |OBJ.Stop(BRAKEMODE, HANDLE)|
+%%
+%% Description
+% |OBJ.Stop()| is the same as |OBJ.Stop('off')|.
+%%
+% |OBJ.Stop(BRAKEMODE)| stops the motor specified in |OBJ| with the
+% brakemode specified in |BRAKEMODE|:
+%%
+% |BRAKEMODE| can take the following values:
+%%
+% |'nobrake'|, |'off'|, 0, |false|: The electrical power to the specified
+% motor is simply disconnected, the
+% so-called "COAST" mode. Motor will keep
+% spinning until it comes to a soft stop.
+%%
+% |'brake'|,   |'on'|,  1, |true|: This will actively halt the motor at the
+% current position (until the next movement
+% command); it's a "hard brake".
+%%
+% Use |HANDLE| to identify the connection to use for this command (optional).
+%%
+%%
+%%
+% *Note:*
+%%
+%%
+% To stop all motors at precisely the same time, please see the command
+% |StopMotor|. It can be called with the syntax |StopMotor('all', 'off')|
+% or |StopMotor('all', 'brake')|. When comparing this to the |obj.Stop| method,
+% it acts more precise when wanting to stop multiple motors at the same
+% time...
+%%
+% Using the active brake (e.g. |.Stop('brake')|) can be very power
+% consuming, so watch your battery level when using this functionality for
+% long periods of time.
+%%
+%%
+%% Example:
+      motorC = NXTMotor('C', 'Power', -100, 'TachoLimit', 0);
+      motorC.SendToNXT();
+      pause(4);      % wait 4 seconds
+      motorC.Stop('brake');
+%%
+%% See also
+% NXTMotor, WaitFor, StopMotor
+%%
+%%
+%% Signature
+%%
+% * *Author:* Aulis Telle, Linus Atorf (see AUTHORS)
+% * *Date:* 2009/07/20
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%%
+%
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,67 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_SendPacket</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_SendPacket.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_SendPacket</h1><!--introduction--><p>Sends a communication protocol packet (byte-array) via a USB or Bluetooth</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#10">Example</a></li><li><a href="#12">See also</a></li><li><a href="#14">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>COM_SendPacket(Packet, handle)</tt></p><h2>Description<a name="4"></a></h2><p><tt>COM_SendPacket(Packet, handle)</tt> sends the given byte-array <tt>Packet</tt> (column vector), (which can easily be created by the function <tt>COM_CreatePacket</tt>) over the USB or Bluetooth channel specified by the given <tt>handle</tt> (struct) created by the function <tt>COM_OpenNXT</tt> or <tt>COM_OpenNXTEx</tt>, or obtained from <tt>COM_GetDefaultNXT</tt>.</p><p><b>Note:</b></p><p>In the case of a Bluetooth connection this function uses the specific settings from the ini-file that was specified when opening the handle. Parameters used here are <tt>SendSendPause</tt> and <tt>SendReceivePause</tt>, which will cause this function to wait a certain amount of milliseconds between each consecutive send or receive operation to avoid packet loss or buffer overflows inside the blutooth stack.</p><h2>Example<a name="10"></a></h2><pre class="codeinput">   COM_MakeBTConfigFile();
+
+   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+
+   [type cmd] = name2commandbytes(<span class="string">'KEEPALIVE'</span>);
+   content = [];  <span class="comment">% no payload in NXT command KEEPALIVE</span>
+   packet = COM_CreatePacket(type, cmd, <span class="string">'dontreply'</span>, content);
+
+   COM_SendPacket(packet, bt_handle);
+</pre><h2>See also<a name="12"></a></h2><p><a href="COM_CreatePacket.html">COM_CreatePacket</a>, <a href="COM_CollectPacket.html">COM_CollectPacket</a>, <a href="COM_OpenNXT.html">COM_OpenNXT</a>, <a href="COM_GetDefaultNXT.html">COM_GetDefaultNXT</a>, <a href="COM_MakeBTConfigFile.html">COM_MakeBTConfigFile</a>, </p><h2>Signature<a name="14"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/08/31</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_SendPacket
+% Sends a communication protocol packet (byte-array) via a USB or Bluetooth
+%%
+%% Syntax
+% |COM_SendPacket(Packet, handle)|
+%%
+%% Description
+% |COM_SendPacket(Packet, handle)| sends the given byte-array |Packet| (column vector),
+% (which can easily be created by the function |COM_CreatePacket|) over the USB or Bluetooth
+% channel specified by the given |handle| (struct) created by the function |COM_OpenNXT| or
+% |COM_OpenNXTEx|, or obtained from |COM_GetDefaultNXT|.
+%%
+%%
+% *Note:*
+%%
+%%
+% In the case of a Bluetooth connection this function uses the specific settings from the
+% ini-file that was specified when opening the handle. Parameters used here are
+% |SendSendPause| and |SendReceivePause|, which will cause this function to wait a certain
+% amount of milliseconds between each consecutive send or receive operation to avoid packet
+% loss or buffer overflows inside the blutooth stack.
+%%
+%% Example
+   COM_MakeBTConfigFile();
+
+   handle = COM_OpenNXT('bluetooth.ini');
+
+   [type cmd] = name2commandbytes('KEEPALIVE');
+   content = [];  % no payload in NXT command KEEPALIVE
+   packet = COM_CreatePacket(type, cmd, 'dontreply', content);
+
+   COM_SendPacket(packet, bt_handle);
+%%
+%% See also
+% COM_CreatePacket, COM_CollectPacket, COM_OpenNXT, COM_GetDefaultNXT, COM_MakeBTConfigFile
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/08/31
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

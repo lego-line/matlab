@@ -1,0 +1,44 @@
+General System Information
+
+The line is running under a Local_Control System
+Downstream Units are Being Run
+Priority is Given to the Mainline over the Feed Lines
+
+
+Upstream Unit
+
+The Upstream Unit will not run
+
+
+
+Feed Lines
+
+Feed Line 1  is running in with a feed line buffer of 1 pallets and a Main Line Buffer of size1 pallets
+Arrivals Periodic : period = 26 seconds
+
+Feed Line 2  is running in with a feed line buffer of 1 pallets and a Main Line Buffer of size1 pallets
+Arrivals Periodic : period = 26 seconds
+
+Feed Line 3  is running in with a feed line buffer of 1 pallets and a Main Line Buffer of size1 pallets
+Arrivals Periodic : period = 26 seconds
+
+
+
+
+Splitter Information
+
+Splitter Unit 1 is sorting pallets based on Colour
+The Colour of pallets separated is: Red
+Splitter Unit 2 is not running
+
+
+
+Experiment Information
+
+Pass_Time 240
+Rate_Step 2
+Minimum_Rate 20
+Initial_Rate 30
+Buffer_Step 1
+Minimum_Size 1
+Maximum_Size 4

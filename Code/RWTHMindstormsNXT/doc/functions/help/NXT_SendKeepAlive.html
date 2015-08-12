@@ -1,0 +1,79 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_SendKeepAlive</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_SendKeepAlive.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_SendKeepAlive</h1><!--introduction--><p>Sends a KeepAlive packet. Optional: requests sleep time limit.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#15">Examples</a></li><li><a href="#19">See also</a></li><li><a href="#21">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode)</tt></p><p><tt>[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode)</tt> sends a KeepAlive packet to the NXT Brick to get the current sleep time limit of the Brick in milliseconds. By the <tt>ReplyMode</tt> one can request an acknowledgement for the packet transmission. The two strings <tt>'reply'</tt> and <tt>'dontreply'</tt> are valid. <tt>status</tt> indicates if an error occures by the packet transmission. Function <tt>checkStatusBytes</tt> is interpreting this information per default. The value <tt>SleepTimeLimit</tt> contains the time in milliseconds after the NXT brick will turn off automatically. The variable will only be set if <tt>ReplyMode</tt> is <tt>'reply'</tt>. The sleep time limit setting can only  be modified using the on-screen-menu on the brick itself.</p><p>Using <tt>'dontreply'</tt> will just send a keep-alive packet. This means, the NXT internal counter when to shut down automatically (this is a setting that can only be accessed directly on the NXT) will be reset. This counter is not an inactivity counter: Bluetooth traffic will NOT stop the NXT from turning off. E.g. if the sleep limit is set to 10 minutes, the only way to keep the NXT Brick from turning off is to send a keep-alive packet within this time.</p><p>If you use replymode <tt>'reply'</tt>, SleepTimeLimit tells you the current setting on the brick, in milliseconds. 0 means sleep timer is disabled. -1 is an invalid answer: You obviously didn't use <tt>'reply'</tt> and still tried to get an answer.</p><p><tt>[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode, handle)</tt> uses the given NXT connection <tt>handle</tt>. This should be a struct containing a serial handle on a PC system and a file handle on a Linux system.</p><p>If no NXT handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><p><b>Note:</b></p><p>This function is also called by <tt>COM_OpenNXT()</tt>. Then a keep-alive packet is send and the answer will be received to check for a correctly working bidirectional bluetooth connection.</p><h2>Examples<a name="15"></a></h2><pre class="codeinput">   [status SleepTimeLimit] = NXT_SendKeepAlive(<span class="string">'reply'</span>);
+</pre><pre class="codeinput">   NXT_SendKeepAlive(<span class="string">'dontreply'</span>);
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   [status SleepTimeLimit] = NXT_SendKeepAlive(<span class="string">'reply'</span>, handle);
+</pre><h2>See also<a name="19"></a></h2><p><a href="COM_OpenNXT.html">COM_OpenNXT</a>, <a href="NXT_GetBatteryLevel.html">NXT_GetBatteryLevel</a>, </p><h2>Signature<a name="21"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_SendKeepAlive
+% Sends a KeepAlive packet. Optional: requests sleep time limit.
+%%
+%% Syntax
+% |[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode)|
+%%
+% |[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode, handle)|
+%%
+%% Description
+% |[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode)| sends a KeepAlive packet to the NXT
+% Brick to get the current sleep time limit of the Brick in milliseconds. By the |ReplyMode|
+% one can request an acknowledgement for the packet transmission. The two strings |'reply'| and
+% |'dontreply'| are valid. |status| indicates if an error occures by the packet transmission.
+% Function |checkStatusBytes| is interpreting this information per default. The value
+% |SleepTimeLimit| contains the time in milliseconds after the NXT brick will turn off
+% automatically. The variable will only be set if |ReplyMode| is |'reply'|. The sleep time limit
+% setting can only  be modified using the on-screen-menu on the brick itself.
+%%
+% Using |'dontreply'| will just send a keep-alive packet. This means, the NXT internal counter when
+% to shut down automatically (this is a setting that can only be accessed directly on the NXT)
+% will be reset. This counter is not an inactivity counter: Bluetooth traffic will NOT stop the
+% NXT from turning off. E.g. if the sleep limit is set to 10 minutes, the only way to keep the NXT
+% Brick from turning off is to send a keep-alive packet within this time.
+%%
+% If you use replymode |'reply'|, SleepTimeLimit tells you the current setting on the brick, in
+% milliseconds. 0 means sleep timer is disabled. -1 is an invalid answer: You obviously didn't use
+% |'reply'| and still tried to get an answer.
+%%
+% |[status SleepTimeLimit] = NXT_SendKeepAlive(ReplyMode, handle)| uses the given NXT
+% connection |handle|. This should be a struct containing a serial handle on a PC system and a file handle on a Linux
+% system.
+%%
+% If no NXT handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%%
+% *Note:*
+%%
+% This function is also called by |COM_OpenNXT()|. Then a keep-alive packet is send and the
+% answer will be received to check for a correctly working bidirectional bluetooth connection.
+%%
+%% Examples
+   [status SleepTimeLimit] = NXT_SendKeepAlive('reply');
+%%
+   NXT_SendKeepAlive('dontreply');
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   [status SleepTimeLimit] = NXT_SendKeepAlive('reply', handle);
+%%
+%% See also
+% COM_OpenNXT, NXT_GetBatteryLevel
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

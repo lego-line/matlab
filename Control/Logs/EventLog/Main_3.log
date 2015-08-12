@@ -1,0 +1,2761 @@
+Running Mainline 3
+9 / 2 / 2015
+16 : 56 : 8.218
+Performing Mainline Setup
+Beginning to read File Data
+Elapsed time is 0.000011 seconds.
+Found Code:
+
+Code = 
+
+    '001653118B91'
+
+Running Open Link Script to Open a Connection
+Reading Config File for Running Setup
+Elapsed time is 1.712116 seconds.
+The Running Speed is 15
+    'The Buffer State is '    '100'
+
+Finished reading Data From File
+Elapsed time is 1.729601 seconds.
+Setting Up Running variables
+Elapsed time is 1.729619 seconds.
+Finished Setting Up variables
+Elapsed time is 1.729640 seconds.
+Beginning Physical Initialisations
+Elapsed time is 1.729655 seconds.
+Initialising Sensors
+Purging The Conveyor
+Completed Physical Initialisations
+Elapsed time is 1.806466 seconds.
+Setting Up Motor Commands
+Elapsed time is 1.806483 seconds.
+Completed Setting Up Motor Commands
+Elapsed time is 1.820475 seconds.
+Waiting to Go
+Elapsed time is 1.820492 seconds.
+--------------------------------------------------------------
+Started Operations
+Running the Mainline Continuously
+Elapsed time is 0.003050 seconds.
+Start of Loop
+Elapsed time is 0.051907 seconds.
+End of loop
+Elapsed time is 0.327178 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 0.328866 seconds.
+End of loop
+Elapsed time is 0.527219 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 0.528867 seconds.
+End of loop
+Elapsed time is 0.729147 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 0.731503 seconds.
+End of loop
+Elapsed time is 0.932476 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 0.934016 seconds.
+End of loop
+Elapsed time is 1.137084 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 1.138070 seconds.
+End of loop
+Elapsed time is 1.339250 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 1.340780 seconds.
+End of loop
+Elapsed time is 1.540343 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 1.541280 seconds.
+End of loop
+Elapsed time is 1.743147 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 1.744135 seconds.
+End of loop
+Elapsed time is 1.945923 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 1.946966 seconds.
+End of loop
+Elapsed time is 2.148825 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 2.149742 seconds.
+End of loop
+Elapsed time is 2.352589 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 2.353484 seconds.
+End of loop
+Elapsed time is 2.556913 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 2.563771 seconds.
+End of loop
+Elapsed time is 2.766971 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 2.767905 seconds.
+End of loop
+Elapsed time is 2.976997 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 2.978734 seconds.
+End of loop
+Elapsed time is 3.182564 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 3.187917 seconds.
+End of loop
+Elapsed time is 3.392671 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 3.396793 seconds.
+End of loop
+Elapsed time is 3.601986 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 3.602863 seconds.
+End of loop
+Elapsed time is 3.804002 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 3.804927 seconds.
+End of loop
+Elapsed time is 4.006002 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 4.006917 seconds.
+End of loop
+Elapsed time is 4.207199 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 4.210894 seconds.
+End of loop
+Elapsed time is 4.419038 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 4.420561 seconds.
+End of loop
+Elapsed time is 4.632665 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 4.645850 seconds.
+End of loop
+Elapsed time is 4.867112 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 4.868758 seconds.
+End of loop
+Elapsed time is 5.077459 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 5.081513 seconds.
+End of loop
+Elapsed time is 5.289722 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 5.290596 seconds.
+End of loop
+Elapsed time is 5.497754 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 5.498922 seconds.
+End of loop
+Elapsed time is 5.722993 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 5.725012 seconds.
+End of loop
+Elapsed time is 5.918106 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 5.919011 seconds.
+End of loop
+Elapsed time is 6.122390 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 6.126833 seconds.
+End of loop
+Elapsed time is 6.341934 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 6.342929 seconds.
+End of loop
+Elapsed time is 6.542106 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 6.543582 seconds.
+End of loop
+Elapsed time is 6.744916 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 6.747670 seconds.
+End of loop
+Elapsed time is 6.947752 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 6.956658 seconds.
+End of loop
+Elapsed time is 7.156628 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 7.157622 seconds.
+End of loop
+Elapsed time is 7.353345 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 7.354165 seconds.
+End of loop
+Elapsed time is 7.559019 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 7.559894 seconds.
+End of loop
+Elapsed time is 7.774641 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 7.778354 seconds.
+End of loop
+Elapsed time is 7.979540 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 7.980543 seconds.
+End of loop
+Elapsed time is 8.182754 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 8.185432 seconds.
+End of loop
+Elapsed time is 8.384098 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 8.385035 seconds.
+End of loop
+Elapsed time is 8.587410 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 8.588299 seconds.
+End of loop
+Elapsed time is 8.799054 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 8.799908 seconds.
+End of loop
+Elapsed time is 9.013128 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 9.014118 seconds.
+End of loop
+Elapsed time is 9.208131 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 9.209012 seconds.
+End of loop
+Elapsed time is 9.420148 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 9.421149 seconds.
+End of loop
+Elapsed time is 9.625159 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 9.626162 seconds.
+End of loop
+Elapsed time is 9.816897 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 9.817857 seconds.
+End of loop
+Elapsed time is 10.019801 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 10.024084 seconds.
+End of loop
+Elapsed time is 10.233248 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 10.235903 seconds.
+End of loop
+Elapsed time is 10.440218 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 10.442841 seconds.
+End of loop
+Elapsed time is 10.644401 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 10.646848 seconds.
+End of loop
+Elapsed time is 10.859071 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 10.867719 seconds.
+End of loop
+Elapsed time is 11.086280 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 11.088754 seconds.
+End of loop
+Elapsed time is 11.308410 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 11.311204 seconds.
+End of loop
+Elapsed time is 11.528563 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 11.548236 seconds.
+End of loop
+Elapsed time is 11.754393 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 11.755262 seconds.
+End of loop
+Elapsed time is 11.949531 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 11.950412 seconds.
+End of loop
+Elapsed time is 12.152385 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 12.157248 seconds.
+End of loop
+Elapsed time is 12.355082 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 12.356782 seconds.
+End of loop
+Elapsed time is 12.557872 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 12.558783 seconds.
+End of loop
+Elapsed time is 12.767113 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 12.768049 seconds.
+End of loop
+Elapsed time is 12.963844 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 12.964811 seconds.
+End of loop
+Elapsed time is 13.181872 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 13.182762 seconds.
+End of loop
+Elapsed time is 13.384675 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 13.385543 seconds.
+End of loop
+Elapsed time is 13.587499 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 13.588579 seconds.
+End of loop
+Elapsed time is 13.790315 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 13.791251 seconds.
+End of loop
+Elapsed time is 13.993082 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 13.993995 seconds.
+End of loop
+Elapsed time is 14.195896 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 14.196889 seconds.
+End of loop
+Elapsed time is 14.399414 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 14.401945 seconds.
+End of loop
+Elapsed time is 14.600279 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 14.601156 seconds.
+End of loop
+Elapsed time is 14.815312 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 14.816310 seconds.
+End of loop
+Elapsed time is 15.017084 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 15.023228 seconds.
+End of loop
+Elapsed time is 15.229328 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 15.230470 seconds.
+End of loop
+Elapsed time is 15.439328 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 15.440175 seconds.
+End of loop
+Elapsed time is 15.637346 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 15.638313 seconds.
+End of loop
+Elapsed time is 15.849350 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 15.850184 seconds.
+End of loop
+Elapsed time is 16.040356 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 16.041269 seconds.
+End of loop
+Elapsed time is 16.252381 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 16.263033 seconds.
+End of loop
+Elapsed time is 16.489389 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 16.490849 seconds.
+End of loop
+Elapsed time is 16.696460 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 16.715659 seconds.
+End of loop
+Elapsed time is 16.926423 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 16.929399 seconds.
+End of loop
+Elapsed time is 17.134589 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 17.147515 seconds.
+End of loop
+Elapsed time is 17.362448 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 17.365066 seconds.
+End of loop
+Elapsed time is 17.575256 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 17.577599 seconds.
+End of loop
+Elapsed time is 17.788238 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 17.789109 seconds.
+End of loop
+Elapsed time is 17.982220 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 17.986533 seconds.
+End of loop
+Elapsed time is 18.183660 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 18.197023 seconds.
+End of loop
+Elapsed time is 18.404537 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 18.410447 seconds.
+End of loop
+Elapsed time is 18.620614 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 18.623207 seconds.
+End of loop
+Elapsed time is 18.823410 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 18.825078 seconds.
+End of loop
+Elapsed time is 19.041654 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 19.042508 seconds.
+End of loop
+Elapsed time is 19.244452 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 19.245321 seconds.
+End of loop
+Elapsed time is 19.448220 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 19.449187 seconds.
+End of loop
+Elapsed time is 19.650100 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 19.653206 seconds.
+End of loop
+Elapsed time is 19.852880 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 19.853875 seconds.
+End of loop
+Elapsed time is 20.055664 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 20.056660 seconds.
+End of loop
+Elapsed time is 20.261329 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 20.262217 seconds.
+End of loop
+Elapsed time is 20.455464 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 20.456418 seconds.
+End of loop
+Elapsed time is 20.664583 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 20.672769 seconds.
+End of loop
+Elapsed time is 20.903762 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 20.904638 seconds.
+End of loop
+Elapsed time is 21.103476 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 21.104402 seconds.
+End of loop
+Elapsed time is 21.302501 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 21.303540 seconds.
+End of loop
+Elapsed time is 21.501562 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 21.518949 seconds.
+End of loop
+Elapsed time is 21.730822 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 21.743525 seconds.
+End of loop
+Elapsed time is 21.939065 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 21.940674 seconds.
+End of loop
+Elapsed time is 22.153816 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 22.161326 seconds.
+End of loop
+Elapsed time is 22.369754 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 22.372831 seconds.
+End of loop
+Elapsed time is 22.587641 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 22.588459 seconds.
+End of loop
+Elapsed time is 22.807021 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 22.807884 seconds.
+End of loop
+Elapsed time is 23.003200 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 23.007312 seconds.
+End of loop
+Elapsed time is 23.225595 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 23.229461 seconds.
+End of loop
+Elapsed time is 23.445821 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 23.451871 seconds.
+End of loop
+Elapsed time is 23.670350 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 23.671246 seconds.
+End of loop
+Elapsed time is 23.878841 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 23.879773 seconds.
+End of loop
+Elapsed time is 24.077079 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 24.080223 seconds.
+End of loop
+Elapsed time is 24.287857 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 24.289026 seconds.
+End of loop
+Elapsed time is 24.489867 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 24.490708 seconds.
+End of loop
+Elapsed time is 24.694936 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 24.695865 seconds.
+End of loop
+Elapsed time is 24.889589 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 24.890509 seconds.
+End of loop
+Elapsed time is 25.096915 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 25.097859 seconds.
+End of loop
+Elapsed time is 25.306025 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 25.313845 seconds.
+End of loop
+Elapsed time is 25.510930 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 25.513454 seconds.
+End of loop
+Elapsed time is 25.721977 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 25.722927 seconds.
+End of loop
+Elapsed time is 25.927973 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 25.930089 seconds.
+End of loop
+Elapsed time is 26.136287 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 26.137311 seconds.
+End of loop
+Elapsed time is 26.345977 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 26.351178 seconds.
+End of loop
+Elapsed time is 26.560258 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 26.566404 seconds.
+End of loop
+Elapsed time is 26.763070 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 26.764062 seconds.
+End of loop
+Elapsed time is 26.965860 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 26.966768 seconds.
+End of loop
+Elapsed time is 27.168606 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 27.169481 seconds.
+End of loop
+Elapsed time is 27.371390 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 27.381181 seconds.
+End of loop
+Elapsed time is 27.574259 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 27.575188 seconds.
+End of loop
+Elapsed time is 27.776987 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 27.777907 seconds.
+End of loop
+Elapsed time is 27.995492 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 28.000576 seconds.
+End of loop
+Elapsed time is 28.202838 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 28.203729 seconds.
+End of loop
+Elapsed time is 28.400984 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 28.402047 seconds.
+End of loop
+Elapsed time is 28.603794 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 28.604694 seconds.
+End of loop
+Elapsed time is 28.806642 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 28.807585 seconds.
+End of loop
+Elapsed time is 29.009424 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 29.010353 seconds.
+End of loop
+Elapsed time is 29.224589 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 29.228072 seconds.
+End of loop
+Elapsed time is 29.428055 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 29.433140 seconds.
+End of loop
+Elapsed time is 29.655004 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 29.655977 seconds.
+End of loop
+Elapsed time is 29.858014 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 29.858872 seconds.
+End of loop
+Elapsed time is 30.060026 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 30.066837 seconds.
+End of loop
+Elapsed time is 30.296053 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 30.297049 seconds.
+End of loop
+Elapsed time is 30.504052 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 30.506655 seconds.
+End of loop
+Elapsed time is 30.714062 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 30.714939 seconds.
+End of loop
+Elapsed time is 30.918069 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 30.920323 seconds.
+End of loop
+Elapsed time is 31.126133 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 31.127099 seconds.
+End of loop
+Elapsed time is 31.337689 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 31.347408 seconds.
+End of loop
+Elapsed time is 31.557124 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 31.558061 seconds.
+End of loop
+Elapsed time is 31.752167 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 31.754903 seconds.
+End of loop
+Elapsed time is 31.961146 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 31.976639 seconds.
+End of loop
+Elapsed time is 32.213149 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 32.219739 seconds.
+End of loop
+Elapsed time is 32.435559 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 32.445141 seconds.
+End of loop
+Elapsed time is 32.654105 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 32.659215 seconds.
+End of loop
+Elapsed time is 32.856770 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 32.860138 seconds.
+End of loop
+Elapsed time is 33.059616 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 33.060554 seconds.
+End of loop
+Elapsed time is 33.262508 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 33.263489 seconds.
+End of loop
+Elapsed time is 33.465219 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 33.466209 seconds.
+End of loop
+Elapsed time is 33.667975 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 33.668839 seconds.
+End of loop
+Elapsed time is 33.870828 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 33.884739 seconds.
+End of loop
+Elapsed time is 34.089172 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 34.090125 seconds.
+End of loop
+Elapsed time is 34.291994 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 34.304588 seconds.
+End of loop
+Elapsed time is 34.511398 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 34.516591 seconds.
+End of loop
+Elapsed time is 34.713179 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 34.714712 seconds.
+End of loop
+Elapsed time is 34.915982 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 34.917506 seconds.
+End of loop
+Elapsed time is 35.119164 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 35.125631 seconds.
+End of loop
+Elapsed time is 35.338649 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 35.339597 seconds.
+End of loop
+Elapsed time is 35.533173 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 35.534151 seconds.
+End of loop
+Elapsed time is 35.730302 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 35.741625 seconds.
+End of loop
+Elapsed time is 35.962198 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 35.964569 seconds.
+End of loop
+Elapsed time is 36.183207 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 36.199650 seconds.
+End of loop
+Elapsed time is 36.426221 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 36.427048 seconds.
+End of loop
+Elapsed time is 36.619223 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 36.620090 seconds.
+End of loop
+Elapsed time is 36.833582 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 36.836447 seconds.
+End of loop
+Elapsed time is 37.050258 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 37.051210 seconds.
+End of loop
+Elapsed time is 37.243269 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 37.244240 seconds.
+End of loop
+Elapsed time is 37.452391 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 37.466063 seconds.
+End of loop
+Elapsed time is 37.679350 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 37.680240 seconds.
+End of loop
+Elapsed time is 37.891293 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 37.892696 seconds.
+End of loop
+Elapsed time is 38.099405 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 38.100271 seconds.
+End of loop
+Elapsed time is 38.303327 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 38.304908 seconds.
+End of loop
+Elapsed time is 38.516533 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 38.518498 seconds.
+End of loop
+Elapsed time is 38.735559 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 38.736475 seconds.
+End of loop
+Elapsed time is 38.951630 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 38.952602 seconds.
+End of loop
+Elapsed time is 39.156572 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 39.159503 seconds.
+End of loop
+Elapsed time is 39.362655 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 39.363603 seconds.
+End of loop
+Elapsed time is 39.574638 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 39.576514 seconds.
+End of loop
+Elapsed time is 39.794600 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 39.795724 seconds.
+End of loop
+Elapsed time is 39.988627 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 39.989544 seconds.
+End of loop
+Elapsed time is 40.198632 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 40.199652 seconds.
+End of loop
+Elapsed time is 40.402645 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 40.403467 seconds.
+End of loop
+Elapsed time is 40.604669 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 40.605519 seconds.
+End of loop
+Elapsed time is 40.799656 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 40.812360 seconds.
+End of loop
+Elapsed time is 41.028684 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 41.035688 seconds.
+End of loop
+Elapsed time is 41.238012 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 41.238951 seconds.
+End of loop
+Elapsed time is 41.453138 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 41.465818 seconds.
+End of loop
+Elapsed time is 41.670131 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 41.672927 seconds.
+End of loop
+Elapsed time is 41.879449 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 41.880352 seconds.
+End of loop
+Elapsed time is 42.075753 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 42.077236 seconds.
+End of loop
+Elapsed time is 42.278516 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 42.280440 seconds.
+End of loop
+Elapsed time is 42.481370 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 42.482709 seconds.
+End of loop
+Elapsed time is 42.684199 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 42.685908 seconds.
+End of loop
+Elapsed time is 42.893433 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 42.895781 seconds.
+End of loop
+Elapsed time is 43.105329 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 43.106265 seconds.
+End of loop
+Elapsed time is 43.308145 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 43.309201 seconds.
+End of loop
+Elapsed time is 43.513957 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 43.515985 seconds.
+End of loop
+Elapsed time is 43.713794 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 43.714774 seconds.
+End of loop
+Elapsed time is 43.916535 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 43.917439 seconds.
+End of loop
+Elapsed time is 44.119342 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 44.120309 seconds.
+End of loop
+Elapsed time is 44.322388 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 44.323242 seconds.
+End of loop
+Elapsed time is 44.518715 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 44.522156 seconds.
+End of loop
+Elapsed time is 44.733489 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 44.734380 seconds.
+End of loop
+Elapsed time is 44.943737 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 44.948264 seconds.
+End of loop
+Elapsed time is 45.167885 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 45.170861 seconds.
+End of loop
+Elapsed time is 45.380763 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 45.381680 seconds.
+End of loop
+Elapsed time is 45.572554 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 45.581127 seconds.
+End of loop
+Elapsed time is 45.791783 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 45.792641 seconds.
+End of loop
+Elapsed time is 45.996423 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 46.002773 seconds.
+End of loop
+Elapsed time is 46.197407 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 46.199048 seconds.
+End of loop
+Elapsed time is 46.407671 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 46.408646 seconds.
+End of loop
+Elapsed time is 46.601885 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 46.602729 seconds.
+End of loop
+Elapsed time is 46.814839 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 46.815781 seconds.
+End of loop
+Elapsed time is 47.020101 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 47.021062 seconds.
+End of loop
+Elapsed time is 47.226865 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 47.227732 seconds.
+End of loop
+Elapsed time is 47.439882 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 47.440833 seconds.
+End of loop
+Elapsed time is 47.648350 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 47.656287 seconds.
+End of loop
+Elapsed time is 47.849898 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 47.852374 seconds.
+End of loop
+Elapsed time is 48.052908 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 48.053744 seconds.
+End of loop
+Elapsed time is 48.265930 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 48.275038 seconds.
+End of loop
+Elapsed time is 48.473986 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 48.478509 seconds.
+End of loop
+Elapsed time is 48.676951 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 48.679021 seconds.
+End of loop
+Elapsed time is 48.878970 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 48.883651 seconds.
+End of loop
+Elapsed time is 49.098993 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 49.099874 seconds.
+End of loop
+Elapsed time is 49.311980 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 49.326664 seconds.
+End of loop
+Elapsed time is 49.534009 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 49.534920 seconds.
+End of loop
+Elapsed time is 49.748062 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 49.748920 seconds.
+End of loop
+Elapsed time is 49.949043 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 49.949985 seconds.
+End of loop
+Elapsed time is 50.154050 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 50.154996 seconds.
+End of loop
+Elapsed time is 50.346101 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 50.347031 seconds.
+End of loop
+Elapsed time is 50.561264 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 50.562141 seconds.
+End of loop
+Elapsed time is 50.764045 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 50.768812 seconds.
+End of loop
+Elapsed time is 50.966886 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 50.967860 seconds.
+End of loop
+Elapsed time is 51.170853 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 51.178976 seconds.
+End of loop
+Elapsed time is 51.374043 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 51.384709 seconds.
+End of loop
+Elapsed time is 51.590872 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 51.596911 seconds.
+End of loop
+Elapsed time is 51.793707 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 51.794668 seconds.
+End of loop
+Elapsed time is 51.998674 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 51.999596 seconds.
+End of loop
+Elapsed time is 52.199260 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 52.200146 seconds.
+End of loop
+Elapsed time is 52.402107 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 52.418690 seconds.
+End of loop
+Elapsed time is 52.620456 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 52.621392 seconds.
+End of loop
+Elapsed time is 52.823268 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 52.824212 seconds.
+End of loop
+Elapsed time is 53.026056 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 53.026905 seconds.
+End of loop
+Elapsed time is 53.228886 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 53.229760 seconds.
+End of loop
+Elapsed time is 53.426118 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 53.431789 seconds.
+End of loop
+Elapsed time is 53.648062 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 53.649042 seconds.
+End of loop
+Elapsed time is 53.848944 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 53.849905 seconds.
+End of loop
+Elapsed time is 54.043276 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 54.051516 seconds.
+End of loop
+Elapsed time is 54.256097 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 54.256959 seconds.
+End of loop
+Elapsed time is 54.458418 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 54.459383 seconds.
+End of loop
+Elapsed time is 54.653026 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 54.657588 seconds.
+End of loop
+Elapsed time is 54.864936 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 54.867783 seconds.
+End of loop
+Elapsed time is 55.084212 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 55.085310 seconds.
+End of loop
+Elapsed time is 55.302225 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 55.307596 seconds.
+End of loop
+Elapsed time is 55.521303 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 55.522146 seconds.
+End of loop
+Elapsed time is 55.713181 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 55.719229 seconds.
+End of loop
+Elapsed time is 55.939095 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 55.939953 seconds.
+End of loop
+Elapsed time is 56.153189 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 56.154204 seconds.
+End of loop
+Elapsed time is 56.365131 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 56.367737 seconds.
+End of loop
+Elapsed time is 56.578935 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 56.586018 seconds.
+End of loop
+Elapsed time is 56.789180 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 56.795089 seconds.
+End of loop
+Elapsed time is 56.991325 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 56.992355 seconds.
+End of loop
+Elapsed time is 57.207684 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 57.225829 seconds.
+End of loop
+Elapsed time is 57.436945 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 57.440636 seconds.
+End of loop
+Elapsed time is 57.686898 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 57.687843 seconds.
+End of loop
+Elapsed time is 57.891908 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 57.895024 seconds.
+End of loop
+Elapsed time is 58.098916 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 58.099860 seconds.
+End of loop
+Elapsed time is 58.311931 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 58.312875 seconds.
+End of loop
+Elapsed time is 58.521946 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 58.522858 seconds.
+End of loop
+Elapsed time is 58.732960 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 58.733802 seconds.
+End of loop
+Elapsed time is 58.940044 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 58.940900 seconds.
+End of loop
+Elapsed time is 59.146524 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 59.165168 seconds.
+End of loop
+Elapsed time is 59.389587 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 59.393883 seconds.
+End of loop
+Elapsed time is 59.610551 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 59.613676 seconds.
+End of loop
+Elapsed time is 59.810802 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 59.812161 seconds.
+End of loop
+Elapsed time is 60.014412 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 60.015813 seconds.
+End of loop
+Elapsed time is 60.216409 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 60.218027 seconds.
+End of loop
+Elapsed time is 60.423373 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 60.424364 seconds.
+End of loop
+Elapsed time is 60.624471 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 60.627737 seconds.
+End of loop
+Elapsed time is 60.824892 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 60.826386 seconds.
+End of loop
+Elapsed time is 61.027664 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 61.029184 seconds.
+End of loop
+Elapsed time is 61.231521 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 61.247962 seconds.
+End of loop
+Elapsed time is 61.448817 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 61.450359 seconds.
+End of loop
+Elapsed time is 61.654621 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 61.659246 seconds.
+End of loop
+Elapsed time is 61.854458 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 61.855782 seconds.
+End of loop
+Elapsed time is 62.057216 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 62.058797 seconds.
+End of loop
+Elapsed time is 62.260021 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 62.262465 seconds.
+End of loop
+Elapsed time is 62.477018 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 62.478061 seconds.
+End of loop
+Elapsed time is 62.677021 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 62.686354 seconds.
+End of loop
+Elapsed time is 62.890101 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 62.892831 seconds.
+End of loop
+Elapsed time is 63.103700 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 63.109958 seconds.
+End of loop
+Elapsed time is 63.316040 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 63.321338 seconds.
+End of loop
+Elapsed time is 63.539059 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 63.539980 seconds.
+End of loop
+Elapsed time is 63.755108 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 63.755986 seconds.
+End of loop
+Elapsed time is 63.957173 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 63.983015 seconds.
+End of loop
+Elapsed time is 64.183116 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 64.184069 seconds.
+End of loop
+Elapsed time is 64.387110 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 64.387994 seconds.
+End of loop
+Elapsed time is 64.590382 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 64.591347 seconds.
+End of loop
+Elapsed time is 64.803135 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 64.808676 seconds.
+End of loop
+Elapsed time is 65.011165 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 65.021590 seconds.
+End of loop
+Elapsed time is 65.239157 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 65.240085 seconds.
+End of loop
+Elapsed time is 65.436983 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 65.438852 seconds.
+End of loop
+Elapsed time is 65.639555 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 65.642480 seconds.
+End of loop
+Elapsed time is 65.842235 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 65.843079 seconds.
+End of loop
+Elapsed time is 66.044994 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 66.045993 seconds.
+End of loop
+Elapsed time is 66.258501 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 66.266562 seconds.
+End of loop
+Elapsed time is 66.466244 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 66.467166 seconds.
+End of loop
+Elapsed time is 66.668980 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 66.670889 seconds.
+End of loop
+Elapsed time is 66.871775 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 66.872710 seconds.
+End of loop
+Elapsed time is 67.074654 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 67.075613 seconds.
+End of loop
+Elapsed time is 67.279236 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 67.285136 seconds.
+End of loop
+Elapsed time is 67.482601 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 67.483607 seconds.
+End of loop
+Elapsed time is 67.682993 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 67.683949 seconds.
+End of loop
+Elapsed time is 67.885819 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 67.886690 seconds.
+End of loop
+Elapsed time is 68.088594 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 68.091543 seconds.
+End of loop
+Elapsed time is 68.291421 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 68.292317 seconds.
+End of loop
+Elapsed time is 68.500192 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 68.501209 seconds.
+End of loop
+Elapsed time is 68.715196 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 68.716186 seconds.
+End of loop
+Elapsed time is 68.919276 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 68.920218 seconds.
+End of loop
+Elapsed time is 69.124245 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 69.125209 seconds.
+End of loop
+Elapsed time is 69.339294 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 69.340168 seconds.
+End of loop
+Elapsed time is 69.537022 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 69.537934 seconds.
+End of loop
+Elapsed time is 69.753263 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 69.754247 seconds.
+End of loop
+Elapsed time is 69.964862 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 70.002744 seconds.
+End of loop
+Elapsed time is 70.204279 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 70.205181 seconds.
+End of loop
+Elapsed time is 70.409296 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 70.412439 seconds.
+End of loop
+Elapsed time is 70.616306 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 70.618903 seconds.
+End of loop
+Elapsed time is 70.815371 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 70.816345 seconds.
+End of loop
+Elapsed time is 71.026334 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 71.027412 seconds.
+End of loop
+Elapsed time is 71.228353 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 71.229222 seconds.
+End of loop
+Elapsed time is 71.421144 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 71.423244 seconds.
+End of loop
+Elapsed time is 71.624362 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 71.625243 seconds.
+End of loop
+Elapsed time is 71.826880 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 71.827782 seconds.
+End of loop
+Elapsed time is 72.029584 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 72.030448 seconds.
+End of loop
+Elapsed time is 72.232383 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 72.233288 seconds.
+End of loop
+Elapsed time is 72.435186 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 72.436094 seconds.
+End of loop
+Elapsed time is 72.637995 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 72.638849 seconds.
+End of loop
+Elapsed time is 72.856442 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 72.857421 seconds.
+End of loop
+Elapsed time is 73.059170 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 73.060146 seconds.
+End of loop
+Elapsed time is 73.261976 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 73.262844 seconds.
+End of loop
+Elapsed time is 73.465087 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 73.467595 seconds.
+End of loop
+Elapsed time is 73.683184 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 73.683987 seconds.
+End of loop
+Elapsed time is 73.885980 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 73.887465 seconds.
+End of loop
+Elapsed time is 74.088761 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 74.089613 seconds.
+End of loop
+Elapsed time is 74.291552 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 74.292473 seconds.
+End of loop
+Elapsed time is 74.494426 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 74.499072 seconds.
+End of loop
+Elapsed time is 74.705918 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 74.723758 seconds.
+End of loop
+Elapsed time is 74.943379 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 74.944293 seconds.
+End of loop
+Elapsed time is 75.161399 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 75.162311 seconds.
+End of loop
+Elapsed time is 75.379404 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 75.380280 seconds.
+End of loop
+Elapsed time is 75.572480 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 75.573431 seconds.
+End of loop
+Elapsed time is 75.784479 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 75.789925 seconds.
+End of loop
+Elapsed time is 76.004546 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 76.006036 seconds.
+End of loop
+Elapsed time is 76.212714 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 76.220638 seconds.
+End of loop
+Elapsed time is 76.413489 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 76.419615 seconds.
+End of loop
+Elapsed time is 76.628589 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 76.632926 seconds.
+End of loop
+Elapsed time is 76.845498 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 76.849358 seconds.
+End of loop
+Elapsed time is 77.052509 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 77.053566 seconds.
+End of loop
+Elapsed time is 77.282517 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 77.287943 seconds.
+End of loop
+Elapsed time is 77.499338 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 77.502166 seconds.
+End of loop
+Elapsed time is 77.720697 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 77.723722 seconds.
+End of loop
+Elapsed time is 77.920560 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 77.927042 seconds.
+End of loop
+Elapsed time is 78.123440 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 78.125613 seconds.
+End of loop
+Elapsed time is 78.326117 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 78.327025 seconds.
+End of loop
+Elapsed time is 78.528917 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 78.529824 seconds.
+End of loop
+Elapsed time is 78.731732 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 78.735518 seconds.
+End of loop
+Elapsed time is 78.935513 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 78.938374 seconds.
+End of loop
+Elapsed time is 79.141018 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 79.142003 seconds.
+End of loop
+Elapsed time is 79.343298 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 79.344774 seconds.
+End of loop
+Elapsed time is 79.546278 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 79.547177 seconds.
+End of loop
+Elapsed time is 79.749159 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 79.749988 seconds.
+End of loop
+Elapsed time is 79.949406 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 79.958238 seconds.
+End of loop
+Elapsed time is 80.151329 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 80.160882 seconds.
+End of loop
+Elapsed time is 80.359752 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 80.360582 seconds.
+End of loop
+Elapsed time is 80.560632 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 80.574138 seconds.
+End of loop
+Elapsed time is 80.776540 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 80.777409 seconds.
+End of loop
+Elapsed time is 80.979551 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 80.980519 seconds.
+End of loop
+Elapsed time is 81.183611 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 81.185308 seconds.
+End of loop
+Elapsed time is 81.389598 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 81.390412 seconds.
+End of loop
+Elapsed time is 81.604593 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 81.612714 seconds.
+End of loop
+Elapsed time is 81.812676 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 81.823687 seconds.
+End of loop
+Elapsed time is 82.039784 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 82.042319 seconds.
+End of loop
+Elapsed time is 82.277698 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 82.278822 seconds.
+End of loop
+Elapsed time is 82.482281 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 82.483304 seconds.
+End of loop
+Elapsed time is 82.684667 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 82.685743 seconds.
+End of loop
+Elapsed time is 82.898662 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 82.901129 seconds.
+End of loop
+Elapsed time is 83.117550 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 83.118715 seconds.
+End of loop
+Elapsed time is 83.323721 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 83.324657 seconds.
+End of loop
+Elapsed time is 83.535332 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 83.536238 seconds.
+End of loop
+Elapsed time is 83.740314 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 83.741946 seconds.
+End of loop
+Elapsed time is 83.934317 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 83.935532 seconds.
+End of loop
+Elapsed time is 84.145368 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 84.146357 seconds.
+End of loop
+Elapsed time is 84.348358 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 84.350277 seconds.
+End of loop
+Elapsed time is 84.549971 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 84.560203 seconds.
+End of loop
+Elapsed time is 84.770375 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 84.771226 seconds.
+End of loop
+Elapsed time is 84.974189 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 84.978433 seconds.
+End of loop
+Elapsed time is 85.180447 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 85.181340 seconds.
+End of loop
+Elapsed time is 85.395538 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 85.402619 seconds.
+End of loop
+Elapsed time is 85.619856 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 85.622040 seconds.
+End of loop
+Elapsed time is 85.832426 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 85.833296 seconds.
+End of loop
+Elapsed time is 86.048712 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 86.069195 seconds.
+End of loop
+Elapsed time is 86.300898 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 86.306753 seconds.
+End of loop
+Elapsed time is 86.515891 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 86.516843 seconds.
+End of loop
+Elapsed time is 86.722302 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 86.739508 seconds.
+End of loop
+Elapsed time is 86.937069 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 86.941694 seconds.
+End of loop
+Elapsed time is 87.143435 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 87.145180 seconds.
+End of loop
+Elapsed time is 87.358628 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 87.363659 seconds.
+End of loop
+Elapsed time is 87.561114 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 87.561974 seconds.
+End of loop
+Elapsed time is 87.763898 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 87.764828 seconds.
+End of loop
+Elapsed time is 87.966677 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 87.969700 seconds.
+End of loop
+Elapsed time is 88.169469 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 88.170402 seconds.
+End of loop
+Elapsed time is 88.382139 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 88.383053 seconds.
+End of loop
+Elapsed time is 88.575249 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 88.576156 seconds.
+End of loop
+Elapsed time is 88.777914 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 88.795101 seconds.
+End of loop
+Elapsed time is 88.996273 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 88.997156 seconds.
+End of loop
+Elapsed time is 89.199612 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 89.209079 seconds.
+End of loop
+Elapsed time is 89.417476 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 89.418324 seconds.
+End of loop
+Elapsed time is 89.637979 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 89.641095 seconds.
+End of loop
+Elapsed time is 89.844516 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 89.845447 seconds.
+End of loop
+Elapsed time is 90.047560 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 90.048436 seconds.
+End of loop
+Elapsed time is 90.262519 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 90.263369 seconds.
+End of loop
+Elapsed time is 90.465580 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 90.466439 seconds.
+End of loop
+Elapsed time is 90.672535 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 90.673356 seconds.
+End of loop
+Elapsed time is 90.875459 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 90.876884 seconds.
+End of loop
+Elapsed time is 91.084451 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 91.108487 seconds.
+End of loop
+Elapsed time is 91.321586 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 91.322593 seconds.
+End of loop
+Elapsed time is 91.526617 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 91.527643 seconds.
+End of loop
+Elapsed time is 91.734381 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 91.735295 seconds.
+End of loop
+Elapsed time is 91.935656 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 91.941795 seconds.
+End of loop
+Elapsed time is 92.148662 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 92.149675 seconds.
+End of loop
+Elapsed time is 92.351635 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 92.352566 seconds.
+End of loop
+Elapsed time is 92.547239 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 92.548146 seconds.
+End of loop
+Elapsed time is 92.751728 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 92.754709 seconds.
+End of loop
+Elapsed time is 92.952861 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 92.953790 seconds.
+End of loop
+Elapsed time is 93.155726 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 93.161874 seconds.
+End of loop
+Elapsed time is 93.358529 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 93.361450 seconds.
+End of loop
+Elapsed time is 93.561259 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 93.562191 seconds.
+End of loop
+Elapsed time is 93.764068 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 93.765304 seconds.
+End of loop
+Elapsed time is 93.968802 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 93.976126 seconds.
+End of loop
+Elapsed time is 94.185258 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 94.186238 seconds.
+End of loop
+Elapsed time is 94.388150 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 94.393947 seconds.
+End of loop
+Elapsed time is 94.590943 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 94.591870 seconds.
+End of loop
+Elapsed time is 94.793649 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 94.794579 seconds.
+End of loop
+Elapsed time is 94.996483 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 94.997403 seconds.
+End of loop
+Elapsed time is 95.199611 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 95.203671 seconds.
+End of loop
+Elapsed time is 95.402095 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 95.403013 seconds.
+End of loop
+Elapsed time is 95.602473 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 95.603361 seconds.
+End of loop
+Elapsed time is 95.815007 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 95.816988 seconds.
+End of loop
+Elapsed time is 96.028389 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 96.029236 seconds.
+End of loop
+Elapsed time is 96.226136 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 96.228382 seconds.
+End of loop
+Elapsed time is 96.434712 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 96.435993 seconds.
+End of loop
+Elapsed time is 96.636875 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 96.637846 seconds.
+End of loop
+Elapsed time is 96.837730 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 96.840015 seconds.
+End of loop
+Elapsed time is 97.037750 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 97.041548 seconds.
+End of loop
+Elapsed time is 97.241741 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 97.247852 seconds.
+End of loop
+Elapsed time is 97.442788 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 97.444352 seconds.
+End of loop
+Elapsed time is 97.652007 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 97.684009 seconds.
+End of loop
+Elapsed time is 97.879817 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 97.880832 seconds.
+End of loop
+Elapsed time is 98.085792 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 98.088025 seconds.
+End of loop
+Elapsed time is 98.287815 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 98.295743 seconds.
+End of loop
+Elapsed time is 98.516229 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 98.517089 seconds.
+End of loop
+Elapsed time is 98.724915 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 98.730807 seconds.
+End of loop
+Elapsed time is 98.939037 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 98.941665 seconds.
+End of loop
+Elapsed time is 99.140230 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 99.147566 seconds.
+End of loop
+Elapsed time is 99.343075 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 99.345133 seconds.
+End of loop
+Elapsed time is 99.545824 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 99.546869 seconds.
+End of loop
+Elapsed time is 99.748636 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 99.749629 seconds.
+End of loop
+Elapsed time is 99.951495 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 99.954455 seconds.
+End of loop
+Elapsed time is 100.157779 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 100.158727 seconds.
+End of loop
+Elapsed time is 100.357041 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 100.358539 seconds.
+End of loop
+Elapsed time is 100.559818 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 100.560645 seconds.
+End of loop
+Elapsed time is 100.762627 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 100.763532 seconds.
+End of loop
+Elapsed time is 100.965737 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 100.972301 seconds.
+End of loop
+Elapsed time is 101.168245 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 101.169209 seconds.
+End of loop
+Elapsed time is 101.371015 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 101.372003 seconds.
+End of loop
+Elapsed time is 101.560844 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 101.561841 seconds.
+End of loop
+Elapsed time is 101.779151 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 101.780114 seconds.
+End of loop
+Elapsed time is 101.991854 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 101.993285 seconds.
+End of loop
+Elapsed time is 102.194865 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 102.196371 seconds.
+End of loop
+Elapsed time is 102.402864 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 102.403712 seconds.
+End of loop
+Elapsed time is 102.614796 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 102.616943 seconds.
+End of loop
+Elapsed time is 102.819896 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 102.821062 seconds.
+End of loop
+Elapsed time is 103.029304 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 103.030178 seconds.
+End of loop
+Elapsed time is 103.237922 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 103.239423 seconds.
+End of loop
+Elapsed time is 103.441982 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 103.443460 seconds.
+End of loop
+Elapsed time is 103.652007 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 103.652987 seconds.
+End of loop
+Elapsed time is 103.863991 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 103.887478 seconds.
+End of loop
+Elapsed time is 104.088058 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 104.092038 seconds.
+End of loop
+Elapsed time is 104.301006 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 104.301956 seconds.
+End of loop
+Elapsed time is 104.500818 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 104.501819 seconds.
+End of loop
+Elapsed time is 104.703664 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 104.715585 seconds.
+End of loop
+Elapsed time is 104.906398 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 104.907265 seconds.
+End of loop
+Elapsed time is 105.109927 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 105.114021 seconds.
+End of loop
+Elapsed time is 105.312002 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 105.312945 seconds.
+End of loop
+Elapsed time is 105.515651 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 105.517145 seconds.
+End of loop
+Elapsed time is 105.717603 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 105.722109 seconds.
+End of loop
+Elapsed time is 105.924342 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 105.925636 seconds.
+End of loop
+Elapsed time is 106.123469 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 106.125963 seconds.
+End of loop
+Elapsed time is 106.326021 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 106.327521 seconds.
+End of loop
+Elapsed time is 106.530670 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 106.531516 seconds.
+End of loop
+Elapsed time is 106.731600 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 106.732977 seconds.
+End of loop
+Elapsed time is 106.935504 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 106.936724 seconds.
+End of loop
+Elapsed time is 107.137233 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 107.138789 seconds.
+End of loop
+Elapsed time is 107.340020 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 107.341391 seconds.
+End of loop
+Elapsed time is 107.546003 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 107.547582 seconds.
+End of loop
+Elapsed time is 107.763019 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 107.764462 seconds.
+End of loop
+Elapsed time is 107.957030 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 107.958505 seconds.
+End of loop
+Elapsed time is 108.159035 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 108.160597 seconds.
+End of loop
+Elapsed time is 108.373063 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 108.374667 seconds.
+End of loop
+Elapsed time is 108.581072 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 108.582582 seconds.
+End of loop
+Elapsed time is 108.785088 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 108.800719 seconds.
+End of loop
+Elapsed time is 109.012103 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 109.013725 seconds.
+End of loop
+Elapsed time is 109.232861 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 109.237974 seconds.
+End of loop
+Elapsed time is 109.442167 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 109.443498 seconds.
+End of loop
+Elapsed time is 109.643129 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 109.644070 seconds.
+End of loop
+Elapsed time is 109.852503 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 109.869291 seconds.
+End of loop
+Elapsed time is 110.072343 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 110.079048 seconds.
+End of loop
+Elapsed time is 110.292165 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 110.294080 seconds.
+End of loop
+Elapsed time is 110.511404 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 110.512589 seconds.
+End of loop
+Elapsed time is 110.728396 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 110.730164 seconds.
+End of loop
+Elapsed time is 110.946398 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 110.968132 seconds.
+End of loop
+Elapsed time is 111.176341 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 111.177181 seconds.
+End of loop
+Elapsed time is 111.388408 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 111.389300 seconds.
+End of loop
+Elapsed time is 111.602508 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 111.604065 seconds.
+End of loop
+Elapsed time is 111.819646 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 111.842793 seconds.
+End of loop
+Elapsed time is 112.052469 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 112.061563 seconds.
+End of loop
+Elapsed time is 112.262483 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 112.271891 seconds.
+End of loop
+Elapsed time is 112.490629 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 112.493341 seconds.
+End of loop
+Elapsed time is 112.700486 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 112.701489 seconds.
+End of loop
+Elapsed time is 112.911890 seconds.
+-----------------------------------------------------------
+Start of Loop
+Elapsed time is 112.913359 seconds.
+End of loop
+Elapsed time is 113.136236 seconds.
+-----------------------------------------------------------
+Shutting fown the Conveyor
+The total motor running time is (in seconds)
+  226.2192
+
+The Total Sensor data Read was 0 bytes
+The Total Sensor data Written was 0 bytes
+The Total Message data Read was 0 bytes
+The Total Message data Written was 0 bytes
+In 113.1601 seconds
+stopped motors
+Closed All Sensors

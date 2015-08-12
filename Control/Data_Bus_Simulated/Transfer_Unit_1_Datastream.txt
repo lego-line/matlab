@@ -1,0 +1,5 @@
+State 1 0 0 
+Flag Error_Correcting_Transfer_1 0
+Flag Mainline_Clear_1 1
+Flag Arrival_Status_1 0
+Flag Unload_state_1 1

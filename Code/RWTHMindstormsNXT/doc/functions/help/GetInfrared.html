@@ -1,0 +1,55 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>GetInfrared</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_GetInfrared.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>GetInfrared</h1><!--introduction--><p>Reads the current value of the Hitechnic infrared sensor (infrared seeker)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#9">Example</a></li><li><a href="#11">See also</a></li><li><a href="#13">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[direction rawData] = GetInfrared(port)</tt></p><p><tt>[direction rawData] = GetInfrared(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>[direction rawData] = GetInfrared(port)</tt> returns the current direction an the raw data of the detected infrared signal. <tt>direction</tt> represents the main direction (1-9) calculated based on the measured raw data given in the <tt>rawData</tt> vector (1x5). Five sensors are provided by the infrared seeker. For more information see <a href="http://www.hitechnic.com">http://www.hitechnic.com</a></p><p>The given <tt>port</tt> number specifies the connection port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Example<a name="9"></a></h2><pre class="codeinput">   OpenInfrared(SENSOR_4);
+   [direction rawData] = GetInfrared(SENSOR_4);
+   CloseSensor(SENSOR_4);
+</pre><h2>See also<a name="11"></a></h2><p><a href="OpenInfrared.html">OpenInfrared</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="COM_ReadI2C.html">COM_ReadI2C</a>, </p><h2>Signature<a name="13"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/09/25</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% GetInfrared
+% Reads the current value of the Hitechnic infrared sensor (infrared seeker)
+%%
+%% Syntax
+% |[direction rawData] = GetInfrared(port)|
+%%
+% |[direction rawData] = GetInfrared(port, handle)|
+%%
+%% Description
+% |[direction rawData] = GetInfrared(port)| returns the current direction an the raw data of the
+% detected infrared signal. |direction| represents the main direction (1-9) calculated based on
+% the measured raw data given in the |rawData| vector (1x5). Five sensors are provided by the
+% infrared seeker. For more information see http://www.hitechnic.com
+%%
+% The given |port| number specifies the connection port. The value |port| can be
+% addressed by the symbolic constants |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to
+% the labeling on the NXT Brick.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%% Example
+   OpenInfrared(SENSOR_4);
+   [direction rawData] = GetInfrared(SENSOR_4);
+   CloseSensor(SENSOR_4);
+%%
+%% See also
+% OpenInfrared, CloseSensor, COM_ReadI2C
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2008/09/25
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

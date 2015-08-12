@@ -1,0 +1,164 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 3: Drive Around Table (Motor Class)</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Example_3_DriveAroundTable_MotorClass.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Example 3: Drive Around Table (Motor Class)</h1><!--introduction--><p>Let a robot (e.g. Tribot or CATTbot) drive a square on the floor</p><p>Signature</p><div><ul><li> Author: Linus Atorf, Alexander Behrens</li><li> Date: 2009/07/17</li><li> License: BSD</li><li> RWTH - Mindstorms NXT Toolbox: <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Check toolbox installation</a></li><li><a href="#2">Clear and close</a></li><li><a href="#3">Constants and so on</a></li><li><a href="#4">Open Bluetooth connetion</a></li><li><a href="#5">Initialize motor-objects:</a></li><li><a href="#6">Initialize Motors...</a></li><li><a href="#7">Start the engines, main loop begins (repeated 4 times)</a></li><li><a href="#9">Drive</a></li><li><a href="#10">Wait for the end end of table</a></li><li><a href="#11">Now please turn</a></li><li><a href="#12">Thats it. Repeat 4 times....</a></li><li><a href="#14">Done.</a></li><li><a href="#15">Close Bluetooth connection</a></li></ul></div><h2>Check toolbox installation<a name="1"></a></h2><p>verify that the RWTH - Mindstorms NXT toolbox is installed.</p><pre class="codeinput"><span class="keyword">if</span> verLessThan(<span class="string">'RWTHMindstormsNXT'</span>, <span class="string">'3.00'</span>);
+    error(strcat(<span class="string">'This program requires the RWTH - Mindstorms NXT Toolbox '</span> <span class="keyword">...</span>
+        ,<span class="string">'version 3.00 or greater. Go to http://www.mindstorms.rwth-aachen.de '</span> <span class="keyword">...</span>
+        ,<span class="string">'and follow the installation instructions!'</span>));
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><h2>Clear and close<a name="2"></a></h2><pre class="codeinput">COM_CloseNXT <span class="string">all</span>
+clear <span class="string">all</span>
+close <span class="string">all</span>
+</pre><h2>Constants and so on<a name="3"></a></h2><pre class="codeinput">TableLength      = 1000;     <span class="comment">% in degrees of motor rotations :-)</span>
+QuarterTurnTicks = 219;      <span class="comment">% in motor degrees, how much is a 90&deg; turn of the bot?</span>
+Ports = [MOTOR_B; MOTOR_C];  <span class="comment">% motorports for left and right wheel</span>
+DrivingSpeed     = 60;
+TurningSpeed     = 40;
+</pre><h2>Open Bluetooth connetion<a name="4"></a></h2><pre class="codeinput">h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+COM_SetDefaultNXT(h);
+</pre><h2>Initialize motor-objects:<a name="5"></a></h2><pre class="codeinput">mStraight                   = NXTMotor(Ports);
+<span class="comment">% next command since we are driving in SYNC-mode. This should not be</span>
+<span class="comment">% necessary with correct default values, but at the moment, I have to set</span>
+<span class="comment">% it manually,</span>
+mStraight.SpeedRegulation   = false;  <span class="comment">% not for sync mode</span>
+mStraight.Power             = DrivingSpeed;
+mStraight.TachoLimit        = TableLength;
+mStraight.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+
+
+mTurn1                      = NXTMotor(Ports(2)); <span class="comment">% ports swapped because it's nicer</span>
+mTurn1.SpeedRegulation      = false;  <span class="comment">% we could use it if we wanted</span>
+mTurn1.Power                = TurningSpeed;
+mTurn1.TachoLimit           = QuarterTurnTicks;
+mStraight.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+
+
+mTurn2          = mTurn1;
+mTurn2.Port     = Ports(1);   <span class="comment">% ports swapped again...</span>
+mTurn2.Power    = - mTurn1.Power;
+</pre><h2>Initialize Motors...<a name="6"></a></h2><p>we send this in case they should still be spinning or something...</p><pre class="codeinput">mStraight.Stop(<span class="string">'off'</span>);
+</pre><h2>Start the engines, main loop begins (repeated 4 times)<a name="7"></a></h2><pre class="codeinput"><span class="comment">% 4 times because we got 4 equal sides of the table :-)</span>
+<span class="keyword">for</span> j = 1 : 4
+</pre><h2>Drive<a name="9"></a></h2><pre class="codeinput">    mStraight.SendToNXT();
+</pre><h2>Wait for the end end of table<a name="10"></a></h2><pre class="codeinput">    mStraight.WaitFor();
+</pre><h2>Now please turn<a name="11"></a></h2><pre class="codeinput">    mTurn1.SendToNXT();
+    mTurn1.WaitFor();
+
+    mTurn2.SendToNXT();
+    mTurn2.WaitFor();
+</pre><h2>Thats it. Repeat 4 times....<a name="12"></a></h2><pre class="codeinput"><span class="keyword">end</span><span class="comment">%for</span>
+</pre><h2>Done.<a name="14"></a></h2><p>Hey! End of a hard day's work Just to show good style, we close down our motors again:</p><pre class="codeinput">mStraight.Stop(<span class="string">'off'</span>);
+</pre><h2>Close Bluetooth connection<a name="15"></a></h2><pre class="codeinput">COM_CloseNXT(h);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 3: Drive Around Table (Motor Class)
+% Let a robot (e.g. Tribot or CATTbot) drive a square on the floor
+%
+% Signature
+%
+% *  Author: Linus Atorf, Alexander Behrens
+% *  Date: 2009/07/17
+% *  License: BSD
+% *  RWTH - Mindstorms NXT Toolbox: http://www.mindstorms.rwth-aachen.de
+
+
+%% Check toolbox installation
+% verify that the RWTH - Mindstorms NXT toolbox is installed.
+if verLessThan('RWTHMindstormsNXT', '3.00');
+    error(strcat('This program requires the RWTH - Mindstorms NXT Toolbox ' ...
+        ,'version 3.00 or greater. Go to http://www.mindstorms.rwth-aachen.de ' ...
+        ,'and follow the installation instructions!'));
+end%if
+
+
+%% Clear and close
+COM_CloseNXT all
+clear all
+close all
+
+
+%% Constants and so on
+TableLength      = 1000;     % in degrees of motor rotations :-)
+QuarterTurnTicks = 219;      % in motor degrees, how much is a 90° turn of the bot?
+Ports = [MOTOR_B; MOTOR_C];  % motorports for left and right wheel
+DrivingSpeed     = 60;
+TurningSpeed     = 40;
+
+
+%% Open Bluetooth connetion
+h = COM_OpenNXT('bluetooth.ini');
+COM_SetDefaultNXT(h);
+
+
+%% Initialize motor-objects:
+
+mStraight                   = NXTMotor(Ports);
+% next command since we are driving in SYNC-mode. This should not be
+% necessary with correct default values, but at the moment, I have to set
+% it manually,
+mStraight.SpeedRegulation   = false;  % not for sync mode
+mStraight.Power             = DrivingSpeed;
+mStraight.TachoLimit        = TableLength;
+mStraight.ActionAtTachoLimit = 'Brake';
+
+
+mTurn1                      = NXTMotor(Ports(2)); % ports swapped because it's nicer
+mTurn1.SpeedRegulation      = false;  % we could use it if we wanted
+mTurn1.Power                = TurningSpeed;
+mTurn1.TachoLimit           = QuarterTurnTicks;
+mStraight.ActionAtTachoLimit = 'Brake';
+
+
+mTurn2          = mTurn1;
+mTurn2.Port     = Ports(1);   % ports swapped again...
+mTurn2.Power    = - mTurn1.Power;
+
+
+
+%% Initialize Motors...
+% we send this in case they should still be spinning or something...
+mStraight.Stop('off');
+
+
+%% Start the engines, main loop begins (repeated 4 times)
+
+% 4 times because we got 4 equal sides of the table :-)
+for j = 1 : 4
+
+%% Drive
+
+    mStraight.SendToNXT();
+    
+%% Wait for the end end of table
+    mStraight.WaitFor();
+    
+%% Now please turn 
+
+    mTurn1.SendToNXT();
+    mTurn1.WaitFor();
+    
+    mTurn2.SendToNXT();
+    mTurn2.WaitFor();
+    
+%% Thats it. Repeat 4 times....
+end%for
+
+%% Done.
+% Hey! End of a hard day's work
+% Just to show good style, we close down our motors again:
+mStraight.Stop('off');
+
+
+%% Close Bluetooth connection
+COM_CloseNXT(h);
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,88 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MAP_GetOutputModule</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_MAP_GetOutputModule.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>MAP_GetOutputModule</h1><!--introduction--><p>Reads the IO map of the output module</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#27">Examples</a></li><li><a href="#30">See also</a></li><li><a href="#32">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>map = MAP_GetOutputModule(motor)</tt></p><h2>Description<a name="4"></a></h2><p><tt>map = MAP_GetOutputModule(motor)</tt> returns the IO map of the output module at the given <tt>motor</tt> port. The <tt>motor</tt> port can be addressed by <tt>MOTOR_A</tt>, <tt>MOTOR_B</tt>, <tt>MOTOR_C</tt> and <tt>'all'</tt>. The return value <tt>map</tt> is a struct variable or cell array (<tt>'all'</tt> mode). It contains all output module information.</p><p><b>Output:</b></p><p><tt>map.TachoCount</tt>         % internal, non-resettable rotation-counter (in degrees)</p><p><tt>map.BlockTachoCount</tt>    % block tacho counter, current motor position, resettable using, ResetMotorAngle (NXT-G counter since block start)</p><p><tt>map.RotationCount</tt>      % rotation tacho counter, current motor position (NXT-G counter since program start)</p><p><tt>map.TachoLimit</tt>         % tacho/angle limit, 0 means none set</p><p><tt>map.MotorRPM</tt>           % current pulse width modulation ?</p><p><tt>map.Flags</tt>              % should be always ''. Flags are considered in MAP_SetOutputModule.</p><p><tt>map.Mode</tt>               % output mode bitfield 1: MOTORON, 2: BRAKE, 4: REGULATED</p><p><tt>map.ModeName</tt>           % output mode name interpreted by output mode bitfield</p><p><tt>map.Speed</tt>              % motor power/speed</p><p><tt>map.ActualSpeed</tt>        % current actual percentage of full power (regulation mode)</p><p><tt>map.RegPParameter</tt>      % proportional term of the internal PID control algorithm</p><p><tt>map.RegIParameter</tt>      % integral term of the internal PID control algorithm</p><p><tt>map.RegDParameter</tt>      % derivate term of the internal PID control algorithm</p><p><tt>map.RunStateByte</tt>       % run state byte</p><p><tt>map.RunStateName</tt>       % run state name interpreted by run state byte</p><p><tt>map.RegModeByte</tt>        % regulation mode byte</p><p><tt>map.RegModeName</tt>        % regulation mode name interpreted by regulation mode byte</p><p><tt>map.Overloaded</tt>         % overloaded flag (true: speed regulation is unable to onvercome physical load on the motor)</p><p><tt>map.SyncTurnParam</tt>      % current turn ratio, 1: 25%, 2:50%, 3:75%, 4:100% of full volume</p><h2>Examples<a name="27"></a></h2><pre class="codeinput">   map = MAP_GetOutputModule(MOTOR_A);
+</pre><pre class="codeinput">   map = MAP_GetOutputModule(<span class="string">'all'</span>);
+</pre><h2>See also<a name="30"></a></h2><p><a href="NXT_ReadIOMap.html">NXT_ReadIOMap</a>, </p><h2>Signature<a name="32"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/22</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% MAP_GetOutputModule
+% Reads the IO map of the output module
+%%
+%% Syntax
+% |map = MAP_GetOutputModule(motor)|
+%%
+%% Description
+% |map = MAP_GetOutputModule(motor)| returns the IO map of the output module at the given
+% |motor| port. The |motor| port can be addressed by |MOTOR_A|, |MOTOR_B|, |MOTOR_C| and |'all'|.
+% The return value |map| is a struct variable or cell array (|'all'| mode). It contains all
+% output module information.
+%%
+%%
+% *Output:*
+%%
+% |map.TachoCount|         % internal, non-resettable rotation-counter (in degrees)
+%%
+% |map.BlockTachoCount|    % block tacho counter, current motor position, resettable using,
+% ResetMotorAngle (NXT-G counter since block start)
+%%
+% |map.RotationCount|      % rotation tacho counter, current motor position (NXT-G counter
+% since program start)
+%%
+% |map.TachoLimit|         % tacho/angle limit, 0 means none set
+%%
+% |map.MotorRPM|           % current pulse width modulation ?
+%%
+% |map.Flags|              % should be always ''. Flags are considered in MAP_SetOutputModule.
+%%
+% |map.Mode|               % output mode bitfield 1: MOTORON, 2: BRAKE, 4: REGULATED
+%%
+% |map.ModeName|           % output mode name interpreted by output mode bitfield
+%%
+% |map.Speed|              % motor power/speed
+%%
+% |map.ActualSpeed|        % current actual percentage of full power (regulation mode)
+%%
+% |map.RegPParameter|      % proportional term of the internal PID control algorithm
+%%
+% |map.RegIParameter|      % integral term of the internal PID control algorithm
+%%
+% |map.RegDParameter|      % derivate term of the internal PID control algorithm
+%%
+% |map.RunStateByte|       % run state byte
+%%
+% |map.RunStateName|       % run state name interpreted by run state byte
+%%
+% |map.RegModeByte|        % regulation mode byte
+%%
+% |map.RegModeName|        % regulation mode name interpreted by regulation mode byte
+%%
+% |map.Overloaded|         % overloaded flag (true: speed regulation is unable to onvercome
+% physical load on the motor)
+%%
+% |map.SyncTurnParam|      % current turn ratio, 1: 25%, 2:50%, 3:75%, 4:100% of full volume
+%%
+%% Examples
+   map = MAP_GetOutputModule(MOTOR_A);
+%%
+   map = MAP_GetOutputModule('all');
+%%
+%% See also
+% NXT_ReadIOMap
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/22
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

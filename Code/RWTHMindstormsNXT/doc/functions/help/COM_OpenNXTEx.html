@@ -1,0 +1,138 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_OpenNXTEx</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_OpenNXTEx.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_OpenNXTEx</h1><!--introduction--><p>Opens USB or Bluetooth connection to NXT; advanced version, more options</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#10">Description</a></li><li><a href="#28">Limitations of COM_CloseNXT</a></li><li><a href="#31">Examples</a></li><li><a href="#34">See also</a></li><li><a href="#36">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>handle = COM_OpenNXTEx('USB', UseThisNXTMAC)</tt></p><p><tt>handle = COM_OpenNXTEx('Bluetooth', UseThisNXTMAC, inifilename)</tt></p><p><tt>handle = COM_OpenNXTEx('Any', UseThisNXTMAC, inifilename)</tt></p><p><tt>handle = COM_OpenNXTEx('USB'      , UseThisNXTMAC, 'MotorControlFilename', motorcontrolfile)</tt></p><p><tt>handle = COM_OpenNXTEx('Bluetooth', UseThisNXTMAC, inifilename, 'MotorControlFilename', motorcontrolfile)</tt></p><p><tt>handle = COM_OpenNXTEx('Any'      , UseThisNXTMAC, inifilename, 'MotorControlFilename', motorcontrolfile)</tt></p><h2>Description<a name="10"></a></h2><p>This function establishes a connection to an NXT brick and returns the handle structure that has to be used with NXT-functions (you can call <tt>COM_SetDefaultNXT(handle)</tt> afterwards for easier use).</p><p>For a more convenient way to open an NXT handle with less parameters, the function <tt>COM_OpenNXT</tt> is provided.</p><p>Different types of connection modes are supported. In all modes, you can set <tt>UseThisNXTMAC</tt> to a string with the NXT's MAC address (serial number). A connection will then only be estabslished to a matching NXT brick. This can be useful for programs with multiple NXT devices. Set it to an empty string <tt>''</tt> to use any NXT available (usually the first one found). The string can have the format '001612345678' or '00:16:12:34:56:78'.</p><p><tt>handle = COM_OpenNXTEx('USB', UseThisNXTMAC)</tt></p><p>This will try to open a connection via USB. Device drivers (Fantom on Windows, libusb on Linux) have to be installed.</p><p><tt>handle = COM_OpenNXTEx('Bluetooth', UseThisNXTMAC, inifilename)</tt></p><p>Uses Bluetooth as communication method. A valid inifile containing parameters like the COM-Port has to be specified in <tt>inifilename</tt>. To create an inifile with Bluetooth settings, the function <tt>COM_MakeBTConfigFile</tt> is available.</p><p>Note that as of right now, the parameter <tt>UseThisNXTMAC</tt> will only be used on Windows 64 Bit system with "Instrument Control Toolbox" &gt;= V3.0. This is because Mathworks introduced a new Bluetooth object which can open connections using the MAC of your device.</p><p><tt>handle = COM_OpenNXTEx('Any', UseThisNXTMAC, inifilename)</tt></p><p>This syntax combines the two parameter settings from above. <tt>inifilename</tt> has to be given. The function will try to locate an NXT device on the USB bus first. If this fails for some reason (no USB connection to the NXT available, no device drivers installed, or NXT device is busy), the function will silently try to establish a connection via Bluetooth.</p><p>The advantage is that this version works with both Bluetooth and USB connections <i>without changing</i> any code. Plug or unplug the USB cable to switch between connection types...</p><p>The optional string-parameter <tt>'MotorControlFilename'</tt> can be used to override the default file name for the embedded NXC program MotorControl, which will be launched by the method. Specify <tt>'MotorControlFilename'</tt>, followed by a the actual filename to be started in <tt>motorcontrolfile</tt>. You can set this to any executable file present on the NXT. The filename conventions are the same as for <tt>NXT_StartProgram</tt>. Set it to an empty string <tt>''</tt> to disable the embedded MotorControl program. In this case, the class <tt>NXTMotor</tt> will not completely be available for usage. This option is intended for advanced users.</p><h2>Limitations of COM_CloseNXT<a name="28"></a></h2><p>If you call <tt>COM_CloseNXT('all')</tt> after a <tt>clear all</tt> command has been issued, the function will not be able to close all remaining open USB handles, since they have been cleared out of memory. This is a problem on Linux systems. You will not be able to use the NXT device without rebooting it. Solution: Either use only <tt>clear</tt> in your programs, or you use the <tt>COM_CloseNXT('all')</tt> statement before <tt>clear all</tt>. The best way however is to track your handles carefully and close them manually (<tt>COM_CloseNXT(handle)</tt>) before exiting whenever possible!%</p><h2>Examples<a name="31"></a></h2><pre class="codeinput">   myNXT = COM_OpenNXTEx(<span class="string">'Any'</span>, <span class="string">'001612345678'</span>, <span class="string">'bluetooth.ini'</span>);
+   <span class="comment">% This will connect to an NXT device with the MAC/serial number 001612345678,</span>
+   <span class="comment">% first trying via USB. If this fails (no drivers installed or no matching USB</span>
+   <span class="comment">% device found), a connection via Bluetooth will be established, using</span>
+   <span class="comment">% the paramters found in the given config file.</span>
+</pre><pre class="codeinput">   myNXT = COM_OpenNXTEx(<span class="string">'USB'</span>, <span class="string">''</span>, <span class="string">'MotorControlFilename, '</span>MyProgram.rxe');
+   <span class="comment">% This will try to connect to an NXT device via USB, using the first</span>
+   <span class="comment">% one found (we set |UseThisNXTMAC| to |''|). Instead of the embedded</span>
+   <span class="comment">% default MotorControl program, a custom user file MyProgram.rxe will</span>
+   <span class="comment">% try to be launched...</span>
+</pre><h2>See also<a name="34"></a></h2><p><a href="COM_OpenNXT.html">COM_OpenNXT</a>, <a href="COM_CloseNXT.html">COM_CloseNXT</a>, <a href="COM_MakeBTConfigFile.html">COM_MakeBTConfigFile</a>, <a href="COM_SetDefaultNXT.html">COM_SetDefaultNXT</a>, </p><h2>Signature<a name="36"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens, Martin Staas (see AUTHORS)</li><li><b>Date:</b> 2011/09/30</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_OpenNXTEx
+% Opens USB or Bluetooth connection to NXT; advanced version, more options
+%%
+%% Syntax
+% |handle = COM_OpenNXTEx('USB', UseThisNXTMAC)|
+%%
+% |handle = COM_OpenNXTEx('Bluetooth', UseThisNXTMAC, inifilename)|
+%%
+% |handle = COM_OpenNXTEx('Any', UseThisNXTMAC, inifilename)|
+%%
+%%
+% |handle = COM_OpenNXTEx('USB'      , UseThisNXTMAC, 'MotorControlFilename', motorcontrolfile)|
+%%
+% |handle = COM_OpenNXTEx('Bluetooth', UseThisNXTMAC, inifilename, 'MotorControlFilename', motorcontrolfile)|
+%%
+% |handle = COM_OpenNXTEx('Any'      , UseThisNXTMAC, inifilename, 'MotorControlFilename', motorcontrolfile)|
+%%
+%% Description
+% This function establishes a connection to an NXT brick and returns the
+% handle structure that has to be used with NXT-functions (you can call
+% |COM_SetDefaultNXT(handle)| afterwards for easier use).
+%%
+% For a more convenient way to open an NXT handle with less parameters, the
+% function |COM_OpenNXT| is provided.
+%%
+% Different types of connection modes are supported. In all modes, you can
+% set |UseThisNXTMAC| to a string with the NXT's MAC address (serial number).
+% A connection will then only be estabslished to a matching NXT brick. This can be
+% useful for programs with multiple NXT devices. Set it to an empty string
+% |''| to use any NXT available (usually the first one found). The string
+% can have the format '001612345678' or '00:16:12:34:56:78'.
+%%
+%%
+% |handle = COM_OpenNXTEx('USB', UseThisNXTMAC)|
+%%
+% This will try to open a connection via USB. Device drivers (Fantom on
+% Windows, libusb on Linux) have to be installed.
+%%
+%%
+% |handle = COM_OpenNXTEx('Bluetooth', UseThisNXTMAC, inifilename)|
+%%
+% Uses Bluetooth as communication method. A valid inifile containing
+% parameters like the COM-Port has to be specified in |inifilename|.
+% To create an inifile with Bluetooth settings, the function
+% |COM_MakeBTConfigFile| is available.
+%%
+% Note that as of right now, the parameter |UseThisNXTMAC| will only be
+% used on Windows 64 Bit system with "Instrument Control Toolbox" >=
+% V3.0. This is because Mathworks introduced a new Bluetooth object which
+% can open connections using the MAC of your device.
+%%
+%%
+% |handle = COM_OpenNXTEx('Any', UseThisNXTMAC, inifilename)|
+%%
+% This syntax combines the two parameter settings from above.
+% |inifilename| has to be given.
+% The function will try to locate an NXT device on the USB bus first. If
+% this fails for some reason (no USB connection to the NXT available, no
+% device drivers installed, or NXT device is busy), the function will
+% silently try to establish a connection via Bluetooth.
+%%
+% The advantage is that this version works with both Bluetooth and USB
+% connections _without changing_ any code. Plug or unplug the USB cable
+% to switch between connection types...
+%%
+%%
+% The optional string-parameter |'MotorControlFilename'| can be used to
+% override the default file name for the embedded NXC program MotorControl,
+% which will be launched by the method. Specify |'MotorControlFilename'|,
+% followed by a the actual filename to be started in |motorcontrolfile|.
+% You can set this to any executable file present on the NXT. The filename conventions
+% are the same as for |NXT_StartProgram|. Set it to an empty string |''| to disable
+% the embedded MotorControl program. In this case, the class |NXTMotor| will not
+% completely be available for usage.
+% This option is intended for advanced users.
+%%
+%%
+%% Limitations of COM_CloseNXT
+% If you call |COM_CloseNXT('all')| after a |clear all| command has been
+% issued, the function will not be able to close all remaining open USB
+% handles, since they have been cleared out of memory. This is a problem
+% on Linux systems. You will not be able to use the NXT device without
+% rebooting it.
+% Solution: Either use only |clear| in your programs, or you use the
+% |COM_CloseNXT('all')| statement before |clear all|.
+% The best way however is to track your handles carefully and close them
+% manually (|COM_CloseNXT(handle)|) before exiting whenever possible!%
+%%
+%%
+%% Examples
+   myNXT = COM_OpenNXTEx('Any', '001612345678', 'bluetooth.ini');
+   % This will connect to an NXT device with the MAC/serial number 001612345678,
+   % first trying via USB. If this fails (no drivers installed or no matching USB
+   % device found), a connection via Bluetooth will be established, using
+   % the paramters found in the given config file.
+%%
+   myNXT = COM_OpenNXTEx('USB', '', 'MotorControlFilename, 'MyProgram.rxe');
+   % This will try to connect to an NXT device via USB, using the first
+   % one found (we set |UseThisNXTMAC| to |''|). Instead of the embedded
+   % default MotorControl program, a custom user file MyProgram.rxe will
+   % try to be launched...
+%%
+%% See also
+% COM_OpenNXT, COM_CloseNXT, COM_MakeBTConfigFile, COM_SetDefaultNXT
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens, Martin Staas (see AUTHORS)
+% * *Date:* 2011/09/30
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%%
+%
+
+##### SOURCE END #####
+--></body></html>

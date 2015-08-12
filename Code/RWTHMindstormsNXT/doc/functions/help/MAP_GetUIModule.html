@@ -1,0 +1,77 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MAP_GetUIModule</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_MAP_GetUIModule.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>MAP_GetUIModule</h1><!--introduction--><p>Reads the IO map of the user interface module</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#26">Examples</a></li><li><a href="#28">See also</a></li><li><a href="#30">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>map = MAP_GetUIModule()</tt></p><h2>Description<a name="4"></a></h2><p><tt>map = MAP_GetUIModule()</tt> returns the IO map of the user interface module. The return value <tt>map</tt> is a struct variable. It contains all user interface module information.</p><p><b>Output:</b></p><p><tt>map.PMenu</tt>              % ?</p><p><tt>map.BatteryVoltage</tt>     % battery voltage in mili volt.</p><p><tt>map.LMSfilename</tt>        % ?</p><p><tt>map.Flags</tt>              % flag bitfield</p><p><tt>map.State</tt>              % state value</p><p><tt>map.Button</tt>             % button value</p><p><tt>map.RunState</tt>           % VM run state</p><p><tt>map.BatteryState</tt>       % battery level (0..4)</p><p><tt>map.BluetoothState</tt>     % bluetooth state bitfield</p><p><tt>map.UsbState</tt>           % USB state</p><p><tt>map.SleepTimout</tt>        % sleep timeout value in minutes</p><p><tt>map.SleepTimer</tt>         % current sleep timer in minutes</p><p><tt>map.Rechargeable</tt>       % true if reachargeable battery is used</p><p><tt>map.Volume</tt>             % volume level (0..4)</p><p><tt>map.Error</tt>              % error value</p><p><tt>map.OBPPointer</tt>         % on brick program pointer</p><p><tt>map.ForceOff</tt>           % turn off brick if value is true</p><h2>Examples<a name="26"></a></h2><pre class="codeinput">   map = MAP_GetUIModule();
+</pre><h2>See also<a name="28"></a></h2><p><a href="NXT_ReadIOMap.html">NXT_ReadIOMap</a>, </p><h2>Signature<a name="30"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/23</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% MAP_GetUIModule
+% Reads the IO map of the user interface module
+%%
+%% Syntax
+% |map = MAP_GetUIModule()|
+%%
+%% Description
+% |map = MAP_GetUIModule()| returns the IO map of the user interface module. The return
+% value |map| is a struct variable. It contains all user interface module information.
+%%
+%%
+% *Output:*
+%%
+% |map.PMenu|              % ?
+%%
+% |map.BatteryVoltage|     % battery voltage in mili volt.
+%%
+% |map.LMSfilename|        % ?
+%%
+% |map.Flags|              % flag bitfield
+%%
+% |map.State|              % state value
+%%
+% |map.Button|             % button value
+%%
+% |map.RunState|           % VM run state
+%%
+% |map.BatteryState|       % battery level (0..4)
+%%
+% |map.BluetoothState|     % bluetooth state bitfield
+%%
+% |map.UsbState|           % USB state
+%%
+% |map.SleepTimout|        % sleep timeout value in minutes
+%%
+% |map.SleepTimer|         % current sleep timer in minutes
+%%
+% |map.Rechargeable|       % true if reachargeable battery is used
+%%
+% |map.Volume|             % volume level (0..4)
+%%
+% |map.Error|              % error value
+%%
+% |map.OBPPointer|         % on brick program pointer
+%%
+% |map.ForceOff|           % turn off brick if value is true
+%%
+%%
+%% Examples
+   map = MAP_GetUIModule();
+%%
+%% See also
+% NXT_ReadIOMap
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/23
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

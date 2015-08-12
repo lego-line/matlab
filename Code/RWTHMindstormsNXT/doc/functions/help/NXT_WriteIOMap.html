@@ -1,0 +1,58 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_WriteIOMap</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_WriteIOMap.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_WriteIOMap</h1><!--introduction--><p>Writes the IO map to the given module ID</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Examples</a></li><li><a href="#13">See also</a></li><li><a href="#15">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>NXT_WriteIOMap(mod_id, offset, n_bytes, data)</tt></p><p><tt>NXT_WriteIOMap(mod_id, offset, n_bytes, data, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>NXT_WriteIOMap(mod_id, offset, n_bytes, data)</tt> write the data <tt>bytes</tt> to the given module ID (<tt>mod_id</tt>). The total number of bytes is given by <tt>n_bytes</tt>. The <tt>offset</tt> parameter determines the index position of the first byte.</p><p><tt>NXT_WriteIOMap(mod_id, offset, n_bytes, data, handle)</tt> sends the IO map write command over the specific NXT handle <tt>handle</tt> (e.g. serial handle (PC) / file handle (Linux)).</p><p>If no NXT <tt>handle</tt> is specified the default one (<tt>COM_GetDefaultNXT)</tt> is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><h2>Examples<a name="10"></a></h2><pre class="codeinput">   OutputModuleID = 131073
+   NXT_WriteIOMap(OutputModuleID, 0, 30, bytes;
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   OutputModuleID = 131073
+   NXT_WriteIOMap(OutputModuleID, 0, 30, bytes, handle);
+</pre><h2>See also<a name="13"></a></h2><p><a href="NXT_ReadIOMap.html">NXT_ReadIOMap</a>, <a href="COM_GetDefaultNXT.html">COM_GetDefaultNXT</a>, </p><h2>Signature<a name="15"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/22</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_WriteIOMap
+% Writes the IO map to the given module ID
+%%
+%% Syntax
+% |NXT_WriteIOMap(mod_id, offset, n_bytes, data)|
+%%
+% |NXT_WriteIOMap(mod_id, offset, n_bytes, data, handle)|
+%%
+%% Description
+% |NXT_WriteIOMap(mod_id, offset, n_bytes, data)| write the data |bytes| to the given module ID (|mod_id|).
+% The total number of bytes is given by |n_bytes|. The |offset| parameter determines the index
+% position of the first byte.
+%%
+% |NXT_WriteIOMap(mod_id, offset, n_bytes, data, handle)| sends the IO map write command
+% over the specific NXT handle |handle| (e.g. serial handle (PC) / file handle (Linux)).
+%%
+% If no NXT |handle| is specified the default one (|COM_GetDefaultNXT)| is used.
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%% Examples
+   OutputModuleID = 131073
+   NXT_WriteIOMap(OutputModuleID, 0, 30, bytes;
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   OutputModuleID = 131073
+   NXT_WriteIOMap(OutputModuleID, 0, 30, bytes, handle);
+%%
+%% See also
+% NXT_ReadIOMap, COM_GetDefaultNXT
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/22
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,159 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 4: Next Generation Ultrasound</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Example_4_NextGenerationUltrasound.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Example 4: Next Generation Ultrasound</h1><!--introduction--><p>Example demonstrating the results of the ultrasound "snapshot mode"</p><p>Interpretation of the results however is difficult.</p><p>Just connect an NXT to the USB port, adjust the US port (or connect it to SENSOR_2), and see what's happening. The script will exit after 200 measurements...</p><p>Signature</p><div><ul><li> Author: Linus Atorf, Alexander Behrens</li><li> Date: 2009/07/17</li><li> License: BSD</li><li> RWTH - Mindstorms NXT Toolbox: <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Check toolbox installation</a></li><li><a href="#2">Clean up</a></li><li><a href="#3">Set up Matlab</a></li><li><a href="#4">Set up ports</a></li><li><a href="#5">Get USB handle</a></li><li><a href="#6">Prepare graphics</a></li><li><a href="#7">Initialize</a></li><li><a href="#8">Measuring...</a></li><li><a href="#9">Clean up</a></li></ul></div><h2>Check toolbox installation<a name="1"></a></h2><p>verify that the RWTH - Mindstorms NXT toolbox is installed.</p><pre class="codeinput"><span class="keyword">if</span> verLessThan(<span class="string">'RWTHMindstormsNXT'</span>, <span class="string">'2.00'</span>);
+    error(strcat(<span class="string">'This program requires the RWTH - Mindstorms NXT Toolbox '</span> <span class="keyword">...</span>
+        ,<span class="string">'version 3.00 or greater. Go to http://www.mindstorms.rwth-aachen.de '</span> <span class="keyword">...</span>
+        ,<span class="string">'and follow the installation instructions!'</span>));
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><h2>Clean up<a name="2"></a></h2><p>Close previous handles (if existing)</p><pre class="codeinput">COM_CloseNXT <span class="string">all</span>
+</pre><h2>Set up Matlab<a name="3"></a></h2><pre class="codeinput">close <span class="string">all</span>
+clear <span class="string">all</span>
+format <span class="string">compact</span>
+</pre><h2>Set up ports<a name="4"></a></h2><pre class="codeinput">portUS      = SENSOR_4;
+</pre><h2>Get USB handle<a name="5"></a></h2><pre class="codeinput">h = COM_OpenNXT();
+COM_SetDefaultNXT(h);
+</pre><h2>Prepare graphics<a name="6"></a></h2><pre class="codeinput">figure(<span class="string">'name'</span>, <span class="string">'Next Generation Ultrasound'</span>)
+set(gca, <span class="string">'Color'</span>, <span class="string">'black'</span>);
+hold <span class="string">on</span>
+</pre><h2>Initialize<a name="7"></a></h2><pre class="codeinput">OpenUltrasonic(portUS, <span class="string">'snapshot'</span>)
+
+n          = 8;         <span class="comment">% bytes the US sensor received</span>
+count      = 200;       <span class="comment">% how many readings until end?</span>
+plotcols   = 8;         <span class="comment">% how many out of n echos to plot?</span>
+outOfRange = 160;       <span class="comment">% setting for out of range readings</span>
+
+colors = flipud(hot(8));
+
+data = zeros(1, n);
+allX = (1:count+1)';
+</pre><h2>Measuring...<a name="8"></a></h2><pre class="codeinput"><span class="keyword">for</span> i = 1 : count
+    USMakeSnapshot(portUS)
+    pause(0.05);            <span class="comment">% wait for the sound to travel</span>
+    echos = USGetSnapshotResults(portUS);
+
+    echos(echos == 255) = outOfRange;
+
+    echos = [echos(1); diff(echos)];
+
+    data = vertcat(data, echos');
+    x = allX(1:i+1);
+
+    clf
+    hold <span class="string">on</span>
+    set(gca, <span class="string">'Color'</span>, <span class="string">'black'</span>);
+
+    axis([0 count 0 outOfRange])
+
+    <span class="keyword">for</span> j = plotcols : -1 : 1
+        area(x, data(:, j) , <span class="string">'FaceColor'</span>, colors(j, :))
+    <span class="keyword">end</span>
+
+<span class="keyword">end</span><span class="comment">%for</span>
+</pre><h2>Clean up<a name="9"></a></h2><pre class="codeinput">CloseSensor(portUS)
+COM_CloseNXT(h);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 4: Next Generation Ultrasound
+% Example demonstrating the results of the ultrasound "snapshot mode"
+%
+% Interpretation of the results however is difficult.
+%
+% Just connect an NXT to the USB port, adjust the US port (or connect it to
+% SENSOR_2), and see what's happening. The script will exit after 200
+% measurements...
+%
+% Signature
+%
+% *  Author: Linus Atorf, Alexander Behrens
+% *  Date: 2009/07/17
+% *  License: BSD
+% *  RWTH - Mindstorms NXT Toolbox: http://www.mindstorms.rwth-aachen.de
+
+%% Check toolbox installation
+% verify that the RWTH - Mindstorms NXT toolbox is installed.
+if verLessThan('RWTHMindstormsNXT', '2.00');
+    error(strcat('This program requires the RWTH - Mindstorms NXT Toolbox ' ...
+        ,'version 3.00 or greater. Go to http://www.mindstorms.rwth-aachen.de ' ...
+        ,'and follow the installation instructions!'));
+end%if
+
+
+%% Clean up
+% Close previous handles (if existing)
+COM_CloseNXT all
+
+
+%% Set up Matlab
+close all
+clear all
+format compact
+
+
+%% Set up ports
+portUS      = SENSOR_4;
+
+
+%% Get USB handle
+h = COM_OpenNXT();
+COM_SetDefaultNXT(h);
+
+
+%% Prepare graphics
+figure('name', 'Next Generation Ultrasound')
+set(gca, 'Color', 'black');
+hold on
+
+%% Initialize
+OpenUltrasonic(portUS, 'snapshot')
+
+n          = 8;         % bytes the US sensor received
+count      = 200;       % how many readings until end?
+plotcols   = 8;         % how many out of n echos to plot?
+outOfRange = 160;       % setting for out of range readings
+
+colors = flipud(hot(8));
+
+data = zeros(1, n); 
+allX = (1:count+1)';
+
+%% Measuring...
+for i = 1 : count
+    USMakeSnapshot(portUS)
+    pause(0.05);            % wait for the sound to travel
+    echos = USGetSnapshotResults(portUS);
+
+    echos(echos == 255) = outOfRange;
+
+    echos = [echos(1); diff(echos)];
+
+    data = vertcat(data, echos');
+    x = allX(1:i+1);
+    
+    clf
+    hold on
+    set(gca, 'Color', 'black');
+    
+    axis([0 count 0 outOfRange])
+
+    for j = plotcols : -1 : 1
+        area(x, data(:, j) , 'FaceColor', colors(j, :))
+    end
+    
+end%for
+
+
+%% Clean up
+CloseSensor(portUS)
+COM_CloseNXT(h);
+
+##### SOURCE END #####
+--></body></html>

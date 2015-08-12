@@ -1,0 +1,279 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXTMotor</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXTMotor.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXTMotor</h1><!--introduction--><p>Constructs an NXTMotor object</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#6">Description</a></li><li><a href="#27">Limitations</a></li><li><a href="#34">Example:</a></li><li><a href="#39">See also</a></li><li><a href="#42">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>M = NXTMotor()</tt></p><p><tt>M = NXTMotor(PORT)</tt></p><p><tt>M = NXTMotor(PORT, 'PropName1', PropValue1, 'PropName2', PropValue2, ...)</tt></p><h2>Description<a name="6"></a></h2><p><tt>M = NXTMotor(PORT)</tt> constructs an NXTMotor object with motor port <tt>PORT</tt> and default attributes. <tt>PORT</tt> may be either the port number (0, 1, 2 or <tt>MOTOR_A</tt>, <tt>MOTOR_B</tt>, <tt>MOTOR_C</tt>) or a string specifying the port ('A', 'B', 'C'). To have two motors synchronized <tt>PORT</tt> may be a vector of two ports in ascending order.</p><p><tt>M = NXTMotor(PORT, 'PropName1', PropValue1, 'PropName2', PropValue2, ...)</tt> constructs an NXTMotor object with motor port(s) <tt>PORT</tt> in which the given Property name/value pairs are set on the object. All properties can also be set after creation by dot-notation (see example).</p><p>Available properties are:</p><div><ul><li><tt>Port</tt> - the motor port(s) being used, either a string composed of the letters <tt>'A'</tt>, <tt>'B'</tt>, <tt>'C'</tt>, or a single value or array of the numbers 0, 1, 2. A maximum of 2 motors is allowed. If 2 motors are specified, the bot will drive in sync mode, good for driving straight ahead.</li></ul></div><div><ul><li><tt>Power</tt> - integer from -100 to 100, sets power level and direction of rotation (0 to 100%)</li></ul></div><div><ul><li><tt>SpeedRegulation</tt> - if set to <tt>true</tt> (default), the motor will try to hold a constant speed by adjusting power output according to load (e.g. friction) - this is only valid for single motors. It must be deactivated when using two motors! If you'd like to have motor movement with preferrably constant torque, it's advisable to disable this option. <tt>SpeedRegulation</tt> must be <tt>false</tt> for "normal", unregulated motor control. If set to <tt>true</tt>, single motors will be operated in speed regulation mode. This means that the motor will increase its internal power setting to reach a constant turning speed. Use this option when working with motors under varying load. If you'd like to have motor movement with preferrably constant torque, it's advisable to disable this option. In conjunction with multiple motors (i.e. when <tt>Port</tt> is an array of 2 ports), you have to disable <tt>SpeedRegulation</tt>! Multiple motors will enable synchronization between the two motors. They will run at the same speed as if they were connected through and axle, leading to straight movement for driving bots.</li></ul></div><div><ul><li><tt>TachoLimit</tt> - integer from 0 to 999999, specifies the angle in degrees the motor will try to reach, set 0 to run forever. Note that direction is specified by the sign of <tt>Power</tt>.</li></ul></div><p>
+<ul>
+<li> <code>ActionAtTachoLimit</code> is a string parameter with valid options
+<code>'Coast'</code>, <code>'Brake'</code> or <code>'HoldBrake'</code>.
+It specifies how the motor(s) should react
+when their position counter reaches the set
+<code>TachoLimit</code>.<br><br>
+<ul>
+<li> In COAST
+mode, the motor(s) will simply be turned of when the <code>TachoLimit</code> is
+reached, leading to free movement until slowly stopping (called
+coasting). The <code>TachoLimit</code> won't be met, the motor(s) move way too far
+(overshooting), depending on their angular momentum.<br><br>
+<li> Use BRAKE mode (default) to let the motor(s) automatically
+slow down nice and smoothly shortly before the <code>TachoLimit</code>. This leads
+to a very high precision, usually the <code>TachoLimit</code> is met within +/- 1
+degree (depending on the motor load and speed of course). After this
+braking, power to the motor(s) is turned off when they are at
+rest.<br><br>
+<li> HOLDBRAKE is similar to BRAKE, but in this case, the active brake of
+the motors stays enabled (careful, this consumes a lot of battery
+power), causing the motor(s) to actively keep holding their
+position.<br>
+</ul>
+</ul>
+</p><div><ul><li><tt>SmoothStart</tt> can be set to <tt>true</tt> to smoothly accelerate movement. This "manual ramp up" of power will occur fairly quickly. It's comfortable for driving robots so that they don't loose traction when starting to move. If used in conjunction with <tt>SpeedRegulation</tt> for single motors, after accleration is finished and the full power is applied, the speed regulation can possibly even accelerate a bit more. This option is only available for <tt>TachoLimit &gt; 0</tt> and <tt>ActionAtTachoLimit = 'Brake'</tt> or <tt>'HoldBrake'</tt>.</li></ul></div><p>For a list of valid methods, see the "See also" section below.</p><p><b>Note:</b></p><p>When using a motor object with two ports set, the motors will be operated in synchronous mode. This means an internal regulation of the NXT firmware tries to move both motors at the same speed and to the same position (so that driving robots can go a straight line for example). With <tt>ActionAtTachoLimit == 'Coast'</tt> the sync mode will stay enabled during coasting, allowing for the firmware to correct the robot's position (align it straight ahead again). If you want to use those motors again, you must reset/stop the synchonization before by sending a <tt>.Stop()</tt> to the motors!</p><h2>Limitations<a name="27"></a></h2><p>If you send a command to the NXT without waiting for the previous motor operation to have finished, the command will be dropped (the NXT indicates this with a high and low beep tone). Use the classes method <tt>WaitFor</tt> to make sure the motor is ready for new  commands, or stop the motor using the method <tt>.Stop</tt>.</p><p>The option <tt>SmoothStart</tt> in conjunction with <tt>ActionAtTachoLimit == 'Coast'</tt> is not available. As a workaround, disable <tt>SmoothStart</tt> for this mode. <tt>SmoothStart</tt> will generally only work when <tt>TachoLimit</tt> &gt; 0 is set.</p><p>With ActionAtTachoLimit = 'Coast' and synchronous driving (two motors), the motors will stay synced after movement (even after <tt>.WaitFor()</tt> has finished). This is by design. To disable the synchonization, just use <tt>.Stop('off')</tt>.</p><p><tt>SpeedRegulation = true</tt> does not always produce the expected result. Due to internal PID regulation, the actually achieved speed can vary or oscillate when using very small values for <tt>Power</tt>. This happens especially when using the motor with a heavy load for small speeds. In this case it can be better to disable <tt>SpeedRegulation</tt>. In general, speed regulation should only be enabled if a constant rotational velocity is desired. For constant torque, better disable this feature.</p><h2>Example:<a name="34"></a></h2><pre class="codeinput">      <span class="comment">% Construct a NXTMotor object on port 'B' with a power of</span>
+      <span class="comment">% 60, disabled speed regulation, a TachoLimit of 360 and</span>
+      <span class="comment">% send the motor settings to the NXT brick.</span>
+      motorB = NXTMotor(<span class="string">'B'</span>, <span class="string">'Power'</span>, 60)
+
+      motorB.SpeedRegulation     = false;
+      motorB.TachoLimit          = 360;
+      motorB.ActionAtTachoLimit  = <span class="string">'Brake'</span>; <span class="comment">% this is the default anyway</span>
+      motorB.SmoothStart         = true;
+
+      <span class="comment">% enough setting up params, let's go!</span>
+      motorB.SendToNXT();
+      <span class="comment">% let MATLAB wait until the motor has stopped moving</span>
+      motorB.WaitFor();
+
+      <span class="comment">% Play tone when motor is ready to be used again</span>
+      NXT_PlayTone(400,500);
+</pre><pre class="codeinput">      <span class="comment">% let's use a driving robot</span>
+      m = NXTMotor(<span class="string">'BC'</span>, <span class="string">'Power'</span>, 60);
+      m.TachoLimit         = 1000;
+      m.SmoothStart        = true,    <span class="comment">% start soft</span>
+      m.ActionAtTachoLimit = <span class="string">'coast'</span>; <span class="comment">% we want very smooth "braking", too :-)</span>
+      m.SendToNXT();                  <span class="comment">% go!</span>
+
+      m.WaitFor();                    <span class="comment">% are we there yet?</span>
+
+      <span class="comment">% we're here, motors are still moving / coasting, so give the bot time!</span>
+      pause(3);
+
+      <span class="comment">% you can still hear the synchronization (high noisy beeping)</span>
+      <span class="comment">% before we go back, we have to disable the synchronization quickly</span>
+      m.Stop();
+
+      <span class="comment">% reverse direction</span>
+      m.Power = -m.Power;
+      m.SendToNXT();
+      m.WaitFor();
+      pause(3);
+      m.Stop();
+
+      NXT_PlayTone(500, 100); <span class="comment">% all done</span>
+</pre><h2>See also<a name="39"></a></h2><p><a href="SendToNXT.html">SendToNXT</a>, <a href="ReadFromNXT.html">ReadFromNXT</a>, <a href="WaitFor.html">WaitFor</a>, <a href="Stop.html">Stop</a>, <a href="ResetPosition.html">ResetPosition</a>, <a href="DirectMotorCommand.html">DirectMotorCommand</a>, </p><h2>Signature<a name="42"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Aulis Telle, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2009/08/24</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXTMotor
+% Constructs an NXTMotor object
+%%
+%% Syntax
+% |M = NXTMotor()|
+%%
+% |M = NXTMotor(PORT)|
+%%
+% |M = NXTMotor(PORT, 'PropName1', PropValue1, 'PropName2', PropValue2, ...)|
+%%
+%% Description
+% |M = NXTMotor(PORT)| constructs an NXTMotor object with motor
+% port |PORT| and default attributes. |PORT| may be either the port
+% number (0, 1, 2 or |MOTOR_A|, |MOTOR_B|, |MOTOR_C|) or a string
+% specifying the port ('A', 'B', 'C'). To have two motors
+% synchronized |PORT| may be a vector of two ports in ascending
+% order.
+%%
+% |M = NXTMotor(PORT, 'PropName1', PropValue1, 'PropName2', PropValue2, ...)|
+% constructs an NXTMotor object with motor port(s) |PORT| in which the given
+% Property name/value pairs are set on the object. All properties can also be set after
+% creation by dot-notation (see example).
+%%
+% Available properties are:
+%%
+%%
+% * |Port| - the motor port(s) being used, either a string composed of the
+% letters |'A'|, |'B'|, |'C'|, or a single value or array of the
+% numbers 0, 1, 2. A maximum of 2 motors is allowed. If 2 motors
+% are specified, the bot will drive in sync mode, good for driving
+% straight ahead.
+%%
+%%
+% * |Power| - integer from -100 to 100, sets power level and direction of rotation (0 to 100%)
+%%
+%%
+% * |SpeedRegulation| - if set to |true| (default), the motor will try to hold a
+% constant speed by adjusting power output according to load (e.g.
+% friction) - this is only valid for single motors. It must be
+% deactivated when using two motors! If you'd like to have motor movement
+% with preferrably constant torque, it's advisable to disable
+% this option.
+% |SpeedRegulation| must be |false| for "normal", unregulated motor
+% control. If set to |true|, single motors will be operated in speed
+% regulation mode. This means that the motor will increase its internal
+% power setting to reach a constant turning speed. Use this option when
+% working with motors under varying load. If you'd like to have motor movement
+% with preferrably constant torque, it's advisable to disable
+% this option.
+% In conjunction with multiple motors
+% (i.e. when |Port| is an array of 2 ports), you have to disable
+% |SpeedRegulation|! Multiple motors will enable synchronization between the two
+% motors. They will run at the same speed as if they were connected
+% through and axle, leading to straight movement for driving bots.
+%%
+%%
+% * |TachoLimit| - integer from 0 to 999999, specifies the angle in degrees
+% the motor will try to reach, set 0 to run forever. Note
+% that direction is specified by the sign of |Power|.
+%%
+% <html>
+% <ul>
+% <li> <code>ActionAtTachoLimit</code> is a string parameter with valid options
+% <code>'Coast'</code>, <code>'Brake'</code> or <code>'HoldBrake'</code>.
+% It specifies how the motor(s) should react
+% when their position counter reaches the set
+% <code>TachoLimit</code>.<br><br>
+% <ul>
+% <li> In COAST
+% mode, the motor(s) will simply be turned of when the <code>TachoLimit</code> is
+% reached, leading to free movement until slowly stopping (called
+% coasting). The <code>TachoLimit</code> won't be met, the motor(s) move way too far
+% (overshooting), depending on their angular momentum.<br><br>
+% <li> Use BRAKE mode (default) to let the motor(s) automatically
+% slow down nice and smoothly shortly before the <code>TachoLimit</code>. This leads
+% to a very high precision, usually the <code>TachoLimit</code> is met within +/- 1
+% degree (depending on the motor load and speed of course). After this
+% braking, power to the motor(s) is turned off when they are at
+% rest.<br><br>
+% <li> HOLDBRAKE is similar to BRAKE, but in this case, the active brake of
+% the motors stays enabled (careful, this consumes a lot of battery
+% power), causing the motor(s) to actively keep holding their
+% position.<br>
+% </ul>
+% </ul>
+% </html>
+%%
+%%
+% * |SmoothStart| can be set to |true| to smoothly accelerate movement.
+% This "manual ramp up" of power will occur fairly quickly. It's
+% comfortable for driving robots so that they don't loose traction when
+% starting to move. If used in conjunction with |SpeedRegulation| for
+% single motors, after accleration is finished and the full power is
+% applied, the speed regulation can possibly even accelerate a bit more.
+% This option is only available for |TachoLimit > 0| and
+% |ActionAtTachoLimit = 'Brake'| or |'HoldBrake'|.
+%%
+% For a list of valid methods, see the "See also" section below.
+%%
+%%
+% *Note:*
+%%
+%%
+% When using a motor object with two ports set, the motors will be
+% operated in synchronous mode. This means an internal regulation of the
+% NXT firmware tries to move both motors at the same speed and to the
+% same position (so that driving robots can go a straight line for example). With |ActionAtTachoLimit == 'Coast'| the sync mode will stay
+% enabled during coasting, allowing for the firmware to correct the
+% robot's position (align it straight ahead again). If you want to use
+% those motors again, you must reset/stop the synchonization before by
+% sending a |.Stop()| to the motors!
+%%
+%%
+%% Limitations
+% If you send a command to the NXT without waiting for the previous motor
+% operation to have finished, the command will be dropped (the NXT
+% indicates this with a high and low beep tone). Use the classes method |WaitFor|
+% to make sure the motor is ready for new  commands, or stop the motor
+% using the method |.Stop|.
+%%
+% The option |SmoothStart| in conjunction with |ActionAtTachoLimit ==
+% 'Coast'| is not available. As a workaround, disable |SmoothStart| for
+% this mode. |SmoothStart| will generally only work when |TachoLimit| > 0
+% is set.
+%%
+% With ActionAtTachoLimit = 'Coast' and synchronous driving (two motors),
+% the motors will stay synced after movement (even after |.WaitFor()| has
+% finished). This is by design. To disable the synchonization, just use
+% |.Stop('off')|.
+%%
+%%
+% |SpeedRegulation = true| does not always produce the expected result.
+% Due to internal PID regulation, the actually achieved speed can vary or
+% oscillate when using very small values for |Power|. This happens
+% especially when using the motor with a heavy load for small speeds. In
+% this case it can be better to disable |SpeedRegulation|. In general,
+% speed regulation should only be enabled if a constant rotational
+% velocity is desired. For constant torque, better disable this feature.
+%%
+%%
+%% Example:
+      % Construct a NXTMotor object on port 'B' with a power of
+      % 60, disabled speed regulation, a TachoLimit of 360 and
+      % send the motor settings to the NXT brick.
+      motorB = NXTMotor('B', 'Power', 60)
+
+      motorB.SpeedRegulation     = false;
+      motorB.TachoLimit          = 360;
+      motorB.ActionAtTachoLimit  = 'Brake'; % this is the default anyway
+      motorB.SmoothStart         = true;
+
+      % enough setting up params, let's go!
+      motorB.SendToNXT();
+      % let MATLAB wait until the motor has stopped moving
+      motorB.WaitFor();
+
+      % Play tone when motor is ready to be used again
+      NXT_PlayTone(400,500);
+%%
+%%
+      % let's use a driving robot
+      m = NXTMotor('BC', 'Power', 60);
+      m.TachoLimit         = 1000;
+      m.SmoothStart        = true,    % start soft
+      m.ActionAtTachoLimit = 'coast'; % we want very smooth "braking", too :-)
+      m.SendToNXT();                  % go!
+
+      m.WaitFor();                    % are we there yet?
+
+      % we're here, motors are still moving / coasting, so give the bot time!
+      pause(3);
+
+      % you can still hear the synchronization (high noisy beeping)
+      % before we go back, we have to disable the synchronization quickly
+      m.Stop();
+
+      % reverse direction
+      m.Power = -m.Power;
+      m.SendToNXT();
+      m.WaitFor();
+      pause(3);
+      m.Stop();
+
+      NXT_PlayTone(500, 100); % all done
+%%
+%%
+%% See also
+% SendToNXT, ReadFromNXT, WaitFor, Stop, ResetPosition,
+% DirectMotorCommand
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Aulis Telle, Alexander Behrens (see AUTHORS)
+% * *Date:* 2009/08/24
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

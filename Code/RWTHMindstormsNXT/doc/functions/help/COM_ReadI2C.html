@@ -1,0 +1,114 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_ReadI2C</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_ReadI2C.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_ReadI2C</h1><!--introduction--><p>Requests and reads sensor data via I2C from a correctly configured digital sensor.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#17">Example</a></li><li><a href="#20">See also</a></li><li><a href="#23">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>ReturnBytes = COM_ReadI2C(Port, RequestLen, DeviceAddress, RegisterAddress)</tt></p><p><tt>ReturnBytes = COM_ReadI2C(Port, RequestLen, DeviceAddress, RegisterAddress, handle)</tt></p><h2>Description<a name="5"></a></h2><p>This function is used to retrieve data from digital sensors (like the ultrasonic) in a comfortable way. It is designed as a helping function for developers wanting to access new sensors. For already implemented sensors (e.g. ultrasound, as well as HiTechnic's acceleration and infrared sensors), use the provided high-level functions such as <tt>GetUltrasonic</tt>, <tt>GetInfrared</tt>, etc.</p><p>For I2C communication, usually the <tt>NXT_SetInputMode</tt> command has to be used with the <tt>LOWSPEED_9V</tt> or <tt>LOWSPEED</tt> setting. Afterwards, commands can be send with <tt>NXT_LSWrite</tt>. Once a sensor is correctly working, i.e. has data available, you can use this function to retrieve them.</p><p>In <tt>COM_ReadI2C(Port, RequestLen, DeviceAddress, RegisterAddress)</tt>, <tt>Port</tt> is the sensor-port the sensor is connected to. <tt>RequestLen</tt> specifies the amount of bytes you want to retrieve. For ultasound, this is 1. <tt>DeviceAddress</tt> is the sensor's address on the I2C bus. This sometimes can be changed, but not for the ultrasonic sensor. Default value is 0x02 (2 in decimal). Finally, <tt>RegisterAddress</tt> is the address where you want to read data from. For the ultrasound and many other sensors, the "data section" starts at 0x42 (66 in decimal).</p><p>As last argument you can pass a valid NXT-handle to be used by this function. If no handle is passed, the default set by <tt>COM_SetDefaultNXT</tt> will be used.</p><p><b>Returns:</b> <tt>ReturnBytes</tt>, byte-array (column vector) of uint8. This array contains the raw sensor-data you requested. How to interpret them depends on the sensor. If communication failed (even after automatic retransmission) -- e.g. when the sensor get's disconnected while in use -- an empty vector <tt>[]</tt> will be returned.</p><p><b>Note:</b></p><p>Please note that the return values of this function are of type uint8. You have to convert them to double (using <tt>double()</tt>) before performing calculations with them, otherwise you might get unexpected results!</p><p>The sensor you are addressing with this command has to be correctly opened and initialized of course -- otherwise no valid data can be received.</p><h2>Example<a name="17"></a></h2><p>This example opens and reads the ultrasonic sensor</p><pre class="codeinput">   port = SENSOR_1;
+   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+
+   OpenUltrasonic(port);
+
+   <span class="comment">% retrieve 1 byte from device 0x02, register 0x42</span>
+   data = COM_ReadI2C(port, 1, uint8(2), uint8(66));
+
+   <span class="keyword">if</span> isempty(data)
+       DistanceCM = -1;
+   <span class="keyword">else</span>
+       <span class="comment">% don'f forget this double()!!!</span>
+       DistanceCM = double(data(1));
+   <span class="keyword">end</span><span class="comment">%if</span>
+</pre><h2>See also<a name="20"></a></h2><p><a href="NXT_LSWrite.html">NXT_LSWrite</a>, <a href="NXT_LSRead.html">NXT_LSRead</a>, <a href="NXT_LSGetStatus.html">NXT_LSGetStatus</a>, <a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="OpenUltrasonic.html">OpenUltrasonic</a>, <a href="GetUltrasonic.html">GetUltrasonic</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="23"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/09/23</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_ReadI2C
+% Requests and reads sensor data via I2C from a correctly configured digital sensor.
+%%
+%% Syntax
+% |ReturnBytes = COM_ReadI2C(Port, RequestLen, DeviceAddress, RegisterAddress)|
+%%
+% |ReturnBytes = COM_ReadI2C(Port, RequestLen, DeviceAddress, RegisterAddress, handle)|
+%%
+%% Description
+% This function is used to retrieve data from digital sensors (like the
+% ultrasonic) in a comfortable way. It is designed as a helping function
+% for developers wanting to access new sensors. For already implemented
+% sensors (e.g. ultrasound, as well as HiTechnic's acceleration and
+% infrared sensors), use the provided high-level functions such as
+% |GetUltrasonic|, |GetInfrared|, etc.
+%%
+% For I2C communication, usually the |NXT_SetInputMode| command has to
+% be used with the |LOWSPEED_9V| or |LOWSPEED| setting. Afterwards,
+% commands can be send with |NXT_LSWrite|. Once a sensor is correctly
+% working, i.e. has data available, you can use this function to
+% retrieve them.
+%%
+% In |COM_ReadI2C(Port, RequestLen, DeviceAddress, RegisterAddress)|,
+% |Port| is the sensor-port the sensor is connected to. |RequestLen|
+% specifies the amount of bytes you want to retrieve. For ultasound,
+% this is 1. |DeviceAddress| is the sensor's address on the I2C bus.
+% This sometimes can be changed, but not for the ultrasonic sensor.
+% Default value is 0x02 (2 in decimal). Finally, |RegisterAddress| is
+% the address where you want to read data from. For the ultrasound and
+% many other sensors, the "data section" starts at 0x42 (66 in decimal).
+%%
+% As last argument you can pass a valid NXT-handle to be used by this
+% function. If no handle is passed, the default set by
+% |COM_SetDefaultNXT| will be used.
+%%
+%%
+% *Returns:* |ReturnBytes|, byte-array (column vector) of uint8.
+% This array contains the raw sensor-data you requested. How to
+% interpret them depends on the sensor. If communication failed (even
+% after automatic retransmission) REPLACE_WITH_DASH_DASH e.g. when the sensor get's
+% disconnected while in use REPLACE_WITH_DASH_DASH an empty vector |[]| will be returned.
+%%
+%%
+% *Note:*
+%%
+%%
+% Please note that the return values of this function are of type uint8.
+% You have to convert them to double (using |double()|) before
+% performing calculations with them, otherwise you might get unexpected
+% results!
+%%
+% The sensor you are addressing with this command has to be correctly
+% opened and initialized of course REPLACE_WITH_DASH_DASH otherwise no valid data can be
+% received.
+%%
+%% Example
+% This example opens and reads the ultrasonic sensor
+   port = SENSOR_1;
+   handle = COM_OpenNXT('bluetooth.ini');
+
+   OpenUltrasonic(port);
+
+   % retrieve 1 byte from device 0x02, register 0x42
+   data = COM_ReadI2C(port, 1, uint8(2), uint8(66));
+
+   if isempty(data)
+       DistanceCM = -1;
+   else
+       % don'f forget this double()!!!
+       DistanceCM = double(data(1));
+   end%if
+%%
+%%
+%% See also
+% NXT_LSWrite, NXT_LSRead, NXT_LSGetStatus, NXT_SetInputMode, OpenUltrasonic,
+% GetUltrasonic, SENSOR_1, SENSOR_2, SENSOR_3, SENSOR_4
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2008/09/23
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,128 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 6: Multi NXT support</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Example_6_MultiNxt.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Example 6: Multi NXT support</h1><!--introduction--><p>Use several NXTs at the same time</p><p>This Example shows how you can use the Toolbox to controll several NXTs via USB and/or Bluetooth at the same time.</p><p>Signature</p><div><ul><li> Author: Martin Staas</li><li> Date: 2011/09/30</li><li> License: BSD</li><li> RWTH - Mindstorms NXT Toolbox: <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></li></ul></div><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">verify that the RWTH - Mindstorms NXT toolbox is installed.</a></li><li><a href="#2">Prepare</a></li><li><a href="#4">For this Example you have to Edit the MAC Adresses right below this text.</a></li><li><a href="#5">write all NXT-Handles into one array</a></li><li><a href="#6">Iterate all NXTs and play a tone</a></li><li><a href="#7">close</a></li></ul></div><h2>verify that the RWTH - Mindstorms NXT toolbox is installed.<a name="1"></a></h2><pre class="codeinput"><span class="keyword">if</span> verLessThan(<span class="string">'RWTHMindstormsNXT'</span>, <span class="string">'4.05'</span>);
+    error(strcat(<span class="string">'This program requires the RWTH - Mindstorms NXT Toolbox '</span> <span class="keyword">...</span>
+        ,<span class="string">'version 4.05 or greater. Go to http://www.mindstorms.rwth-aachen.de '</span><span class="keyword">...</span>
+        ,<span class="string">'and follow the installation instructions!'</span>));
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><h2>Prepare<a name="2"></a></h2><pre class="codeinput">COM_CloseNXT <span class="string">all</span>
+close <span class="string">all</span>
+clear <span class="string">all</span>
+</pre><h2>For this Example you have to Edit the MAC Adresses right below this text.<a name="4"></a></h2><pre class="codeinput"><span class="comment">% NXT 1 (USB)</span>
+<span class="comment">% Open NXT with given MAC via USB</span>
+NXT1.MAC = <span class="string">'00165302F0DD'</span>;
+NXT1.connectionMode = <span class="string">'USB'</span>;
+NXT1.bluetoothIni = <span class="string">''</span>; <span class="comment">%we don&acute;t need a bluetooth.ini for an USB-Connection</span>
+
+<span class="comment">% NXT 2 (Bluetooth)</span>
+<span class="comment">% Open NXT with given information from "bluetooth1.ini" via Bluetooth</span>
+NXT2.MAC = <span class="string">''</span>;
+NXT2.connectionMode = <span class="string">'Bluetooth'</span>;
+NXT2.bluetoothIni = <span class="string">'bluetooth1.ini'</span>;
+<span class="comment">% use information from ini file (serial port information, Name or/and MAC</span>
+<span class="comment">% of NXT(using Bluetooth object from Intstrument Control Toolbox &gt;= v3.0))</span>
+
+<span class="comment">% NXT 3 (Bluetooth)</span>
+<span class="comment">% Open NXT with given information from "bluetooth2.ini" and the given MAC</span>
+<span class="comment">% via Bluetooth</span>
+NXT3.MAC = <span class="string">'0016530E7EDE'</span>;
+<span class="comment">%this information will only be used if you have a Windows 64Bit system</span>
+<span class="comment">%and the "Intstrument Control Toolbox" &gt;= v3.0.</span>
+NXT3.connectionMode = <span class="string">'Bluetooth'</span>;
+NXT3.bluetoothIni = <span class="string">'bluetooth2.ini'</span>;
+<span class="comment">% use information from ini file (serial port information, Name or/and MAC</span>
+<span class="comment">%of NXT (using Bluetooth object from Intstrument Control Toolbox &gt;= v3.0))</span>
+
+<span class="comment">% NXT 4 ... add as many as you want!</span>
+</pre><h2>write all NXT-Handles into one array<a name="5"></a></h2><pre class="codeinput">handle(1) = COM_OpenNXTEx(NXT1.connectionMode,NXT1.MAC,NXT1.bluetoothIni);
+handle(2) = COM_OpenNXTEx(NXT2.connectionMode,NXT2.MAC,NXT2.bluetoothIni);
+handle(3) = COM_OpenNXTEx(NXT3.connectionMode,NXT3.MAC,NXT3.bluetoothIni);
+</pre><h2>Iterate all NXTs and play a tone<a name="6"></a></h2><pre class="codeinput"><span class="keyword">for</span> n = 1:numel(handle)
+    NXT_PlayTone(mod(450*n,7000),400,handle(n));
+    pause(1);
+<span class="keyword">end</span>
+</pre><h2>close<a name="7"></a></h2><pre class="codeinput">COM_CloseNXT(<span class="string">'all'</span>);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 6: Multi NXT support
+% Use several NXTs at the same time
+%
+% This Example shows how you can use the Toolbox to controll several NXTs
+% via USB and/or Bluetooth at the same time.
+%
+% Signature
+%
+% *  Author: Martin Staas
+% *  Date: 2011/09/30
+% *  License: BSD
+% *  RWTH - Mindstorms NXT Toolbox: http://www.mindstorms.rwth-aachen.de
+
+
+%% verify that the RWTH - Mindstorms NXT toolbox is installed.
+if verLessThan('RWTHMindstormsNXT', '4.05');
+    error(strcat('This program requires the RWTH - Mindstorms NXT Toolbox ' ...
+        ,'version 4.05 or greater. Go to http://www.mindstorms.rwth-aachen.de '...
+        ,'and follow the installation instructions!'));
+end%if
+
+%% Prepare
+COM_CloseNXT all
+close all
+clear all
+
+%%
+%
+%% For this Example you have to Edit the MAC Adresses right below this text.
+
+% NXT 1 (USB)
+% Open NXT with given MAC via USB
+NXT1.MAC = '00165302F0DD';
+NXT1.connectionMode = 'USB';
+NXT1.bluetoothIni = ''; %we don´t need a bluetooth.ini for an USB-Connection
+
+% NXT 2 (Bluetooth)
+% Open NXT with given information from "bluetooth1.ini" via Bluetooth
+NXT2.MAC = '';
+NXT2.connectionMode = 'Bluetooth';
+NXT2.bluetoothIni = 'bluetooth1.ini';  
+% use information from ini file (serial port information, Name or/and MAC 
+% of NXT(using Bluetooth object from Intstrument Control Toolbox >= v3.0))
+
+% NXT 3 (Bluetooth)
+% Open NXT with given information from "bluetooth2.ini" and the given MAC
+% via Bluetooth
+NXT3.MAC = '0016530E7EDE'; 
+%this information will only be used if you have a Windows 64Bit system 
+%and the "Intstrument Control Toolbox" >= v3.0.
+NXT3.connectionMode = 'Bluetooth';
+NXT3.bluetoothIni = 'bluetooth2.ini'; 
+% use information from ini file (serial port information, Name or/and MAC 
+%of NXT (using Bluetooth object from Intstrument Control Toolbox >= v3.0))
+
+% NXT 4 ... add as many as you want!
+
+
+%% write all NXT-Handles into one array
+handle(1) = COM_OpenNXTEx(NXT1.connectionMode,NXT1.MAC,NXT1.bluetoothIni);
+handle(2) = COM_OpenNXTEx(NXT2.connectionMode,NXT2.MAC,NXT2.bluetoothIni);
+handle(3) = COM_OpenNXTEx(NXT3.connectionMode,NXT3.MAC,NXT3.bluetoothIni);
+
+%% Iterate all NXTs and play a tone
+for n = 1:numel(handle)
+    NXT_PlayTone(mod(450*n,7000),400,handle(n));
+    pause(1);
+end
+
+%% close
+COM_CloseNXT('all');
+##### SOURCE END #####
+--></body></html>

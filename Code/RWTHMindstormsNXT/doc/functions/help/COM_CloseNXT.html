@@ -1,0 +1,90 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_CloseNXT</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_CloseNXT.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_CloseNXT</h1><!--introduction--><p>Closes and deletes a specific NXT handle, or clears all existing handles</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#7">Description</a></li><li><a href="#13">Limitations</a></li><li><a href="#16">Example</a></li><li><a href="#18">See also</a></li><li><a href="#20">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>COM_CloseNXT(handle)</tt></p><p><tt>COM_CloseNXT('all')</tt></p><p><tt>COM_CloseNXT('all', inifilename)</tt></p><h2>Description<a name="7"></a></h2><p>After using NXT handles, a user should free the device (and the memory occupied by the handle) by calling this method. After the clean up invoked by this call, an NXT brick can be accessed and used again (by <tt>COM_OpenNXT</tt> or <tt>COM_OpenNXTEx</tt>.</p><p><tt>COM_CloseNXT(handle)</tt> will close and erase the specified device. <tt>handle</tt> has to be a valid handle struct created by either <tt>COM_OpenNXT</tt> or <tt>COM_OpenNXTEx</tt>.</p><p><tt>COM_CloseNXT('all')</tt> will close and erase all existing NXT devices from memory (as long as the toolbox could keep track of them). All USB handles will be destroyed, all open serial ports (for Bluetooth connections) will be closed. This can be useful at the beginning of a program to create a "fresh start" and a well-defined starting environment. Please note that a <tt>clear all</tt> command can cause this function to fail (in such a way, that not all open USB devices can be closed, since all information about them has be cleare from MATLAB's memory). If this happens, an NXT device might appear to be busy and cannot be used. Usually rebooting the NXT helps, if not try to restart MATLAB as well. So be careful with using <tt>clear all</tt> before |COM_CloseNXT('all').</p><p><tt>COM_CloseNXT('all', inifilename)</tt> will do the same as above, but instead of closing all open serial ports, only the COM-Port specified in <tt>inifilename</tt> will be used (a valid Bluetooth configuration file can be created by the function <tt>COM_MakeBTConfigFile</tt>). This syntax helps to avoid interference with other serial ports that might be used by other (MATLAB) programs at the same time. Note that still all open USB devices will be closed.</p><h2>Limitations<a name="13"></a></h2><p>If you call <tt>COM_CloseNXT('all')</tt> after a <tt>clear all</tt> command has been issued, the function will not be able to close all remaining open USB handles, since they have been cleared out of memory. This is a problem on Linux systems. You will not be able to use the NXT device without rebooting it. Solution: Either use only <tt>clear</tt> in your programs, or you use the <tt>COM_CloseNXT('all')</tt> statement before <tt>clear all</tt>. The best way however is to track your handles carefully and close them manually before exiting whenever possible!</p><h2>Example<a name="16"></a></h2><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>, check');
+   COM_SetDefaultNXT(handle);
+   NXT_PlayTone(440,10);
+   COM_CloseNXT(handle);
+</pre><h2>See also<a name="18"></a></h2><p><a href="COM_OpenNXT.html">COM_OpenNXT</a>, <a href="COM_OpenNXTEx.html">COM_OpenNXTEx</a>, <a href="COM_MakeBTConfigFile.html">COM_MakeBTConfigFile</a>, <a href="COM_SetDefaultNXT.html">COM_SetDefaultNXT</a>, </p><h2>Signature<a name="20"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2011/09/28</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_CloseNXT
+% Closes and deletes a specific NXT handle, or clears all existing handles
+%%
+%% Syntax
+% |COM_CloseNXT(handle)|
+%%
+% |COM_CloseNXT('all')|
+%%
+% |COM_CloseNXT('all', inifilename)|
+%%
+%%
+%% Description
+% After using NXT handles, a user should free the device (and the memory
+% occupied by the handle) by calling this method. After the clean up
+% invoked by this call, an NXT brick can be accessed and used again (by
+% |COM_OpenNXT| or |COM_OpenNXTEx|.
+%%
+% |COM_CloseNXT(handle)| will close and erase the specified device.
+% |handle| has to be a valid handle struct created by either
+% |COM_OpenNXT| or |COM_OpenNXTEx|.
+%%
+% |COM_CloseNXT('all')| will close and erase all existing NXT devices
+% from memory (as long as the toolbox could keep track of them). All USB
+% handles will be destroyed, all open serial ports (for Bluetooth
+% connections) will be closed. This can be useful at the beginning of a
+% program to create a "fresh start" and a well-defined starting
+% environment.
+% Please note that a |clear all| command can cause this function to fail
+% (in such a way, that not all open USB devices can be closed, since all
+% information about them has be cleare from MATLAB's memory). If this
+% happens, an NXT device might appear to be busy and cannot be used.
+% Usually rebooting the NXT helps, if not try to restart MATLAB as well.
+% So be careful with using |clear all| before |COM_CloseNXT('all').
+%%
+% |COM_CloseNXT('all', inifilename)| will do the same as above, but
+% instead of closing all open serial ports, only the COM-Port specified
+% in |inifilename| will be used (a valid Bluetooth configuration file can be
+% created by the function |COM_MakeBTConfigFile|).
+% This syntax helps to avoid interference with other serial ports that might
+% be used by other (MATLAB) programs at the same time. Note that still all open
+% USB devices will be closed.
+%%
+%%
+%% Limitations
+% If you call |COM_CloseNXT('all')| after a |clear all| command has been
+% issued, the function will not be able to close all remaining open USB
+% handles, since they have been cleared out of memory. This is a problem
+% on Linux systems. You will not be able to use the NXT device without
+% rebooting it.
+% Solution: Either use only |clear| in your programs, or you use the
+% |COM_CloseNXT('all')| statement before |clear all|.
+% The best way however is to track your handles carefully and close them
+% manually before exiting whenever possible!
+%%
+%%
+%% Example
+   handle = COM_OpenNXT('bluetooth.ini', check');
+   COM_SetDefaultNXT(handle);
+   NXT_PlayTone(440,10);
+   COM_CloseNXT(handle);
+%%
+%% See also
+% COM_OpenNXT, COM_OpenNXTEx, COM_MakeBTConfigFile, COM_SetDefaultNXT
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2011/09/28
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

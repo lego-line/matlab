@@ -1,0 +1,76 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MAP_GetInputModule</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_MAP_GetInputModule.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>MAP_GetInputModule</h1><!--introduction--><p>Reads the IO map of the input module</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#22">Examples</a></li><li><a href="#25">See also</a></li><li><a href="#27">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>map = MAP_GetInputModule(port)</tt></p><h2>Description<a name="4"></a></h2><p><tt>map = MAP_GetInputModule(port)</tt> returns the IO map of the input module at the given sensor <tt>port</tt>. The sensor <tt>port</tt> can be addressed by <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt>, <tt>SENSOR_4</tt> and <tt>'all'</tt>. The return value <tt>map</tt> is a struct variable or cell array (<tt>'all'</tt> mode). It contains all input module information.</p><p><b>Output:</b></p><p><tt>map.CustomZeroOffset</tt>   % custom sensor zero offset value of a sensor.</p><p><tt>map.ADRaw</tt>              % raw 10-bit value last read from the ananlog to digital converter. Raw values produced by sensors typically cover some subset of the full 10-bit range.</p><p><tt>map.SensorRaw</tt>          % raw sensor value</p><p><tt>map.SensorValue</tt>        % tacho/angle limit, 0 means none set</p><p><tt>map.SensorType</tt>         % sensor value</p><p><tt>map.SensorMode</tt>         % sensor mode</p><p><tt>map.SensorBoolean</tt>      % boolean sensor value</p><p><tt>map.DigiPinsDir</tt>        % digital pins direction value of a sensor</p><p><tt>map.DigiPinsIn</tt>         % digital pins status value of a sensor ?</p><p><tt>map.DigiPinsOut</tt>        % digital pins output level value of a sensor</p><p><tt>map.CustomPctFullScale</tt> % custom sensor percent full scale value of the sensor.</p><p><tt>map.CustomActiveStatus</tt> % custom sensor active status value of the sensor</p><p><tt>map.InvalidData</tt>        % value of the InvalidData flag of the sensor</p><h2>Examples<a name="22"></a></h2><pre class="codeinput">   map = MAP_GetInputModule(SENSOR_2);
+</pre><pre class="codeinput">   map = MAP_GetInputModule(<span class="string">'all'</span>);
+</pre><h2>See also<a name="25"></a></h2><p><a href="NXT_ReadIOMap.html">NXT_ReadIOMap</a>, </p><h2>Signature<a name="27"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/23</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% MAP_GetInputModule
+% Reads the IO map of the input module
+%%
+%% Syntax
+% |map = MAP_GetInputModule(port)|
+%%
+%% Description
+% |map = MAP_GetInputModule(port)| returns the IO map of the input module at the given sensor
+% |port|. The sensor |port| can be addressed by |SENSOR_1|, |SENSOR_2|, |SENSOR_3|, |SENSOR_4|
+% and |'all'|. The return value |map| is a struct variable or cell array (|'all'| mode).
+% It contains all input module information.
+%%
+%%
+% *Output:*
+%%
+% |map.CustomZeroOffset|   % custom sensor zero offset value of a sensor.
+%%
+% |map.ADRaw|              % raw 10-bit value last read from the ananlog to digital converter. Raw
+% values produced by sensors typically cover some subset of the
+% full 10-bit range.
+%%
+% |map.SensorRaw|          % raw sensor value
+%%
+% |map.SensorValue|        % tacho/angle limit, 0 means none set
+%%
+% |map.SensorType|         % sensor value
+%%
+% |map.SensorMode|         % sensor mode
+%%
+% |map.SensorBoolean|      % boolean sensor value
+%%
+% |map.DigiPinsDir|        % digital pins direction value of a sensor
+%%
+% |map.DigiPinsIn|         % digital pins status value of a sensor ?
+%%
+% |map.DigiPinsOut|        % digital pins output level value of a sensor
+%%
+% |map.CustomPctFullScale| % custom sensor percent full scale value of the sensor.
+%%
+% |map.CustomActiveStatus| % custom sensor active status value of the sensor
+%%
+% |map.InvalidData|        % value of the InvalidData flag of the sensor
+%%
+%%
+%% Examples
+   map = MAP_GetInputModule(SENSOR_2);
+%%
+   map = MAP_GetInputModule('all');
+%%
+%% See also
+% NXT_ReadIOMap
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/23
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

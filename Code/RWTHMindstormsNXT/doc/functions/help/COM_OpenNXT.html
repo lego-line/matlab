@@ -1,0 +1,73 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_OpenNXT</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_OpenNXT.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_OpenNXT</h1><!--introduction--><p>Opens USB or Bluetooth connection to NXT device and returns a handle</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Limitations of COM_CloseNXT</a></li><li><a href="#13">Example</a></li><li><a href="#15">See also</a></li><li><a href="#17">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>handle = COM_OpenNXT()</tt></p><p><tt>handle = COM_OpenNXT(inifilename)</tt></p><h2>Description<a name="5"></a></h2><p><tt>handle = COM_OpenNXT()</tt> tries to open a connection via USB. The first NXT device that is found will be used. Device drivers (Fantom on Windows, libusb on Linux) have to be already installed for USB to work.</p><p><tt>handle = COM_OpenNXT(inifilename)</tt> will search the USB bus for NXT devices, just as the syntax without any parameters. If this fails for some reason (no USB connection to the NXT available, no device drivers installed, or NXT device is busy), the function will try to establish a connection via Bluetooth, using the given Bluetooth configuration file (you can create one easily with <tt>COM_MakeBTConfigFile</tt>.</p><p>Note that this function is the most simple way to get an NXT handle. If you need a method to access multiple NXTs or more options, see the advanced function <tt>COM_OpenNXTEx</tt>. In fact, <tt>COM_OpenNXT</tt> is just a convenient wrapper to <tt>COM_OpenNXTEx('Any', ...)</tt>.</p><h2>Limitations of COM_CloseNXT<a name="10"></a></h2><p>If you call <tt>COM_CloseNXT('all')</tt> after a <tt>clear all</tt> command has been issued, the function will not be able to close all remaining open USB handles, since they have been cleared out of memory. This is a problem on Linux systems. You will not be able to use the NXT device without rebooting it. Solution: Either use only <tt>clear</tt> in your programs, or you use the <tt>COM_CloseNXT('all')</tt> statement before <tt>clear all</tt>. The best way however is to track your handles carefully and close them manually (<tt>COM_CloseNXT(handle)</tt>) before exiting whenever possible!</p><h2>Example<a name="13"></a></h2><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   COM_SetDefaultNXT(handle);
+   NXT_PlayTone(440,10);
+   COM_CloseNXT(handle);
+</pre><h2>See also<a name="15"></a></h2><p><a href="COM_OpenNXTEx.html">COM_OpenNXTEx</a>, <a href="COM_CloseNXT.html">COM_CloseNXT</a>, <a href="COM_MakeBTConfigFile.html">COM_MakeBTConfigFile</a>, <a href="COM_SetDefaultNXT.html">COM_SetDefaultNXT</a>, </p><h2>Signature<a name="17"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/07/10</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_OpenNXT
+% Opens USB or Bluetooth connection to NXT device and returns a handle
+%%
+%% Syntax
+% |handle = COM_OpenNXT()|
+%%
+% |handle = COM_OpenNXT(inifilename)|
+%%
+%% Description
+% |handle = COM_OpenNXT()| tries to open a connection via USB. The first
+% NXT device that is found will be used. Device drivers (Fantom on
+% Windows, libusb on Linux) have to be already installed for USB to work.
+%%
+% |handle = COM_OpenNXT(inifilename)| will search the USB bus
+% for NXT devices, just as the syntax without any parameters. If this fails
+% for some reason (no USB connection to the NXT available, no device drivers
+% installed, or NXT device is busy), the function will try to establish a
+% connection via Bluetooth, using the given Bluetooth configuration file
+% (you can create one easily with |COM_MakeBTConfigFile|.
+%%
+% Note that this function is the most simple way to get an NXT handle. If
+% you need a method to access multiple NXTs or more options, see the
+% advanced function |COM_OpenNXTEx|. In fact, |COM_OpenNXT| is just a
+% convenient wrapper to |COM_OpenNXTEx('Any', ...)|.
+%%
+%%
+%% Limitations of COM_CloseNXT
+% If you call |COM_CloseNXT('all')| after a |clear all| command has been
+% issued, the function will not be able to close all remaining open USB
+% handles, since they have been cleared out of memory. This is a problem
+% on Linux systems. You will not be able to use the NXT device without
+% rebooting it.
+% Solution: Either use only |clear| in your programs, or you use the
+% |COM_CloseNXT('all')| statement before |clear all|.
+% The best way however is to track your handles carefully and close them
+% manually (|COM_CloseNXT(handle)|) before exiting whenever possible!
+%%
+%%
+%% Example
+   handle = COM_OpenNXT('bluetooth.ini');
+   COM_SetDefaultNXT(handle);
+   NXT_PlayTone(440,10);
+   COM_CloseNXT(handle);
+%%
+%% See also
+% COM_OpenNXTEx, COM_CloseNXT, COM_MakeBTConfigFile, COM_SetDefaultNXT
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/07/10
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

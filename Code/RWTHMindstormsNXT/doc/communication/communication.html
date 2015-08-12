@@ -1,0 +1,128 @@
+<html>
+<head>
+<title>Bluetooth / USB Communication</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link type="text/css" rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<p class="header">RWTH - Mindstorms NXT Toolbox</p>
+
+<h1>Bluetooth / USB Communication</h1>
+
+<ul>
+ <li><a href="#1">Bluetooth Communication</a></li>
+ <li><a href="#2">USB Communication</a></li>
+</ul>
+<hr>
+
+<h2>Bluetooth Communication<a name="1"></a></h2>
+
+The LEGO<SUP>&reg;</SUP> Mindstorms NXT Intelligent Brick can communicate with external <a href="#devices">Bluetooth devices</a> that use the Serial Port Profile (SPP) and can be programmed to use the LEGO<SUP>&reg;</SUP> Mindstorms NXT Communication Protocol. A short description of the protocol can be found in the <a href="#protocol">Communication Protocol</a> section. For more details see the official <a href="http://mindstorms.lego.com/Overview/NXTreme.aspx">LEGO<SUP>&reg;</SUP> Mindstorms NXT Bluetooth Developer Kit</a> document. It's also possible to send direct commands to the NXT Intelligent Brick from an external Bluetooth device such as a computer, mobile phone or PDA.
+
+
+<br>
+<br>
+<br>
+
+<h2><a name="protocol">Communication Protocol</a></h2>
+
+
+The LEGO<SUP>&reg;</SUP> Mindstorms Communcation Protocol is placed in the overall architecture above the Bluetooth communication ports. This layer handles the data that will be the payload within the Bluetooth communication layers.
+<p></p>
+<table>
+  <tr><td align="center"><img src="protocol_01.png" alt="Communication Block Diagram (LEGO &copy;)"></td></tr>
+  <tr><td align="center"><b>Communication Block Diagram (LEGO<SUP>&reg;</SUP> &copy;)</b></td></tr>
+</table>
+<p></p>
+
+<p></p>
+All the calculation of checksum and setting of package numbers will be handled by the Bluetooth communication layer.
+
+<h3>General Protocol Overview / Payload Data from Bluetooth communcation channel</h3>
+<p></p>
+<table>
+  <tr><td align="center"><img src="protocol_02.png" alt="Protocol payload data (LEGO &copy;)"></td></tr>
+  <tr><td align="center"><b>Protocol payload data (LEGO<SUP>&reg;</SUP> &copy;)</b></td></tr>
+</table>
+<p></p>
+
+<b>Byte 0:</b> Telegram type. The 7th lowest bit of this byte is used for identifying the command type. Currently the system has the following command types that need to be identified. Bit 7 (MSB) is used for identifying wheter the command should give a reply message or not.
+<ul>
+  <li>0x00: Direct command, reply required</li>
+  <li>0x01: System command, reply required</li>
+  <li>0x02: Reply command</li>
+  <br/>
+  <li>0x80: Direct command, reply not required</li>
+  <li>0x81: System command, reply not required</li>
+</ul>
+<br>
+<b>Byte 1:</b> Command byte. Used by the loader module to identify what should happen with the data. Open, Read, Write, Delete data, Direct communication with NXT
+<br>
+<br>
+<b>Byte 2-N:</b> These bytes offer additional information.
+<br>
+The above figure shows the LEGO<SUP>&reg;</SUP> Mindstorms NXT Communication Protocol standard. This protocol will be wrapped into the Bluetooth serial profile.
+
+<h3>Maximum Command Length</h3>
+The total direct command telegram size is limited to 64 bytes, including the command type byte as listed above. The Bluetooth packets have an additional two bytes for size tacked onto the front, but these are no included in this limit.
+<h3>Bluetooth Messages</h3>
+As explained above all Bluetooth messages need to have two bytes in front of the messages itself which indicates how many bytes the message includes. The length of the package is counted without the two length bytes.
+<br>
+The figure below shows a Bluetooth message:
+<p></p>
+<table>
+  <tr><td align="center"><img src="protocol_03.png" alt="Bluetooth protocol packages (LEGO &copy;)"></td></tr>
+  <tr><td align="center"><b>Bluetooth protocol packages (LEGO<SUP>&reg;</SUP> &copy;)</b></td></tr>
+</table>
+<p></p>
+<h3>Optional Responses</h3>
+Testing during development has shown that the Bluetooth Serial Port communication has some disadvantages when it comes to streaming data. These disadvantages stem from two problems: bigger data packages can be received with small timing differences from the ARM processor; and ther is a time penalty (of around 30 ms) within the Bluecore chip when switching from receive-mode to transmit-mode.
+<br>
+"To handle the problem of the time penalty within the Bluecore chip, users should send data using Bluetooth without requesting a reply package. This will mean that the Bluecore chip won't have to switch direction for every received package and will not incur a 30 ms penalty for every data package."
+<h3>Example 1: PLAYTONE</h3>
+Byte 0: 0x00 or 0x80 <i>(0x80 would be pointless however, since it does not request a reply)</i><br>
+Byte 1: 0x03<br>
+Byte 2-3: Frequency for the tone in Hz (Range: 200 - 14000 Hz)<br>
+Byte 4-5: Duration of the tone in ms<br>
+<br>
+Return package:<br>
+Byte 0: 0x02<br>
+Byte 1: 0x03<br>
+Byte 2: Status Byte<br>
+
+<h3>Example 2: GETBATTERYLEVEL</h3>
+Byte 0: 0x00 or 0x80 <i>(again, 0x80 does not request the return package and makes no sense in this case)</i><br>
+Byte 1: 0x0B<br>
+<br>
+Return package:<br>
+Byte 0: 0x02<br>
+Byte 1: 0x0B<br>
+Byte 2: Status Byte<br>
+Byte 3-4: Voltage in millivolts<br>
+
+<br>
+<br>
+<br>
+
+<h2><a name="devices">Bluetooth Devices</a></h2>
+
+<h3>NXT Brick Bluetooth</h3>
+The NXT Intelligent Brick supports wireless communication using Bluetooth communication, V2.0 with EDR  by including a CSR BlueCore 4 version 2 chip. It supports the Serial Port Profile (SPP), which can be considered a wireless serial port. The NXT Brick can communicate wih Bluetooth devices that can be programmed to communicate using the LEGO<SUP>&reg;</SUP> Mindstorms NXT Communication Protocol commands and that support the Serial Port Profile (SPP). It's possible to send and receive information to the Brick during program execution. To reduce the power consumption used by Bluetooth, the technology has been implemented by a Bluetooth Class II device, which means that it can communicate up to a distance of approximately 10 meters.
+
+<h3>PC Bluetooth Adapter</h3>
+For a Bluetooth communication between computer and the NXT Brick the computer needs a Bluetooth 2.0 adapter. Older versions like Bluetooth 1.2 are not supported by the NXT Brick.<br>
+
+<br>
+<br>
+<br>
+
+<h2>USB Communication<a name="2"></a></h2>
+
+The NXT Intelligent Brick can also communicate via the USB interface and can also be programmed to use the LEGO<SUP>&reg;</SUP> Mindstorms NXT Communication Protocol. The communication possibilities through the USB device should be the same through the Bluetooth device. The USB communication V2.0 is supported. A short description of the protocol can be found above in the <a href="#protocol">Communication Protocol</a> section. For more details see the official <a href="http://mindstorms.lego.com/Overview/NXTreme.aspx">LEGO<SUP>&reg;</SUP> Mindstorms NXT Bluetooth Developer Kit</a> document.
+
+
+
+</body>
+</html>
+

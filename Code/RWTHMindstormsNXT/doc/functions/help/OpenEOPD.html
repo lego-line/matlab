@@ -1,0 +1,95 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OpenEOPD</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_OpenEOPD.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>OpenEOPD</h1><!--introduction--><p>Initializes the HiTechnic EOPD sensor, sets correct sensor mode</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#15">Limitations</a></li><li><a href="#17">Example</a></li><li><a href="#19">See also</a></li><li><a href="#21">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OpenEOPD(port, range)</tt></p><p><tt>OpenEOPD(port, range, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>OpenEOPD(port, range)</tt> initializes the HiTechnic EOPD sensor on the specified sensor port. This sensor can be used to accurately detect objects and small changes in distance to a target. It works by measuring the light returned from its own light source, so it can also be used to detect the "shinyness" and color of a surface.</p><p><tt>range</tt> can be set to either <tt>'SHORT'</tt>, which covers a range of about 10cm, or it can be set to <tt>'LONG'</tt>, which enables increased sensitivity for up to 20cm.</p><p>The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>Before the sensor can be used, <tt>CalibrateEOPD</tt> should be called, otherwise only raw values will be usable. Values can be retrieved using <tt>GetEOPD</tt>.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p><b>Note:</b></p><p>For more details on calibration, see help text and examples of <tt>CalibrateEOPD</tt>.</p><p>Since each EOPD sensor uses a slightly different pulse frequency for the LED, multiple sensor can be used at once without influencing each other.</p><h2>Limitations<a name="15"></a></h2><p>It is normal that the red LED always stays on once the sensor is connected. The LED cannot be turned off using <tt>CloseSensor</tt>.</p><h2>Example<a name="17"></a></h2><pre class="codeinput">   port = SENSOR_2;
+   OpenEOPD(port, <span class="string">'SHORT'</span>);
+
+   <span class="comment">% set calibration matrix</span>
+   calibMatrix = [3 91; 9 19];
+   CalibrateEOPD(port, <span class="string">'SETMATRIX'</span>, calibMatrix);
+
+   <span class="comment">% now the sensor can be used</span>
+   [dist raw] = GetEOPD(port);
+
+   <span class="comment">% clean up, as usual. LED stays on anyway</span>
+   CloseSensor(port);
+</pre><h2>See also<a name="19"></a></h2><p><a href="CalibrateEOPD.html">CalibrateEOPD</a>, <a href="GetEOPD.html">GetEOPD</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, </p><h2>Signature<a name="21"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/09/17</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% OpenEOPD
+% Initializes the HiTechnic EOPD sensor, sets correct sensor mode
+%%
+%% Syntax
+% |OpenEOPD(port, range)|
+%%
+% |OpenEOPD(port, range, handle)|
+%%
+%% Description
+% |OpenEOPD(port, range)| initializes the HiTechnic EOPD sensor on the specified sensor
+% port. This sensor can be used to accurately detect objects and small
+% changes in distance to a target. It works by measuring the light
+% returned from its own light source, so it can also be used to detect
+% the "shinyness" and color of a surface.
+%%
+% |range| can be set to either |'SHORT'|, which covers a range of about
+% 10cm, or it can be set to |'LONG'|, which enables increased sensitivity
+% for up to 20cm.
+%%
+% The value |port| can be addressed by the symbolic constants
+% |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick.
+%%
+% Before the sensor can be used, |CalibrateEOPD| should be called,
+% otherwise only raw values will be usable. Values can be retrieved using
+% |GetEOPD|.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%%
+% *Note:*
+%%
+% For more details on calibration, see help text and examples of
+% |CalibrateEOPD|.
+%%
+% Since each EOPD sensor uses a slightly different pulse frequency for
+% the LED, multiple sensor can be used at once without influencing each
+% other.
+%%
+%% Limitations
+% It is normal that the red LED always stays on once the sensor is connected.
+% The LED cannot be turned off using |CloseSensor|.
+%%
+%% Example
+   port = SENSOR_2;
+   OpenEOPD(port, 'SHORT');
+
+   % set calibration matrix
+   calibMatrix = [3 91; 9 19];
+   CalibrateEOPD(port, 'SETMATRIX', calibMatrix);
+
+   % now the sensor can be used
+   [dist raw] = GetEOPD(port);
+
+   % clean up, as usual. LED stays on anyway
+   CloseSensor(port);
+%%
+%% See also
+% CalibrateEOPD, GetEOPD, CloseSensor, NXT_SetInputMode, NXT_GetInputValues
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/09/17
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

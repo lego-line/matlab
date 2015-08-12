@@ -1,0 +1,83 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>CalibrateCompass</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_CalibrateCompass.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>CalibrateCompass</h1><!--introduction--><p>Enables calibration mode of the HiTechnic compass sensor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Example</a></li><li><a href="#14">See also</a></li><li><a href="#16">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>CalibrateCompass(port, f_start)</tt></p><p><tt>CalibrateCompass(port, f_start, handle)</tt></p><h2>Description<a name="5"></a></h2><p>Calibrate the compass to reduce influence of metallic objects, especially of the NXT motor and brick on compass values. You have to calibrate a roboter only once until the design changes. During calibration the compass should make two full rotations very slowly. The compass sensor has to be opened (using <tt>OpenCompass</tt>) before execution.</p><p>Set <tt>f_start = true</tt> to start calibration mode, and <tt>f_start = false</tt> to stop it. In between those commands, the calibration (compass rotation) should occur.</p><p>The given <tt>port</tt> number specifies the connection port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Example<a name="10"></a></h2><pre class="codeinput">     <span class="comment">% compass must be open for calibration</span>
+     OpenCompass(SENSOR_2);
+
+     <span class="comment">% enable calibration mode</span>
+     CalibrateCompass(SENSOR_2, true);
+
+     <span class="comment">% compass is attached to motor A, rotate 2 full turns</span>
+     m = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 5, <span class="string">'TachoLimit'</span>, 720)
+     m.SendToNXT();
+
+     m.WaitFor();
+
+     <span class="comment">% calibration should now be complete!</span>
+     CalibrateCompass(SENSOR_2, false);
+</pre><h2>See also<a name="14"></a></h2><p><a href="OpenCompass.html">OpenCompass</a>, <a href="GetCompass.html">GetCompass</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="NXT_LSRead.html">NXT_LSRead</a>, <a href="NXT_LSWrite.html">NXT_LSWrite</a>, </p><h2>Signature<a name="16"></a></h2><div><ul><li><b>Author:</b> Rainer Schnitzler, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/08/01</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% CalibrateCompass
+% Enables calibration mode of the HiTechnic compass sensor
+%%
+%% Syntax
+% |CalibrateCompass(port, f_start)|
+%%
+% |CalibrateCompass(port, f_start, handle)|
+%%
+%% Description
+% Calibrate the compass to reduce influence of metallic objects,
+% especially of the NXT motor and brick on compass values.
+% You have to calibrate a roboter only once until the design changes.
+% During calibration the compass should make two full rotations very slowly.
+% The compass sensor has to be opened (using |OpenCompass|) before execution.
+%%
+% Set |f_start = true| to start calibration mode, and |f_start = false| to stop it.
+% In between those commands, the calibration (compass rotation) should occur.
+%%
+% The given |port| number specifies the connection port. The value |port| can be
+% addressed by the symbolic constants |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4|
+% analog to the labeling on the NXT Brick.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%% Example
+%%
+%%
+     % compass must be open for calibration
+     OpenCompass(SENSOR_2);
+
+     % enable calibration mode
+     CalibrateCompass(SENSOR_2, true);
+
+     % compass is attached to motor A, rotate 2 full turns
+     m = NXTMotor('A', 'Power', 5, 'TachoLimit', 720)
+     m.SendToNXT();
+
+     m.WaitFor();
+
+     % calibration should now be complete!
+     CalibrateCompass(SENSOR_2, false);
+%%
+%% See also
+% OpenCompass, GetCompass, CloseSensor, NXT_LSRead, NXT_LSWrite
+%%
+%% Signature
+%%
+% * *Author:* Rainer Schnitzler, Linus Atorf (see AUTHORS)
+% * *Date:* 2008/08/01
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

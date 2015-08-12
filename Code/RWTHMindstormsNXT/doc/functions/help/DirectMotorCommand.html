@@ -1,0 +1,112 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>DirectMotorCommand</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_DirectMotorCommand.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>DirectMotorCommand</h1><!--introduction--><p>Sends a direct command to the specified motor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#13">Limitations:</a></li><li><a href="#17">Examples</a></li><li><a href="#22">See also</a></li><li><a href="#24">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>DirectMotorCommand(port, power, angle, speedRegulation, syncedToMotor, turnRatio, rampMode)</tt></p><h2>Description<a name="5"></a></h2><p><tt>DirectMotorCommand(port, power, angle, speedRegulation, syncedToMotor, turnRatio, rampMode)</tt> sends the given settings like motor <tt>port</tt> (<tt>MOTOR_A</tt>, <tt>MOTOR_B</tt> or <tt>MOTOR_C</tt>), the <tt>power</tt> (<tt>-100...100</tt>), the <tt>angle</tt> limit (also called TachoLimit), <tt>speedRegulation</tt> (<tt>'on'</tt>, <tt>'off'</tt>), <tt>syncedToMotor</tt> (<tt>MOTOR_A</tt>, <tt>MOTOR_B</tt>, <tt>MOTOR_C</tt>), <tt>turnRatio</tt> (<tt>-100...100</tt>) and <tt>rampMode</tt> (<tt>'off'</tt>, <tt>'up'</tt>, <tt>'down'</tt>).</p><p>This function is basically a convenient wrapper for <tt>NXT_SetOutputState</tt>. It provides the fastest way possible to send a direct command to the motor(s) via Bluetooth or USB. Complex parameter combinations which are needed for speed regulation or synchronous driving when using <tt>NXT_SetOutputState</tt> are not necessary, this function does make sure the motor "just works". See below for examples.</p><p><b>Note:</b></p><p>When driving synced motors, it's recommended to stop the motors between consecutive direct motor command (using <tt>StopMotor</tt>) and to reset their position counters (using <tt>NXT_ResetMotorPosition</tt>).</p><p>This function is intended for the advanced user. Knowledge about the LEGO MINDSTORMS NXT Bluetooth Communication Protocol is not required, but can help to understand what this function does.</p><h2>Limitations:<a name="13"></a></h2><p>Generally spoken, using <tt>DirectMotorCommand</tt> together with the class <tt>NXTMotor</tt> (and its method <tt>SendToNXT</tt>) for the same motor is strongly discouraged. This function can interfer with the on-brick embedded NXC program MotorControl and could cause it to crash. It ignores whatever is happening on the NXT when sending the direct command. The only advantage is the low latency.</p><p>When using the parameter <tt>angleLimit</tt>, the motor tries to reach the desired position by turning off the power at the specified position. This will lead to overshooting of the motor (i.e. the position it stops will be too high or too low). Additionally, the LEGO firmware applies an error correction mechanism which can lead to confusing results. Please look inside the chapter "Troubleshooting" of this toolbox documentation for more details.</p><h2>Examples<a name="17"></a></h2><pre class="codeinput">  <span class="comment">% let a driving robot go straight a bit.</span>
+  <span class="comment">% we use motor synchronization for ports B &amp; C:</span>
+  DirectMotorCommand(MOTOR_B, 60, 0, <span class="string">'off'</span>, MOTOR_C, 0, <span class="string">'off'</span>);
+  pause(5); <span class="comment">% driving 5 seconds</span>
+  StopMotor(MOTOR_B, <span class="string">'off'</span>);
+  StopMotor(MOTOR_C, <span class="string">'off'</span>);
+</pre><pre class="codeinput">  <span class="comment">% let motor A rotate for 1000 degrees (with COAST after "braking" and</span>
+  <span class="comment">% the firmware's error correction) and with speed regulation:</span>
+  DirectMotorCommand(MOTOR_A, 50, 1000, <span class="string">'on'</span>, <span class="string">'off'</span>, 0, <span class="string">'off'</span>);
+</pre><pre class="codeinput">  <span class="comment">% this command</span>
+  DirectMotorCommand(MOTOR_A, 0, 0, <span class="string">'off'</span>, <span class="string">'off'</span>, 0, <span class="string">'off'</span>);
+  <span class="comment">% does exactly the same as calling</span>
+  StopMotor(MOTOR_A, <span class="string">'off'</span>);
+  <span class="comment">% or as using</span>
+  m = NXTMotor(<span class="string">'A'</span>);
+  m.Stop(<span class="string">'off'</span>);
+</pre><h2>See also<a name="22"></a></h2><p><a href="NXT_SetOutputState.html">NXT_SetOutputState</a>, <a href="NXT_GetOutputState.html">NXT_GetOutputState</a>, <a href="NXTMotor.html">NXTMotor</a>, <a href="SendToNXT.html">SendToNXT</a>, <a href="Stop.html">Stop</a>, <a href="StopMotor.html">StopMotor</a>, </p><h2>Signature<a name="24"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2009/08/25</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% DirectMotorCommand
+% Sends a direct command to the specified motor
+%%
+%% Syntax
+%%
+% |DirectMotorCommand(port, power, angle, speedRegulation, syncedToMotor, turnRatio, rampMode)|
+%%
+%% Description
+%%
+% |DirectMotorCommand(port, power, angle, speedRegulation, syncedToMotor, turnRatio, rampMode)|
+% sends the given settings like motor |port| (|MOTOR_A|, |MOTOR_B| or |MOTOR_C|), the |power|
+% (|-100...100|), the |angle| limit (also called TachoLimit), |speedRegulation| (|'on'|, |'off'|), |syncedToMotor|
+% (|MOTOR_A|, |MOTOR_B|, |MOTOR_C|), |turnRatio| (|-100...100|) and |rampMode| (|'off'|, |'up'|,
+% |'down'|).
+%%
+% This function is basically a convenient wrapper
+% for |NXT_SetOutputState|. It provides the fastest way possible to send a
+% direct command to the motor(s) via Bluetooth or USB. Complex parameter
+% combinations which are needed for speed regulation or synchronous
+% driving when using |NXT_SetOutputState| are not necessary, this
+% function does make sure the motor "just works". See below for examples.
+%%
+%%
+% *Note:*
+%%
+% When driving synced motors, it's recommended to stop the motors between
+% consecutive direct motor command (using |StopMotor|) and to reset their
+% position counters (using |NXT_ResetMotorPosition|).
+%%
+% This function is intended for the advanced user. Knowledge about the
+% LEGO MINDSTORMS NXT Bluetooth Communication Protocol is not required,
+% but can help to understand what this function does.
+%%
+%% Limitations:
+% Generally spoken, using |DirectMotorCommand| together with the class
+% |NXTMotor| (and its method |SendToNXT|) for the same motor is strongly discouraged.
+% This function can interfer with the on-brick embedded NXC program MotorControl and
+% could cause it to crash. It ignores whatever is happening on the NXT
+% when sending the direct command. The only advantage is the low latency.
+%%
+% When using the parameter |angleLimit|, the motor tries to reach the
+% desired position by turning off the power at the specified position.
+% This will lead to overshooting of the motor (i.e. the position it stops
+% will be too high or too low). Additionally, the LEGO firmware applies an
+% error correction mechanism which can lead to confusing results. Please
+% look inside the chapter "Troubleshooting" of this toolbox documentation
+% for more details.
+%%
+%%
+%% Examples
+%%
+  % let a driving robot go straight a bit.
+  % we use motor synchronization for ports B & C:
+  DirectMotorCommand(MOTOR_B, 60, 0, 'off', MOTOR_C, 0, 'off');
+  pause(5); % driving 5 seconds
+  StopMotor(MOTOR_B, 'off');
+  StopMotor(MOTOR_C, 'off');
+%%
+  % let motor A rotate for 1000 degrees (with COAST after "braking" and
+  % the firmware's error correction) and with speed regulation:
+  DirectMotorCommand(MOTOR_A, 50, 1000, 'on', 'off', 0, 'off');
+%%
+  % this command
+  DirectMotorCommand(MOTOR_A, 0, 0, 'off', 'off', 0, 'off');
+  % does exactly the same as calling
+  StopMotor(MOTOR_A, 'off');
+  % or as using
+  m = NXTMotor('A');
+  m.Stop('off');
+%%
+%% See also
+% NXT_SetOutputState, NXT_GetOutputState, NXTMotor, SendToNXT,
+% Stop, StopMotor
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2009/08/25
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,55 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>GetSound</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_GetSound.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>GetSound</h1><!--introduction--><p>Reads the current value of the NXT sound sensor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#9">Example</a></li><li><a href="#11">See also</a></li><li><a href="#13">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>sound = GetSound(port)</tt></p><p><tt>sound = GetSound(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>sound = GetSound(port)</tt> returns the current sound value <tt>sound</tt> of the NXT sound sensor. The measurement value <tt>sound</tt> represents the normalized (default) sound value (0..1023 / 10 Bit). The normalized value mode is set per default by the function <tt>OpenSound</tt>. The given <tt>port</tt> number specifies the connection port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>For more complex settings the function <tt>NXT_GetInputMode</tt> can be used.</p><h2>Example<a name="9"></a></h2><pre class="codeinput">   OpenSound(SENSOR_1, <span class="string">'DB'</span>);
+   sound = GetSound(SENSOR_1);
+   CloseSensor(SENSOR_1);
+</pre><h2>See also<a name="11"></a></h2><p><a href="OpenSound.html">OpenSound</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="13"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2010/09/14</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% GetSound
+% Reads the current value of the NXT sound sensor
+%%
+%% Syntax
+% |sound = GetSound(port)|
+%%
+% |sound = GetSound(port, handle)|
+%%
+%% Description
+% |sound = GetSound(port)| returns the current sound value |sound| of the NXT sound
+% sensor. The measurement value |sound| represents the normalized (default) sound value (0..1023 /
+% 10 Bit). The normalized value mode is set per default by the function |OpenSound|.
+% The given |port| number specifies the connection port. The value |port| can be
+% addressed by the symbolic constants |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to
+% the labeling on the NXT Brick.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% For more complex settings the function |NXT_GetInputMode| can be used.
+%%
+%% Example
+   OpenSound(SENSOR_1, 'DB');
+   sound = GetSound(SENSOR_1);
+   CloseSensor(SENSOR_1);
+%%
+%% See also
+% OpenSound, CloseSensor, NXT_GetInputValues, SENSOR_1, SENSOR_2, SENSOR_3, SENSOR_4
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2010/09/14
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

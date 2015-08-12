@@ -1,0 +1,91 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_GetInputValues</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_GetInputValues.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_GetInputValues</h1><!--introduction--><p>Executes a complete sensor reading (requests and retrieves input values)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#26">Examples</a></li><li><a href="#29">See also</a></li><li><a href="#31">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>data = NXT_GetInputValues(port)</tt></p><p><tt>data = NXT_GetInputValues(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>data = NXT_GetInputValues(port)</tt> processes a complete sensor reading, i.e. requests input values and collects the answer of the given sensor <tt>port</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. The return value <tt>data</tt> is a struct variable. It contains several sensor settings and information.</p><p><tt>data = NXT_GetInputValues(port, handle)</tt> uses the given Bluetooth connection <tt>handle</tt>. This should be a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p><b>Output:</b></p><p><tt>data.Port</tt>               % current port number (<tt>0..3</tt>)</p><p><tt>data.Valid</tt>              % validation flag</p><p><tt>data.Calibrated</tt>         % boolean, <tt>true</tt> if calibration file found and used</p><p><tt>data.TypeByte</tt>           % sensor type</p><p><tt>data.TypeName</tt>           % sensor mode</p><p><tt>data.ModeByte</tt>           % mode</p><p><tt>data.ModeName</tt>           % mode name</p><p><tt>data.RawADVal</tt>           % raw A/D value</p><p><tt>data.NormalizedADVal</tt>    % normalized A/D value</p><p><tt>data.ScaledVal</tt>          % scaled value</p><p><tt>data.CalibratedVal</tt>      % calibrated value</p><p><b>Note:</b></p><p>Data are only valid if <tt>.Valid</tt> is ~= 0. This should usually be the case, but a short while after setting a new sensor mode using <tt>NXT_SetInputMode</tt>, you have to carefully check .Valid on your own! Experience shows that only <tt>.ScaledVal</tt> is influenced by this, apparently <tt>.NormalizedADVal</tt> seems valid all the time, but closer examination is needed...</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><h2>Examples<a name="26"></a></h2><pre class="codeinput">   data = NXT_GetInputValues(SENSOR_3);
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   data = NXT_GetInputValues(SENSOR_1, handle);
+</pre><h2>See also<a name="29"></a></h2><p><a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="GetLight.html">GetLight</a>, <a href="GetSwitch.html">GetSwitch</a>, <a href="GetSound.html">GetSound</a>, <a href="GetUltrasonic.html">GetUltrasonic</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="31"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_GetInputValues
+% Executes a complete sensor reading (requests and retrieves input values)
+%%
+%% Syntax
+% |data = NXT_GetInputValues(port)|
+%%
+% |data = NXT_GetInputValues(port, handle)|
+%%
+%% Description
+% |data = NXT_GetInputValues(port)| processes a complete sensor reading, i.e. requests input
+% values and collects the answer of the given sensor |port|. The value |port| can be addressed by
+% the symbolic constants |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling
+% on the NXT Brick. The return value |data| is a struct variable. It contains several sensor
+% settings and information.
+%%
+% |data = NXT_GetInputValues(port, handle)| uses the given Bluetooth connection |handle|. This should be a
+% serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+%%
+% *Output:*
+%%
+% |data.Port|               % current port number (|0..3|)
+%%
+% |data.Valid|              % validation flag
+%%
+% |data.Calibrated|         % boolean, |true| if calibration file found and used
+%%
+% |data.TypeByte|           % sensor type
+%%
+% |data.TypeName|           % sensor mode
+%%
+% |data.ModeByte|           % mode
+%%
+% |data.ModeName|           % mode name
+%%
+% |data.RawADVal|           % raw A/D value
+%%
+% |data.NormalizedADVal|    % normalized A/D value
+%%
+% |data.ScaledVal|          % scaled value
+%%
+% |data.CalibratedVal|      % calibrated value
+%%
+%%
+% *Note:*
+%%
+% Data are only valid if |.Valid| is ~= 0. This should usually be the
+% case, but a short while after setting a new sensor mode using
+% |NXT_SetInputMode|, you have to carefully check .Valid on your own!
+% Experience shows that only |.ScaledVal| is influenced by this, apparently
+% |.NormalizedADVal| seems valid all the time, but closer examination is
+% needed...
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%% Examples
+   data = NXT_GetInputValues(SENSOR_3);
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   data = NXT_GetInputValues(SENSOR_1, handle);
+%%
+%% See also
+% NXT_SetInputMode, GetLight, GetSwitch, GetSound, GetUltrasonic, SENSOR_1, SENSOR_2, SENSOR_3, SENSOR_4
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

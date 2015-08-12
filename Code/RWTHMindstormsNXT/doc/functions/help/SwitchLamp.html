@@ -1,0 +1,59 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SwitchLamp</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_SwitchLamp.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>SwitchLamp</h1><!--introduction--><p>Switches the LEGO lamp on or off (has to be connected to a motor port)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Examples</a></li><li><a href="#13">See also</a></li><li><a href="#15">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>SwitchLamp(port, mode)</tt></p><p><tt>SwitchLamp(port, mode, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>SwitchLamp(port, mode)</tt> turns the LEGO lamp on or off. The given <tt>port</tt> number specifies the used motor port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>MOTOR_A</tt> , <tt>MOTOR_B</tt> and <tt>MOTOR_C</tt> analog to the labeling on the NXT Brick. The value <tt>mode</tt> supports two modes <tt>'on'</tt> and <tt>'off'</tt> to turn the lamp on and off.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>This function simply sets power 100 to the specified motor port to turn on the lamp, or sets power 0 to turn it off. Note that dimming is not possible, even a power of just 1 will be enough to switch the lamp to full brightness (after a short while).</p><p>A <tt>StopMotor</tt> command with parameter <tt>'off'</tt> will also turn off the lamp, but it is recommended to use this function when working with lamps for better readability.</p><h2>Examples<a name="10"></a></h2><pre class="codeinput">   SwitchLamp(MOTOR_B, <span class="string">'on'</span>);
+</pre><pre class="codeinput">   SwitchLamp(MOTOR_A, <span class="string">'off'</span>);
+</pre><h2>See also<a name="13"></a></h2><p><a href="NXTMotor.html">NXTMotor</a>, <a href="StopMotor.html">StopMotor</a>, <a href="MOTOR_A.html">MOTOR_A</a>, <a href="MOTOR_B.html">MOTOR_B</a>, <a href="MOTOR_C.html">MOTOR_C</a>, </p><h2>Signature<a name="15"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% SwitchLamp
+% Switches the LEGO lamp on or off (has to be connected to a motor port)
+%%
+%% Syntax
+% |SwitchLamp(port, mode)|
+%%
+% |SwitchLamp(port, mode, handle)|
+%%
+%% Description
+% |SwitchLamp(port, mode)| turns the LEGO lamp on or off.
+% The given |port| number specifies the used motor port. The value |port| can be
+% addressed by the symbolic constants |MOTOR_A| , |MOTOR_B| and |MOTOR_C| analog to
+% the labeling on the NXT Brick. The value |mode| supports two modes |'on'| and |'off'| to turn
+% the lamp on and off.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% This function simply sets power 100 to the specified motor port to turn
+% on the lamp, or sets power 0 to turn it off. Note that dimming is not
+% possible, even a power of just 1 will be enough to switch the lamp to
+% full brightness (after a short while).
+%%
+% A |StopMotor| command with parameter |'off'| will also turn off the lamp, but it is
+% recommended to use this function when working with lamps for better readability.
+%%
+%% Examples
+   SwitchLamp(MOTOR_B, 'on');
+%%
+   SwitchLamp(MOTOR_A, 'off');
+%%
+%% See also
+% NXTMotor, StopMotor, MOTOR_A, MOTOR_B, MOTOR_C
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

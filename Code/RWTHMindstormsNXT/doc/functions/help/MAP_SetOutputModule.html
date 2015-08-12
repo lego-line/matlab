@@ -1,0 +1,98 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MAP_SetOutputModule</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_MAP_SetOutputModule.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>MAP_SetOutputModule</h1><!--introduction--><p>Writes the IO map to the output module</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#26">Examples</a></li><li><a href="#29">See also</a></li><li><a href="#31">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>MAP_SetOutputModule(motor, map)</tt></p><p><tt>MAP_SetOutputModule(motor, map, varargin)</tt></p><h2>Description<a name="5"></a></h2><p><tt>map = MAP_SetOutputModule(motor, map)</tt> writes the IO <tt>map</tt> to the output module at the given motor <tt>motor</tt>. The <tt>motor</tt> port can be addressed by <tt>MOTOR_A</tt>, <tt>MOTOR_B</tt>, <tt>MOTOR_C</tt>. The <tt>map</tt> structure has to provide all output module information, listed below.</p><p><b>Input:</b></p><p><tt>map.TachoCount</tt>         % internal, non-resettable rotation-counter (in degrees)</p><p><tt>map.BlockTachoCount</tt>    % block tacho counter, current motor position, resettable using, ResetMotorAngle (NXT-G counter since block start)</p><p><tt>map.RotationCount</tt>      % rotation tacho counter, current motor position (NXT-G counter since program start)</p><p><tt>map.TachoLimit</tt>         % current set tacho/angle limit, 0 means none set</p><p><tt>map.MotorRPM</tt>           % current pulse width modulation ?</p><p><tt>map.Flags</tt>              % update flag bitfield, commits any changing (see also varargin)</p><p><tt>map.Mode</tt>               % output mode bitfield 1: MOTORON, 2: BRAKE, 4: REGULATED</p><p><tt>map.Speed</tt>              % current motor power/speed</p><p><tt>map.ActualSpeed</tt>        % current actual percentage of full power (regulation mode)</p><p><tt>map.RegPParameter</tt>      % proportional term of the internal PID control algorithm</p><p><tt>map.RegIParameter</tt>      % integral term of the internal PID control algorithm</p><p><tt>map.RegDParameter</tt>      % derivate term of the internal PID control algorithm</p><p><tt>map.RunStateByte</tt>       % run state byte</p><p><tt>map.RegModeByte</tt>        % regulation mode byte</p><p><tt>map.Overloaded</tt>         % overloaded flag (true: speed regulation is unable to onvercome physical load on the motor)</p><p><tt>map.SyncTurnParam</tt>      % current turn ratio, 1: 25%, 2:50%, 3:75%, 4:100% of full volume</p><p>map = MAP_SetOutputModule(motor, map, varargin) sets the update flags explicit by the given arguments. 'UpdateMode':           commits changes to the mode property 'UpdateSpeed':          commits changes to the speed property 'UpdateTachoLimit':     commits changes to the tacho limit property 'ResetCounter':         resets internal movement counters, cancels current goal, and resets internal error-correction system 'UpdatePID':            commits changes to PID regulation parameters 'ResetBlockTachoCount': resets block tacho count (block-relative position counter (NXT-G)) 'ResetRotationCount':   resets rotation count (program-relative position counter (NXT-G))</p><h2>Examples<a name="26"></a></h2><pre class="codeinput">  MAP_SetOutputModule(MOTOR_A, map);
+</pre><pre class="codeinput">  map = MAP_GetOutputModule(MOTOR_A);
+  map.RegPParameter = 20;
+  MAP_SetOutputModule(MOTOR_A, map, <span class="string">'UpdatePID'</span>);
+</pre><h2>See also<a name="29"></a></h2><p><a href="MAP_GetOutputModule.html">MAP_GetOutputModule</a>, <a href="NXT_WriteIOMap.html">NXT_WriteIOMap</a>, </p><h2>Signature<a name="31"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/22</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% MAP_SetOutputModule
+% Writes the IO map to the output module
+%%
+%% Syntax
+% |MAP_SetOutputModule(motor, map)|
+%%
+% |MAP_SetOutputModule(motor, map, varargin)|
+%%
+%% Description
+% |map = MAP_SetOutputModule(motor, map)| writes the IO |map| to the output module at the given motor
+% |motor|. The |motor| port can be addressed by |MOTOR_A|, |MOTOR_B|, |MOTOR_C|. The |map| structure has
+% to provide all output module information, listed below.
+%%
+%%
+% *Input:*
+%%
+% |map.TachoCount|         % internal, non-resettable rotation-counter (in degrees)
+%%
+% |map.BlockTachoCount|    % block tacho counter, current motor position, resettable using,
+% ResetMotorAngle (NXT-G counter since block start)
+%%
+% |map.RotationCount|      % rotation tacho counter, current motor position (NXT-G counter
+% since program start)
+%%
+% |map.TachoLimit|         % current set tacho/angle limit, 0 means none set
+%%
+% |map.MotorRPM|           % current pulse width modulation ?
+%%
+% |map.Flags|              % update flag bitfield, commits any changing (see also varargin)
+%%
+% |map.Mode|               % output mode bitfield 1: MOTORON, 2: BRAKE, 4: REGULATED
+%%
+% |map.Speed|              % current motor power/speed
+%%
+% |map.ActualSpeed|        % current actual percentage of full power (regulation mode)
+%%
+% |map.RegPParameter|      % proportional term of the internal PID control algorithm
+%%
+% |map.RegIParameter|      % integral term of the internal PID control algorithm
+%%
+% |map.RegDParameter|      % derivate term of the internal PID control algorithm
+%%
+% |map.RunStateByte|       % run state byte
+%%
+% |map.RegModeByte|        % regulation mode byte
+%%
+% |map.Overloaded|         % overloaded flag (true: speed regulation is unable to onvercome
+% physical load on the motor)
+%%
+% |map.SyncTurnParam|      % current turn ratio, 1: 25%, 2:50%, 3:75%, 4:100% of full volume
+%%
+% map = MAP_SetOutputModule(motor, map, varargin) sets the update flags explicit by the given
+% arguments.
+% 'UpdateMode':           commits changes to the mode property
+% 'UpdateSpeed':          commits changes to the speed property
+% 'UpdateTachoLimit':     commits changes to the tacho limit property
+% 'ResetCounter':         resets internal movement counters, cancels current goal, and resets
+% internal error-correction system
+% 'UpdatePID':            commits changes to PID regulation parameters
+% 'ResetBlockTachoCount': resets block tacho count (block-relative position counter (NXT-G))
+% 'ResetRotationCount':   resets rotation count (program-relative position counter (NXT-G))
+%%
+%% Examples
+  MAP_SetOutputModule(MOTOR_A, map);
+%%
+  map = MAP_GetOutputModule(MOTOR_A);
+  map.RegPParameter = 20;
+  MAP_SetOutputModule(MOTOR_A, map, 'UpdatePID');
+%%
+%% See also
+% MAP_GetOutputModule, NXT_WriteIOMap
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/22
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

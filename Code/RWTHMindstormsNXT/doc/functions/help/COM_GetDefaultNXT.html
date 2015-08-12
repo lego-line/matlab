@@ -1,0 +1,46 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_GetDefaultNXT</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_GetDefaultNXT.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_GetDefaultNXT</h1><!--introduction--><p>Returns the global default NXT handle if it was previously set</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#6">Example</a></li><li><a href="#8">See also</a></li><li><a href="#10">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>h = COM_GetDefaultNXT()</tt></p><h2>Description<a name="4"></a></h2><p><tt>h = COM_GetDefaultNXT()</tt> returns the global default NXT handle <tt>h</tt> if it was previously set. The default global NXT handle is used by all NXT-Functions per default if no other handle is specified. To set this global handle the function <tt>COM_SetDefaultNXT</tt> is used.</p><h2>Example<a name="6"></a></h2><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   COM_SetDefaultNXT(handle);
+   MyNXT = COM_GetDefaultNXT();
+   <span class="comment">% now MyNXT and handle refer to the same device</span>
+</pre><h2>See also<a name="8"></a></h2><p><a href="COM_SetDefaultNXT.html">COM_SetDefaultNXT</a>, <a href="COM_OpenNXT.html">COM_OpenNXT</a>, <a href="COM_OpenNXTEx.html">COM_OpenNXTEx</a>, </p><h2>Signature<a name="10"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/07/07</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_GetDefaultNXT
+% Returns the global default NXT handle if it was previously set
+%%
+%% Syntax
+% |h = COM_GetDefaultNXT()|
+%%
+%% Description
+% |h = COM_GetDefaultNXT()| returns the global default NXT handle |h| if it was previously
+% set. The default global NXT handle is used by all NXT-Functions per default if no other
+% handle is specified. To set this global handle the function |COM_SetDefaultNXT| is used.
+%%
+%% Example
+   handle = COM_OpenNXT('bluetooth.ini');
+   COM_SetDefaultNXT(handle);
+   MyNXT = COM_GetDefaultNXT();
+   % now MyNXT and handle refer to the same device
+%%
+%% See also
+% COM_SetDefaultNXT, COM_OpenNXT, COM_OpenNXTEx
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2008/07/07
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

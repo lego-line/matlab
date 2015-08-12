@@ -1,0 +1,5 @@
+Feed Lines
+
+Arrivals Periodic : period = 20 seconds
+Arrivals Periodic : period = 20 seconds
+Arrivals Periodic : period = 20 seconds

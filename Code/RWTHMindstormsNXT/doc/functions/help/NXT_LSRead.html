@@ -1,0 +1,82 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_LSRead</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_LSRead.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_LSRead</h1><!--introduction--><p>Reads data from a digital low speed sensor port (I2C)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#7">Description</a></li><li><a href="#18">Examples</a></li><li><a href="#20">See also</a></li><li><a href="#23">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[data BytesRead] = NXT_LSRead(port)</tt></p><p><tt>[data BytesRead] = NXT_LSRead(port, handle)</tt></p><p><tt>[data BytesRead optionalStatusByte] = NXT_LSRead(port)</tt></p><p><tt>[data BytesRead optionalStatusByte] = NXT_LSRead(port, handle)</tt></p><h2>Description<a name="7"></a></h2><p><tt>[data BytesRead] = NXT_LSRead(port))</tt> gets the <tt>data</tt> of the low speed (digital) sensor value of the given sensor <tt>port</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. The return value <tt>BytesRead</tt> contains the number of bytes available to read.</p><p><tt>[data BytesRead] = NXT_LSRead(port, handle)</tt> uses the given Bluetooth connection <tt>handle</tt>. This should be a serial handle on a PC system and a file handle on a Linux system.</p><p><tt>[data BytesRead optionalStatusByte] = NXT_LSRead(port, [handle])</tt> will ignore the automatic statusbyte check and instead return it as output argument. This causes the function to ignore erronous I2C calls or crashes if the sensor is not yet ready. You can effectively save a call to <tt>NXT_LSGetStatus</tt> with this, if you interpret the statusbytes correctly. This may vary, depending on your I2C sensor. The <tt>handle</tt> argument is still optional, like above.</p><p>If no NXT handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><p><b>Note:</b></p><p>For LS communication on the NXT, data lengths are limited to 16 bytes per command. Furthermore, this protocol does not support variable-length return packages, so the response will always contain 16 data bytes, with invalid data bytes padded with zeros.</p><p>Before using LS commands, the sensor mode has to be set to <tt>LOWSPEED_9V</tt> using the NXT_SetInputMode command.</p><h2>Examples<a name="18"></a></h2><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+
+   NXT_SetInputMode(SENSOR_1, <span class="string">'LOWSPEED_9V'</span>, <span class="string">'RAWMODE'</span>, <span class="string">'dontreply'</span>);
+   <span class="comment">% usually we would use NXT_LSWrite before, to request some sort of reply</span>
+   [data BytesRead] = NXT_LSRead(SENSOR_1, handle);
+</pre><h2>See also<a name="20"></a></h2><p><a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="NXT_LSWrite.html">NXT_LSWrite</a>, <a href="NXT_LSGetStatus.html">NXT_LSGetStatus</a>, <a href="COM_ReadI2C.html">COM_ReadI2C</a>, </p><h2>Signature<a name="23"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_LSRead
+% Reads data from a digital low speed sensor port (I2C)
+%%
+%% Syntax
+% |[data BytesRead] = NXT_LSRead(port)|
+%%
+% |[data BytesRead] = NXT_LSRead(port, handle)|
+%%
+% |[data BytesRead optionalStatusByte] = NXT_LSRead(port)|
+%%
+% |[data BytesRead optionalStatusByte] = NXT_LSRead(port, handle)|
+%%
+%% Description
+% |[data BytesRead] = NXT_LSRead(port))| gets the |data| of the low speed (digital) sensor value
+% of the given sensor |port|. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick. The
+% return value |BytesRead| contains the number of bytes available to read.
+%%
+% |[data BytesRead] = NXT_LSRead(port, handle)| uses the given Bluetooth connection |handle|. This should be a
+% serial handle on a PC system and a file handle on a Linux system.
+%%
+% |[data BytesRead optionalStatusByte] = NXT_LSRead(port, [handle])| will
+% ignore the automatic statusbyte check and instead return it as output
+% argument. This causes the function to ignore erronous I2C calls or
+% crashes if the sensor is not yet ready. You can effectively save a call
+% to |NXT_LSGetStatus| with this, if you interpret the statusbytes
+% correctly. This may vary, depending on your I2C sensor. The |handle|
+% argument is still optional, like above.
+%%
+% If no NXT handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%%
+% *Note:*
+%%
+% For LS communication on the NXT, data lengths are limited to 16 bytes per command. Furthermore,
+% this protocol does not support variable-length return packages, so the response will always
+% contain 16 data bytes, with invalid data bytes padded with zeros.
+%%
+% Before using LS commands, the sensor mode has to be set to
+% |LOWSPEED_9V| using the NXT_SetInputMode command.
+%%
+%% Examples
+   handle = COM_OpenNXT('bluetooth.ini');
+
+   NXT_SetInputMode(SENSOR_1, 'LOWSPEED_9V', 'RAWMODE', 'dontreply');
+   % usually we would use NXT_LSWrite before, to request some sort of reply
+   [data BytesRead] = NXT_LSRead(SENSOR_1, handle);
+%%
+%% See also
+% NXT_SetInputMode, NXT_LSWrite, NXT_LSGetStatus, COM_ReadI2C
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

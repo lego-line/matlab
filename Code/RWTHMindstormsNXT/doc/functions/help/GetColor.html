@@ -1,0 +1,127 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>GetColor</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_GetColor.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>GetColor</h1><!--introduction--><p>Reads the current value of the HiTechnic Color V1 or V2 sensor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#23">Limitations</a></li><li><a href="#25">Example</a></li><li><a href="#27">See also</a></li><li><a href="#29">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[index r g b] = GetColor(port, mode)</tt></p><p><tt>[index r g b] = GetColor(port, mode, handle)</tt></p><h2>Description<a name="5"></a></h2><p>This function returns the color index and the RGB-values of the HiTechnic Color sensor. There are two different hardware versions of the sensor.</p><div><ul><li>The old Color sensor V1 has a single weak LED which is always on once connected. You can spot little red, green and blue lights behind the milky lens. This sensor can be calibrated using the function <tt>CalibrateColor</tt>. It has sometimes trouble getting accurate results. You can use all values for <tt>mode</tt>. Try which one works best for you.</li></ul></div><div><ul><li>The new Color sensor V2 has a single bright white LED which is always flashing once connected. The lens is relatively clear. This sensor gives great accuary for most colors, even at some distance. Only <tt>mode = 0</tt> is supported. Other modes will return wrong values. The sensor works fine as it comes, it SHOULD NOT BE CALIBRATED.</li></ul></div><p>The color index values roughly correspond to the following table (when using modes 0 and 1):</p><pre class="codeinput"><span class="comment">%	    0 = black</span>
+<span class="comment">%	    1 = violet</span>
+<span class="comment">%	    2 = purple</span>
+<span class="comment">%	    3 = blue</span>
+<span class="comment">%	    4 = green</span>
+<span class="comment">%	    5 = lime</span>
+<span class="comment">%	    6 = yellow</span>
+<span class="comment">%	    7 = orange</span>
+<span class="comment">%	    8 = red</span>
+<span class="comment">%	    9 = crimson</span>
+<span class="comment">%	    10 = magenta</span>
+<span class="comment">%	    11 to 16 = pastels</span>
+<span class="comment">%	    17 = white</span>
+</pre><p>The RGB-Values will be returned depending on the mode parameter.</p><div><ul><li><tt>mode = 0</tt> : RGB = the current detection level for the color components red, green and blue in an range of 0 to 255. Use this setting for color sensor V2</li></ul></div><div><ul><li><tt>mode = 1</tt> : RGB = the current relative detection level  for the color components red, green and blue in an range of 0 to 255. The highest value of red, green and blue is set to 255 and the other components are adjusted proportionally. Only V1.</li></ul></div><div><ul><li><tt>mode = 2</tt> : RGB = the analog signal levels for the three color components red, green and blue with an accurancy of 10 bit (0 to 1023). Only V1.</li></ul></div><div><ul><li><tt>mode = 3</tt> : RGB = the current relative detection level  for the color components red, green and blue in an range of 0 to 3. Only V1.</li></ul></div><p>The color index (0..63) for mode 2 and mode 3 will return a 6 bit color index number, which encodes red in bit 5 and 4, green in bit 3 and 2 and blue in bit 1 (?).</p><p>The given <tt>port</tt> number specifies the connection port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>For more complex settings the function <tt>COM_ReadI2C</tt> can be used.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Limitations<a name="23"></a></h2><p>It's by design that the white LED of the Color sensors cannot be turned off by calling <tt>CloseSensor</tt>. It's always on when the sensor is connected. The V2 hardware version of the sensor performs significantly better than the V1 version.</p><h2>Example<a name="25"></a></h2><pre class="codeinput">   OpenColor(SENSOR_4);
+   [index r g b] = GetColor(SENSOR_4, 0);
+   CloseSensor(SENSOR_4);
+</pre><h2>See also<a name="27"></a></h2><p><a href="OpenColor.html">OpenColor</a>, <a href="CalibrateColor.html">CalibrateColor</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="OpenNXT2Color.html">OpenNXT2Color</a>, <a href="GetNXT2Color.html">GetNXT2Color</a>, <a href="COM_ReadI2C.html">COM_ReadI2C</a>, </p><h2>Signature<a name="29"></a></h2><div><ul><li><b>Author:</b> Rainer Schnitzler, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2010/09/16</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% GetColor
+% Reads the current value of the HiTechnic Color V1 or V2 sensor
+%%
+%% Syntax
+% |[index r g b] = GetColor(port, mode)|
+%%
+% |[index r g b] = GetColor(port, mode, handle)|
+%%
+%% Description
+% This function returns the color index and the RGB-values of the
+% HiTechnic Color sensor. There are two different hardware versions of the sensor.
+%%
+%%
+% * The old Color sensor V1 has a single weak LED which is always on once
+% connected. You can spot little red, green and blue lights behind the
+% milky lens. This sensor can be calibrated using the function
+% |CalibrateColor|. It has sometimes trouble getting accurate results.
+% You can use all values for |mode|. Try which one works best for you.
+%%
+%%
+% * The new Color sensor V2 has a single bright white LED which is always flashing
+% once connected. The lens is relatively clear. This sensor gives great
+% accuary for most colors, even at some distance. Only |mode = 0| is
+% supported. Other modes will return wrong values. The sensor works fine
+% as it comes, it SHOULD NOT BE CALIBRATED.
+%%
+%%
+% The color index values roughly correspond to the following
+% table (when using modes 0 and 1):
+%	    0 = black
+%	    1 = violet
+%	    2 = purple
+%	    3 = blue
+%	    4 = green
+%	    5 = lime
+%	    6 = yellow
+%	    7 = orange
+%	    8 = red
+%	    9 = crimson
+%	    10 = magenta
+%	    11 to 16 = pastels
+%	    17 = white
+%%
+% The RGB-Values will be returned depending on the mode parameter.
+%%
+% * |mode = 0| : RGB = the current detection level for the color components red, green and blue
+% in an range of 0 to 255. Use this setting for color sensor V2
+%%
+%%
+% * |mode = 1| : RGB = the current relative detection level  for the color components red, green and blue
+% in an range of 0 to 255. The highest value of red, green and blue is set to 255 and
+% the other components are adjusted proportionally. Only
+% V1.
+%%
+% * |mode = 2| : RGB = the analog signal levels for the three
+% color components red, green and blue with an accurancy
+% of 10 bit (0 to 1023). Only V1.
+%%
+% * |mode = 3| : RGB = the current relative detection level  for the color components red, green and blue
+% in an range of 0 to 3. Only V1.
+%%
+% The color index (0..63) for mode 2 and mode 3 will return a 6 bit color index number, which encodes
+% red in bit 5 and 4, green in bit 3 and 2 and blue in bit 1 (?).
+%%
+% The given |port| number specifies the connection port. The value |port| can be addressed by the
+% symbolic constants |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on
+% the NXT Brick.
+%%
+% For more complex settings the function |COM_ReadI2C| can be used.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%% Limitations
+% It's by design that the white LED of the Color sensors cannot be turned
+% off by calling |CloseSensor|. It's always on when the sensor is
+% connected. The V2 hardware version of the sensor performs significantly
+% better than the V1 version.
+%%
+%% Example
+   OpenColor(SENSOR_4);
+   [index r g b] = GetColor(SENSOR_4, 0);
+   CloseSensor(SENSOR_4);
+%%
+%% See also
+% OpenColor, CalibrateColor, CloseSensor, OpenNXT2Color, GetNXT2Color, COM_ReadI2C
+%%
+%% Signature
+%%
+% * *Author:* Rainer Schnitzler, Linus Atorf (see AUTHORS)
+% * *Date:* 2010/09/16
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%%
+%
+
+##### SOURCE END #####
+--></body></html>

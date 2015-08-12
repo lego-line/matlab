@@ -1,0 +1,257 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>RWTH - Mindstorms NXT Toolbox Version 2.00 Guidelines</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="ToolboxVer2Guidelines.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>RWTH - Mindstorms NXT Toolbox Version 2.00 Guidelines</h1><!--introduction--><p>This document describes the main changes in version 2.00 this toolbox and gives a short introduction on how to use them!</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">The communication layer</a></li><li><a href="#5">Opening connections and retrieving handles</a></li><li><a href="#8">The handle struct</a></li><li><a href="#11">Default handles</a></li><li><a href="#12">Closing handles and cleaning up</a></li><li><a href="#16">New debug functions</a></li><li><a href="#22">New "snapshot" mode for ultrasonic sensor</a></li><li><a href="#23">New I/O Map Module access</a></li><li><a href="#25">Conclusion</a></li><li><a href="#27">Contact</a></li></ul></div><h2>The communication layer<a name="1"></a></h2><p>To establish a connection to an NXT device, the following functions are provided:</p><div><ul><li><tt>COM_OpenNXT</tt></li><li><tt>COM_OpenNXTEx</tt></li><li><tt>COM_CloseNXT</tt></li><li><tt>COM_SetDefaultNXT</tt></li><li><tt>COM_GetDefaultNXT</tt></li></ul></div><p>They replace the old <tt>BT_</tt> functions from toolbox version 1.00. Also <tt>BT_CreatePacket</tt>, <tt>BT_SendPacket</tt>, and <tt>BT_CollectPacket</tt> have been replaced by <tt>COM_CreatePacket</tt>, <tt>COM_SendPacket</tt>, and <tt>COM_CollectPacket</tt>. These changes are only to be consistent with the naming scheme, the usage of these functions has not changed. The prefix <tt>COM_</tt> stands for "communication functions".</p><p>The most important change in toolbox version 2.00 is the support for USB connections. On Windows systems, the Mindstorms NXT device driver (called "Fantom") has to be installed. On Linux systems, the free open source library libusb is used. Additionally, the devices' access rights have to be modified so that the NXT bricks appear in <tt>/dev/</tt>.</p><h2>Opening connections and retrieving handles<a name="5"></a></h2><p>The following way is recommended to open a connection:</p><pre class="codeinput">h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+COM_SetDefaultNXT(h);
+</pre><p>This replaces what looked like this in toolbox version 1.00:</p><pre class="codeinput">h = BT_OpenHandle(<span class="string">'bluetooth.ini'</span>);
+BT_SetDefaultHandle(h);
+</pre><p>The big difference however is that <tt>COM_OpenNXT</tt> will also look on the USB bus for an NXT. If it succeeds, the USB connection will be used, otherwise a Bluetooth connection is created. This makes the above example work with both Bluetooth and USB connections without having to change the code! Just plug or unplug the USB cable to your NXT device. If USB is present, it will be used, if not, Bluetooth comes into action.</p><h2>The handle struct<a name="8"></a></h2><p>In version 1.00 our NXT handle was just a variable (serial object on Windows, file handle on Linux). Now, we have a fairly large struct, containing lots of useful (and necessary) information. The users do NOT have to use this handle in any way but to pass it to functions, just as they could in earlier versions. All other functions and commands just work as they did before!</p><p>The handle contains some function-handles (to store dynamic information using the principle of function closures). However they are not to be used by normal users! It will later be explained to the advanced user how to retrieve connection statistics (how many bytes and packets were sent or received).</p><p>For now, the message is: We have got a huge handle struct, look at it if you want, but do not modify it. It does not matter what is in there, everything just works, so no need to bother!</p><h2>Default handles<a name="11"></a></h2><p>To put it simply: <tt>BT_SetDefaultHandle</tt> and <tt>BT_GetDefaultHandle</tt> have just been replaced by <tt>COM_SetDefaultNXT</tt> and <tt>COM_GetDefaultNXT</tt>. So adapt your code, the syntax is exactly the same.</p><h2>Closing handles and cleaning up<a name="12"></a></h2><p>The two functions <tt>BT_CloseHandle</tt> and <tt>BT_CloseAllHandles</tt> have been combined to the one function <tt>COM_CloseNXT</tt>.</p><p>To clean up after using your NXT-handle, just call</p><pre class="codeinput">COM_CloseNXT(h);
+clear <span class="string">h</span> <span class="comment">% this is not necessary but good practice, so I recommend it</span>
+</pre><p>Instead of <tt>BT_CloseAllHandles</tt> we now have:</p><pre class="codeinput">COM_CloseNXT <span class="string">all</span>
+</pre><p>The old way of closing just a specific serial port has been mapped to this syntax:</p><pre class="codeinput">COM_CloseNXT(<span class="string">'all'</span>, <span class="string">'bluetooth.ini'</span>);
+</pre><h2>New debug functions<a name="16"></a></h2><p>The way the function <tt>textOut</tt> behaves has not changed. But it was quite uncomfortable to use <tt>global DisableScreenOut</tt> in order to enable or disable debug messages. So we now have helper functions:</p><pre class="codeinput">DebugMode <span class="string">on</span>
+    <span class="comment">% do something</span>
+DebugMode <span class="string">off</span>
+</pre><p><tt>DebugMode(state)</tt> is a method that can set the debug-state, but when called without any arguments, <tt>DebugMode()</tt> will return the current setting. So if we want to remember and restore the previous state, we can do so by:</p><pre class="codeinput">OldDebugState = DebugMode(); <span class="comment">% remember old state</span>
+DebugMode <span class="string">on</span>  <span class="comment">% force it to always be on</span>
+    <span class="comment">% do something with guaranteed debug infos</span>
+DebugMode(OldDebugState); <span class="comment">% be polite, reset to old state</span>
+</pre><p>To check if debug messages are enabled, use:</p><pre class="codeinput"><span class="keyword">if</span> isdebug
+    <span class="comment">% we know debug mode is set to 'on'</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><p>This is essentially the same as</p><pre class="codeinput"><span class="keyword">if</span> strcmpi(DebugMode(), <span class="string">'on'</span>)
+    <span class="comment">% we know debug mode is set to 'on'</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><p>but since MATLAB is not very fast with string comparisons, I recommend to use <tt>isdebug</tt> where time is critical. Also it is easier.</p><p>Please note the similarity to MATLAB's built-in functions <tt>hold on</tt>, <tt>hold off</tt> and <tt>ishold</tt>.</p><h2>New "snapshot" mode for ultrasonic sensor<a name="22"></a></h2><p>The function <tt>OpenUltrasonic</tt> has been updated with the additional optional parameter <tt>'snapshot'</tt>. When set, the functions <tt>USMakeSnapshot</tt> and <tt>USGetSnapshotResults</tt> enable you to send out a single "ping" signal, and let the sensor record up to 8 following echos. All 8 recordings can then be retrieved in one step. See function help for further information. An example might look like this:</p><pre class="codeinput">port = SENSOR_4;
+OpenUltrasonic(port, <span class="string">'snapshot'</span>);
+<span class="comment">% send out the ping</span>
+USMakeSnapshot(port);
+<span class="comment">% wait some time for the sound to travel</span>
+pause(0.1); <span class="comment">% 100ms is probably too much, calculate using c_sound ;-)</span>
+<span class="comment">% retrieve all the echos in 1 step</span>
+echos = USGetSnapshotResults(port);
+CloseSensor(port);
+</pre><h2>New I/O Map Module access<a name="23"></a></h2><p>New system functions <tt>NXT_ReadIOMap</tt> and <tt>NXT_WriteIOMap</tt> have been implemented, enabling low-level access to the NXT's internal I/O map module registers. For easier usage, some high level functions have been implemented. They all start with the prefix <tt>MAP_</tt>, see list of functions and their documentation for further information.</p><p>Note: These new functions do not (yet?) work under Windows when using USB connections. They do however work with Bluetooth under Windows. On Linux systems, both USB and Bluetooth connections are supported for I/O map module access.</p><h2>Conclusion<a name="25"></a></h2><p>To sum up all necessary changes for your programs:</p><div><ul><li>Replace <tt>BT_OpenHandle</tt> with <tt>COM_OpenNXT</tt>, syntax stays the same. If   you want, you can also use <tt>COM_OpenNXTEx</tt>, but then a more complex   syntax comes into place.</li><li>Replace <tt>BT_SetDefaultHandle</tt> with <tt>COM_SetDefaultNXT</tt> and   <tt>BT_GetDefaultHandle</tt> with <tt>COM_GetDefaultNXT</tt>.</li><li>Replace <tt>BT_CloseHandle(h)</tt> with <tt>COM_CloseNXT(h)</tt>.</li><li>Replace <tt>BT_CloseAllHandles()</tt> with <tt>COM_CloseNXT('all')</tt>.</li><li>Replace <tt>BT_CloseAllHandles('bluetooth.ini')</tt> with   <tt>COM_CloseNXT('all', 'bluetooth.ini')</tt>.</li><li>Instead of modifying the global variable <tt>DisableScreenOut</tt> for   debug-messages by <tt>textOut</tt>, the two new easy functions <tt>DebugMode()</tt>   and <tt>isdebug</tt> are available.</li></ul></div><h2>Contact<a name="27"></a></h2><p>Please feel free to contact me by mail if you have comments:</p><p>linus (dot) atorf (at) rwth-aachen (dot) de</p><p>or via <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></p><p><i>Version 1.01 of this document, Linus Atorf, July 18th 2008</i></p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% RWTH - Mindstorms NXT Toolbox Version 2.00 Guidelines
+% This document describes the main changes in version 2.00 this
+% toolbox and gives a short introduction on how to use them!
+% 
+
+%% The communication layer
+% To establish a connection to an NXT device, the following functions are
+% provided:
+
+%%
+% * |COM_OpenNXT|
+% * |COM_OpenNXTEx|
+% * |COM_CloseNXT|
+% * |COM_SetDefaultNXT|
+% * |COM_GetDefaultNXT|
+
+%%
+% They replace the old |BT_| functions from toolbox version 1.00. Also
+% |BT_CreatePacket|, |BT_SendPacket|, and |BT_CollectPacket| have been
+% replaced by |COM_CreatePacket|, |COM_SendPacket|, and
+% |COM_CollectPacket|. These changes are only to be consistent with the
+% naming scheme, the usage of these functions has not changed. The prefix
+% |COM_| stands for "communication functions".
+
+%% 
+% The most important change in toolbox version 2.00 is the support for USB
+% connections. On Windows systems, the Mindstorms NXT device driver (called
+% "Fantom") has to be installed. On Linux systems, the free open source
+% library libusb is used. Additionally, the devices' access rights have to
+% be modified so that the NXT bricks appear in |/dev/|.
+
+
+%% Opening connections and retrieving handles
+% The following way is recommended to open a connection:
+
+h = COM_OpenNXT('bluetooth.ini');
+COM_SetDefaultNXT(h);
+
+%%
+% This replaces what looked like this in toolbox version 1.00:
+h = BT_OpenHandle('bluetooth.ini');
+BT_SetDefaultHandle(h);
+
+%% 
+% The big difference however is that |COM_OpenNXT| will also look on the
+% USB bus for an NXT. If it succeeds, the USB connection will be used,
+% otherwise a Bluetooth connection is created.
+% This makes the above example work with both Bluetooth and USB connections
+% without having to change the code!
+% Just plug or unplug the USB cable to your NXT device. If USB is present,
+% it will be used, if not, Bluetooth comes into action.
+
+
+%% The handle struct
+% In version 1.00 our NXT handle was just a variable (serial object on
+% Windows, file handle on Linux). Now, we have a fairly large struct,
+% containing lots of useful (and necessary) information.
+% The users do NOT have to use this handle in any way but to pass it to
+% functions, just as they could in earlier versions.
+% All other functions and commands just work as they did before!
+
+%%
+% The handle contains some function-handles (to store dynamic information
+% using the principle of function closures). However they are not to be
+% used by normal users! It will later be explained to the advanced user
+% how to retrieve connection statistics (how many bytes and packets were
+% sent or received).
+
+%%
+% For now, the message is: We have got a huge handle struct, look at it if
+% you want, but do not modify it. It does not matter what is in there,
+% everything just works, so no need to bother!
+
+
+%% Default handles
+% To put it simply: |BT_SetDefaultHandle| and |BT_GetDefaultHandle| have
+% just been replaced by |COM_SetDefaultNXT| and |COM_GetDefaultNXT|. So
+% adapt your code, the syntax is exactly the same.
+
+
+%% Closing handles and cleaning up
+% The two functions |BT_CloseHandle| and |BT_CloseAllHandles| have been
+% combined to the one function |COM_CloseNXT|.
+
+%%
+% To clean up after using your NXT-handle, just call
+
+COM_CloseNXT(h);
+clear h % this is not necessary but good practice, so I recommend it
+
+%%
+% Instead of |BT_CloseAllHandles| we now have:
+
+COM_CloseNXT all
+
+%% 
+% The old way of closing just a specific serial port has been mapped to
+% this syntax:
+
+COM_CloseNXT('all', 'bluetooth.ini');
+
+
+
+%% New debug functions
+% The way the function |textOut| behaves has not changed. But it was quite
+% uncomfortable to use |global DisableScreenOut| in order to enable or
+% disable debug messages. So we now have helper functions:
+
+DebugMode on
+    % do something
+DebugMode off
+
+%%
+% |DebugMode(state)| is a method that can set the debug-state,
+% but when called without any arguments, |DebugMode()| will return
+% the current setting.
+% So if we want to remember and restore the previous state, we can
+% do so by:
+
+OldDebugState = DebugMode(); % remember old state
+DebugMode on  % force it to always be on
+    % do something with guaranteed debug infos
+DebugMode(OldDebugState); % be polite, reset to old state
+
+%% 
+% To check if debug messages are enabled, use:
+
+if isdebug
+    % we know debug mode is set to 'on'
+end%if
+
+%%
+% This is essentially the same as
+if strcmpi(DebugMode(), 'on')
+    % we know debug mode is set to 'on'
+end%if
+
+%%
+% but since MATLAB is not very fast with string comparisons, I recommend to
+% use |isdebug| where time is critical. Also it is easier. 
+
+%%
+% Please note the similarity to MATLAB's built-in functions |hold on|,
+% |hold off| and |ishold|.
+
+
+
+%% New "snapshot" mode for ultrasonic sensor
+% The function |OpenUltrasonic| has been updated with the additional
+% optional parameter |'snapshot'|. When set, the functions |USMakeSnapshot|
+% and |USGetSnapshotResults| enable you to send out a single "ping" signal,
+% and let the sensor record up to 8 following echos. All 8 recordings can
+% then be retrieved in one step. See function help for further information.
+% An example might look like this:
+
+port = SENSOR_4;
+OpenUltrasonic(port, 'snapshot');
+% send out the ping
+USMakeSnapshot(port);
+% wait some time for the sound to travel
+pause(0.1); % 100ms is probably too much, calculate using c_sound ;-)
+% retrieve all the echos in 1 step
+echos = USGetSnapshotResults(port);
+CloseSensor(port);
+
+
+%% New I/O Map Module access
+% New system functions |NXT_ReadIOMap| and |NXT_WriteIOMap| have been
+% implemented, enabling low-level access to the NXT's internal I/O map module
+% registers. For easier usage, some high level functions have been
+% implemented. They all start with the prefix |MAP_|, see list of functions
+% and their documentation for further information.
+
+%%
+% Note: These new functions do not (yet?) work under Windows when using USB
+% connections. They do however work with Bluetooth under Windows. On Linux
+% systems, both USB and Bluetooth connections are supported for I/O map
+% module access.
+
+
+
+
+
+%% Conclusion
+% To sum up all necessary changes for your programs:
+%
+
+%%
+% * Replace |BT_OpenHandle| with |COM_OpenNXT|, syntax stays the same. If
+%   you want, you can also use |COM_OpenNXTEx|, but then a more complex
+%   syntax comes into place.
+% * Replace |BT_SetDefaultHandle| with |COM_SetDefaultNXT| and
+%   |BT_GetDefaultHandle| with |COM_GetDefaultNXT|.
+% * Replace |BT_CloseHandle(h)| with |COM_CloseNXT(h)|.
+% * Replace |BT_CloseAllHandles()| with |COM_CloseNXT('all')|.
+% * Replace |BT_CloseAllHandles('bluetooth.ini')| with 
+%   |COM_CloseNXT('all', 'bluetooth.ini')|.
+% * Instead of modifying the global variable |DisableScreenOut| for
+%   debug-messages by |textOut|, the two new easy functions |DebugMode()|
+%   and |isdebug| are available.
+
+
+%% Contact
+%
+% Please feel free to contact me by mail if you have comments:
+%
+% linus (dot) atorf (at) rwth-aachen (dot) de
+%
+% or via <http://www.mindstorms.rwth-aachen.de>
+% 
+%
+% _Version 1.01 of this document, Linus Atorf, July 18th 2008_
+##### SOURCE END #####
+--></body></html>

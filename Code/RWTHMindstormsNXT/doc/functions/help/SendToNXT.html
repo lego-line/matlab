@@ -1,0 +1,69 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>SendToNXT</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_SendToNXT.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>SendToNXT</h1><!--introduction--><p>Send motor settings to the NXT brick</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#9">Limitations</a></li><li><a href="#14">Example</a></li><li><a href="#16">See also</a></li><li><a href="#18">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OBJ.SendToNXT</tt></p><p><tt>OBJ.SendToNXT(HANDLE)</tt></p><h2>Description<a name="5"></a></h2><p><tt>OBJ.SendToNXT</tt> sends the motor settings in <tt>OBJ</tt> to the NXT brick.</p><p><tt>OBJ.SendToNXT(HANDLE)</tt> uses <tt>HANDLE</tt> to identifiy the connection to use for this command. This is optional. Otherwise the defaul handle (set using <tt>COM_SetDefaultNXT</tt>) will be used.</p><p>For a valid list of properties and how they affect the motors' behaviour, see the documentation for the class constructor <tt>NXTMotor</tt>.</p><h2>Limitations<a name="9"></a></h2><p>With <tt>ActionAtTachoLimit = 'Coast'</tt> and synchronous driving (two motors), the motors will stay synced after movement (even after <tt>.WaitFor()</tt> has finished). This is by design. To disable the synchonization, just use <tt>.Stop</tt>.</p><p>If you send a command to the NXT without waiting for the previous motor operation to have finished, the command will be dropped (the NXT indicates this with a high and low beep tone). Use the motor-objects method <tt>.WaitFor</tt> to make sure the motor is ready for new commands, or stop the motor(s) using <tt>.Stop</tt>.</p><h2>Example<a name="14"></a></h2><pre class="codeinput">        motor = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 50, <span class="string">'TachoLimit'</span>, 200);
+        motor.SendToNXT();
+        motor.WaitFor();
+        NXT_PlayTone(400,500);
+</pre><h2>See also<a name="16"></a></h2><p><a href="NXTMotor.html">NXTMotor</a>, <a href="ReadFromNXT.html">ReadFromNXT</a>, <a href="Stop.html">Stop</a>, <a href="WaitFor.html">WaitFor</a>, <a href="DirectMotorCommand.html">DirectMotorCommand</a>, </p><h2>Signature<a name="18"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Aulis Telle, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2009/07/12</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% SendToNXT
+% Send motor settings to the NXT brick
+%%
+%% Syntax
+% |OBJ.SendToNXT|
+%%
+% |OBJ.SendToNXT(HANDLE)|
+%%
+%% Description
+% |OBJ.SendToNXT| sends the motor settings in |OBJ| to
+% the NXT brick.
+%%
+% |OBJ.SendToNXT(HANDLE)| uses |HANDLE| to
+% identifiy the connection to use for this command. This is optional.
+% Otherwise the defaul handle (set using |COM_SetDefaultNXT|) will be
+% used.
+%%
+% For a valid list of properties and how they affect the motors'
+% behaviour, see the documentation for the class constructor |NXTMotor|.
+%%
+%% Limitations
+%%
+% With |ActionAtTachoLimit = 'Coast'| and synchronous driving (two motors),
+% the motors will stay synced after movement (even after |.WaitFor()| has
+% finished). This is by design. To disable the synchonization, just use
+% |.Stop|.
+%%
+% If you send a command to the NXT without waiting for the previous motor
+% operation to have finished, the command will be dropped (the NXT
+% indicates this with a high and low beep tone). Use the motor-objects
+% method |.WaitFor| to make sure the motor is ready for new commands, or
+% stop the motor(s) using |.Stop|.
+%%
+%%
+%% Example
+        motor = NXTMotor('A', 'Power', 50, 'TachoLimit', 200);
+        motor.SendToNXT();
+        motor.WaitFor();
+        NXT_PlayTone(400,500);
+%%
+%% See also
+% NXTMotor, ReadFromNXT, Stop, WaitFor, DirectMotorCommand
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Aulis Telle, Alexander Behrens (see AUTHORS)
+% * *Date:* 2009/07/12
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

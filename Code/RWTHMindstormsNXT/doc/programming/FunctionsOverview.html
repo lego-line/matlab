@@ -1,0 +1,1304 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>LEGO Mindstorms NXT Matlab Functions Overview</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="FunctionsOverview.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>LEGO Mindstorms NXT Matlab Functions Overview</h1><!--introduction--><p><b>DOCUMENT IS OUTDATED</b></p><p><i>This tutorial was written for Toolbox version 1.0 and still applies partly to version 2.x, but in general it's outdated and not supposed to be used anymore. Look for "Tutorial: Programming Robots" inside the MATLAB help instead</i></p><p>This document is a tutorial on how to use the functions that come with the RWTH - Mindstorms NXT Toolbox.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Bluetooth connections and serial handles</a></li><li><a href="#10">Sending and receiving data</a></li><li><a href="#20">NXT system commands</a></li><li><a href="#27">NXT direct commands</a></li><li><a href="#40">High level sensor control</a></li><li><a href="#48">High level motor control</a></li><li><a href="#85">Lowlevel and helper functions</a></li><li><a href="#89">Displaying text on the screen (inside the command window)</a></li><li><a href="#97">List of global variables</a></li></ul></div><h2>Bluetooth connections and serial handles<a name="1"></a></h2><p>In this section we've got:</p><div><ul><li><tt>BT_OpenHandle</tt></li><li><tt>BT_CloseHandle</tt></li><li><tt>BT_CloseAllHandles</tt></li><li><tt>BT_SetDefaultHandle</tt></li><li><tt>BT_GetDefaultHandle</tt></li><li><tt>BT_MakeConfigFile</tt></li></ul></div><p>To communicate with the NXT via bluetooth, we have to use the SPP (serial port profile), which basically works like a virtual serial port. This is why we can send and receive data from within MATLAB through the serial port commands.</p><p>To handle different connections or bluetooth adapters on different computers easily, a certain ini-file with settings for the MATLAB functions must be present in the current directory (or one that can be found through path settings).</p><p>The ini-file format looks like this</p><pre>[Bluetooth]</pre><pre>SerialPort=COM3
+BaudRate=57600
+DataBits=8</pre><pre>SendSendPause=10
+SendReceivePause=30</pre><pre>TimeOut=2</pre><p>The serial settings should be self explaining. Explanation of the send-pause-values will follow later on. The <tt>TimeOut</tt> parameter only has an effect when using Windows. It sets the period the bluetooth stack should wait when it is "missing data". The MATLAB-internal default value of 10 causes annoying freezes in certain robot programs on certain computers (a direct cause is not yet found). By setting 2 (the toolbox default value), one should get a fairly stable experience with very rare execution pauses of 2 seconds. Smaller timeout values can lead to real packet loss which has not been examined yet.</p><p>To create a bluetooth configuration ini-file, a standard editor can be used. A more comfortable way is to use the GUI-guided program:</p><pre class="codeinput">BT_MakeConfigFile;
+</pre><p>The following functions work under Windows as well as Linux, with one big exception: The returned handle will be a <tt>serial</tt> struct in Windows, but a simple scalar file handle in Linux. All the internal functions take care of this, but if you should want to access fields like <tt>.BytesAvailable</tt> of the handle, you can only do so in Windows, i.e. you must check the operating system using <tt>if ispc</tt> to avoid errors in Linux.</p><p>Now first have a look how to obtain a handle to a bluetooth connection.</p><pre class="codeinput"><span class="comment">% Before we open a handle, we clean up to avoid errors:</span>
+BT_CloseAllHandles(<span class="string">'bluetooth.ini'</span>);
+
+<span class="comment">% This only closes all open serial ports matching the COM-port from the</span>
+<span class="comment">% ini-file. More drastical is to close all open COM-ports like this:</span>
+BT_CloseAllHandles;
+</pre><p>Now we can open a connection. Make sure the bluetooth dongle is connected to the NXT brick (using the according software or scripts) before calling this.</p><pre class="codeinput">h = BT_OpenHandle(<span class="string">'bluetooth.ini'</span>, <span class="string">'check'</span>);
+</pre><p>The optional argument <tt>'check'</tt> causes the function so send a keep-alive-packet and to wait for the answer before returning a valid handle. This is very comfortable as it detects a malfunctioning / closed bluetooth connection before the execution of other program code.</p><p>Set the global default handle, so that later on, whenever we're calling functions, we don't have to pass the handle every time.</p><pre class="codeinput">BT_SetDefaultHandle(h);
+
+<span class="comment">% This is self-explanatory</span>
+handle = BT_GetDefaultHandle;
+</pre><p>To close an open connection / handle, just call</p><pre class="codeinput">BT_CloseHandle(h);
+
+<span class="comment">% although this would also do the trick:</span>
+BT_CloseAllHandles(<span class="string">'bluetooth.ini'</span>);
+</pre><h2>Sending and receiving data<a name="10"></a></h2><p>In this section we've got:</p><div><ul><li><tt>BT_CreatePacket</tt></li><li><tt>BT_SendPacket</tt></li><li><tt>BT_CollectPacket</tt></li></ul></div><p>These functions are very "low level" and you should usually not use them on your own, unless you're implementing new NXT functions. All the already implemented NXT functions make use of these.</p><p>First we've got</p><pre class="codeinput">packet = BT_CreatePacket(CommandType, Command, ReplyMode, ContentBytes);
+</pre><p>where ReplyMode either has to be 'reply' or 'dontreply', specifying wether we want an answer from the NXT or not. This command essentially creates the binary data for a packet, taking care of payload size and similar things. For more details see inside the "Bluetooth Engine Demo" file.</p><p>Now it's getting interesting. We've got two functions to send and receive data respectively. Because the LEGO NXT brick has a 30ms latency when switching from transmit to receive mode, we can expect a 60ms latency for a whole sensor reading request.</p><p>Very important is that the NXT can apparently lose packets / commands, because the input buffer (or queue) is of limited size. As we do not know any more details about this, the send and receive functions have the option to wait between subsequent send operations (i.e. to be less "aggressive"). This is where the earlier mentioned settings from the ini file come in:</p><pre>SendSendPause=10
+SendReceivePause=30</pre><p>In this case we demand a 10ms delay between two consecutive send operations. On the other hand, a 30ms pause is required between each send and receive operation (and vice versa receive and send). This should give the NXT enough time so switch between bluetooth transmission modes without loosing any packets.</p><p>Note: The functions are "intelligent" and only pause execution if it is necessary. So if you only try to send a packet once every second, you will not notice this automatic delay, as it is not required.</p><pre class="codeinput"><span class="comment">% for this function, we always have to specify a valid serial port handle</span>
+BT_SendPacket(packet, handle);
+</pre><p>Receiving packets is as easy. Make sure you have requested one before you try to collect something.</p><pre class="codeinput">[type cmd statusbyte content] = BT_CollectPacket(handle);
+</pre><p>The statusbyte will be checked automatically by this function, and if it contains an error message, an according warning will be issued. You can disable the automatic status byte check by calling <tt>BT_CollectPacket(handle, 'dontcheck')</tt>. There is really just one special situation where this is needed: <tt>NXT_LSGetStatus</tt> (see documentation and function code).</p><p><tt>BT_CollectPacket</tt> exactly retrieves one packet from the internal receive buffer. It does so by checking the length of the packet (first two bytes) and then only reads the amount of data that belongs to this specific packet. Be very careful though: If you call it without previously requesting data, there will be nothing to collect, hence the function will return nothing after a timeout or crash, depending on your bluetooth adapter. Even worse, under Linux it will block without the possibility to break until you physically turn off the bluetooth device.</p><h2>NXT system commands<a name="20"></a></h2><p>In this section we've got:</p><div><ul><li><tt>NXT_SetBrickName</tt></li><li><tt>NXT_SendKeepAlive</tt></li><li><tt>NXT_GetBatteryLevel</tt></li></ul></div><p>All functions beginning with <tt>NXT_</tt> are basically just ported from the official <i>LEGO NXT Bluetooth Protocol</i> and <i>Direct Commands</i> documentation.</p><p>Specify a name up to 15 chars long (preferrably no spaces) to name your brick. This can be read out by bluetooth adapters (and later on in a MATLAB function as well, <tt>NXT_GetDeviceInfo</tt>, once it will be implemented). This name will also show up in your bluetooth adapter software when browsing for devices.</p><pre class="codeinput">NXT_SetBrickName(<span class="string">'RaceRobotV3'</span>);
+</pre><p>To keep the NXT from turning off automatically, send a keep-alive packet from time to time (if needed):</p><pre class="codeinput">NXT_SendKeepAlive(<span class="string">'dontreply'</span>);
+</pre><p>If you're interested in the internal sleep time limit setting, just request it:</p><pre class="codeinput">[status SleepTimeLimit] = NXT_SendKeepAlive(<span class="string">'reply'</span>);
+
+<span class="comment">% To see after how many minutes the NXT will shut down:</span>
+minutes = SleepTimeLimit / 1000 / 60;
+</pre><p>So how much energy does my bot have left?</p><pre class="codeinput">voltage = NXT_GetBatteryLevel;
+
+<span class="comment">% actually, the unit is milli volts, so</span>
+voltage = voltage / 1000; <span class="comment">% :-)</span>
+</pre><p>Every function that retrieves (i.e. "gets") values from the NXT is internally split into two parts. But this doesn't have to concern you right now. Note how we called the functions without passing a blutooth handle - we simply set the default handle at the beginning of our program or session.</p><h2>NXT direct commands<a name="27"></a></h2><p>These are the interesting ones:</p><div><ul><li><tt>NXT_PlayTone</tt></li><li><tt>NXT_SetInputMode</tt></li><li><tt>NXT_ResetInputScaledValue</tt></li><li><tt>NXT_GetInputValues</tt></li><li><tt>NXT_ResetMotorPosition</tt></li><li><tt>NXT_SetOutputState</tt></li><li><tt>NXT_GetOutputState</tt></li><li><tt>NXT_StartProgram</tt>, <tt>NXT_StopProgram</tt></li><li><tt>NXT_LSWrite</tt>, <tt>NXT_LSGetStatus</tt>, <tt>NXT_LSRead</tt></li></ul></div><p>This section only covers the syntax, for details what the functions do please consider the official LEGO documentation or the function help.</p><pre class="codeinput"><span class="comment">% frequency is in Hz, duration in ms</span>
+NXT_PlayTone(frequency, duration);
+</pre><pre class="codeinput"><span class="comment">% the common way would be this</span>
+NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, <span class="string">'dontreply'</span>);
+
+<span class="comment">% but if you want an acknowledgement (usually not needed), then use</span>
+status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, <span class="string">'reply'</span>);
+<span class="comment">% note: the statusbyte will be automatically checked anyway (and a warning</span>
+<span class="comment">% issued if necessary), but you can still check the status now to handle the</span>
+<span class="comment">% consequences properly...</span>
+</pre><pre class="codeinput">NXT_ResetInputScaledValue(port);
+<span class="comment">% in this function there is no way to request an acknowledgement...</span>
+</pre><pre class="codeinput"><span class="comment">% only call this after you've set a proper input mode</span>
+data = NXT_GetInputValues(port);
+
+<span class="comment">% simple function, heavy output:</span>
+
+out.Port            <span class="comment">% from what port</span>
+out.Valid           <span class="comment">% is this sensorreading valid? if not, well... discard?</span>
+out.Calibrated      <span class="comment">% for future use of NXT firmware</span>
+out.TypeByte        <span class="comment">% sensor type</span>
+out.TypeName        <span class="comment">% sensor type, but human readable</span>
+out.ModeByte        <span class="comment">% sensor mode</span>
+out.ModeName        <span class="comment">% sensor mode, human readable</span>
+out.RawADVal        <span class="comment">% raw digital value, do nut use</span>
+out.NormalizedADVal <span class="comment">% use THIS, normalized value, 10bits, between 0 and 1023</span>
+out.ScaledVal       <span class="comment">% use this, depends on the input mode you set</span>
+out.CalibratedVal   <span class="comment">% for future use of NXT firmware</span>
+</pre><pre class="codeinput"><span class="comment">% Notation as seen in the Direct Commands doc:</span>
+<span class="comment">% true = relative = BlockTachoCount, false = absolute = RotationCount</span>
+NXT_ResetMotorPosition(port, true);
+</pre><pre class="codeinput"><span class="comment">% more lines for better readability</span>
+NXT_SetOutputState(whatmotor, <span class="keyword">...</span><span class="comment"> % port</span>
+    20, <span class="keyword">...</span><span class="comment">         % power</span>
+    true, <span class="keyword">...</span><span class="comment">       % motoron?</span>
+    true, <span class="keyword">...</span><span class="comment">       % brake?</span>
+    <span class="string">'SPEED'</span>, <span class="keyword">...</span><span class="comment">    % regulation</span>
+    0, <span class="keyword">...</span><span class="comment">          % turnratio</span>
+    <span class="string">'RUNNING'</span>, <span class="keyword">...</span><span class="comment">  % runstate</span>
+    0, <span class="keyword">...</span><span class="comment">          % tacho limit (0 = forever)</span>
+    <span class="string">'dontreply'</span>);   <span class="comment">% replymode</span>
+</pre><pre class="codeinput">out = NXT_GetOutputState(port);
+
+<span class="comment">% just like with GetInputValues: simple call, complex output:</span>
+
+out.Port                <span class="comment">% motornumber</span>
+out.Power               <span class="comment">% power</span>
+out.Mode                <span class="comment">% complete mode-byte (bitfield), see below for easier usage</span>
+out.ModeIsMOTORON       <span class="comment">% boolean, state of MOTORON bit (false means motor has no power)</span>
+out.ModeIsBRAKE         <span class="comment">% boolean, state of electronic braking (improves motor performance)</span>
+out.ModeIsREGULATED     <span class="comment">% boolean, if set, see RegModeName, if not set, reg mode will be IDLE</span>
+out.RegModeByte         <span class="comment">% regulation mode, binary</span>
+out.RegModeName         <span class="comment">% name of regulation mode: IDLE, SPEED, or SYNC</span>
+out.TurnRatio           <span class="comment">% turn ratio, 0 = straight forward</span>
+out.RunStateByte        <span class="comment">% run state, binary</span>
+out.RunStateName        <span class="comment">% name of run state: IDLE, RUNNING, RAMPUP or RAMPDOWN</span>
+out.TachoLimit          <span class="comment">% current tacho limit (we'll call it AngleLimit later on)</span>
+out.TachoCount          <span class="comment">% TachoCount = internal cumulative motor-degree-counter.</span>
+out.BlockTachoCount     <span class="comment">% motor-degree-counter, resettable using "ResetMotorPosition relative"</span>
+out.RotationCount       <span class="comment">% motor-degree-counter, resettable using "ResetMotorPosition absolute"</span>
+</pre><p>To execute "real" Mindstorms programs on the NXT (i.e. programs that you created using the official LEGO software and stored it locally on the NXT), you can call this function:</p><pre class="codeinput">NXT_StartProgram(<span class="string">'MyDemo.rxe'</span>);
+<span class="comment">% the file extension '.rxe' can be omitted, it will then be automatically added</span>
+</pre><p>Stopping the currently running program can be accomplished with</p><pre class="codeinput">NXT_StopProgram();
+</pre><p>There are three more NXT direct commands: <tt>NXT_LSGetStatus</tt>, <tt>NXT_LSWrite</tt>, <tt>NXT_LSRead</tt>. They all have one purpose: Address digital sensors that use the I&sup2;C-Protocol. An example is the ultrasonic sensor, and for more documentation you might want to see the sourcecode of <tt>OpenUltrasonic</tt> and <tt>GetUltrasonic</tt>.</p><p>The idea is to send data (containing I&sup2;C payload) first with <tt>NXT_LSWrite</tt>. Then check the sensor status in a loop using <tt>NXT_LSGetStatus</tt> until it is ready, i.e. until the status byte reports no error and all requested bytes are available. Those bytes can then be received using <tt>NXT_LSRead</tt>.</p><h2>High level sensor control<a name="40"></a></h2><p>In this section we've got:</p><div><ul><li><tt>OpenSwitch</tt></li><li><tt>GetSwitch</tt></li><li><tt>OpenSound</tt></li><li><tt>GetSound</tt></li><li><tt>OpenLight</tt></li><li><tt>GetLight</tt></li><li><tt>OpenUltrasonic</tt></li><li><tt>GetUltrasonic</tt></li><li><tt>CloseSensor</tt></li></ul></div><p>The functions mentioned above provide an easy and simple way to access all sensors. The ultrasonic sensor uses a digital interface and has to be handled in a different way internally, but using these high level functions, you won't see a difference. The only thing worth mentioning: <tt>GetUltrasonic</tt> is about 1.5 up to 2 times slower than the other <tt>Get*</tt> functions (because internally 3 or sometimes 4 packets are needed instead of just 2).</p><p>The <tt>Open*</tt> functions use <tt>NXT_SetInputMode</tt>, while <tt>Get*</tt> calls <tt>NXT_GetInputValues</tt>. <tt>CloseSensor</tt> is necessary to turn off a specific sensor, e.g. turn off the light sensor's red LED in active mode. This will save power.</p><p>You can use raw port numbers starting with 0 just as seen in the official Mindstorms documentation, or you can use the named constants <tt>SENSOR_1</tt> to <tt>SENSOR_4</tt> for better readability. So let's open a few sensors:</p><pre class="codeinput">OpenSwitch(SENSOR_1);
+OpenSound(SENSOR_2, <span class="string">'DB'</span>);     <span class="comment">% have to specify mode, DB or DBA</span>
+OpenLight(SENSOR_3, <span class="string">'ACTIVE'</span>); <span class="comment">% have to specify mode, ACTIVE or INACTIVE</span>
+OpenUltrasonic(SENSOR_4);
+</pre><p>Sensors are ready to be used now, very easy:</p><pre class="codeinput"><span class="keyword">if</span> GetSwitch(SENSOR_1) <span class="comment">% always specify port number!</span>
+    <span class="comment">% the touch sensor is "pressed" now, do something</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+
+<span class="keyword">if</span> GetSound(SENSOR_2) &lt; 100 <span class="comment">% remember, values range from 0 to 1023</span>
+    <span class="comment">% quite silent right now</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+
+<span class="keyword">if</span> GetLight(SENSOR_3) &gt; 1000
+    <span class="comment">% VERY bright sunshine :-)</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+
+<span class="keyword">if</span> GetUltrasonic(SENSOR_4) &lt; 30 <span class="comment">% unit is cm</span>
+    <span class="comment">% we seem close to a wall</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+</pre><p>Note that it is possible to use <tt>NXT_SetInputMode</tt> with a custom mode you like instead of <tt>Open*</tt>, and the <tt>Get</tt>-functions will still work (this is not true for the ultrasonic sensor, but it has totally different modes anyway). Internally they just return the <tt>.NormalizedADVal</tt> value. This makes it possible to automatically count claps and still use the simple functions. Example:</p><pre class="codeinput"><span class="comment">% your old code looks like this</span>
+OpenSound(SENSOR_2, <span class="string">'DB'</span>);
+<span class="comment">% do something</span>
+
+<span class="keyword">while</span>(something)
+    <span class="comment">% note how you continously have to poll the sensor</span>
+    <span class="keyword">if</span> GetSound(SENSOR_2) &gt; 700
+        ClapCount = ClapCount + 1;
+    <span class="keyword">end</span><span class="comment">%if</span>
+<span class="keyword">end</span><span class="comment">%while</span>
+</pre><pre class="codeinput"><span class="comment">% now replace OpenSound by this</span>
+NXT_SetInputMode(SENSOR_2, <span class="string">'SOUND_DB'</span>, <span class="string">'PERIODCOUNTERMODE'</span>, <span class="string">'dontreply'</span>);
+NXT_ResetInputScaledValue(SENSOR_2); <span class="comment">% this is needed if you want to start with 0</span>
+
+<span class="keyword">if</span> GetSound(SENSOR_2) &gt; 500 <span class="comment">% GetSound still works!</span>
+    <span class="comment">% hey, this is a loud atmosphere...</span>
+<span class="keyword">end</span><span class="comment">%if</span>
+
+<span class="comment">% we could do whatever we wanted here:</span>
+pause(10) <span class="comment">% take a little 10s nap</span>
+
+data = NXT_GetInputValues(SENSOR_2);
+ClapCount = data.ScaledVal;
+</pre><p>That was easy. The NXT did the counting for us. For more details about sensor modes see the LEGO documentation, but in a few words: A "transition" (<tt>TRANSITIONCNTMODE</tt>) is whenever the value (<tt>.NormalizedADVal</tt>) changes between the 45% threshold (45% of 1023 is 460). As "period" (<tt>PERIODCOUNTERMODE</tt>) counts when the value goes down from somewhere above 45%, and then changes back up. The "count" happens during the raising part. To see what exactly is happening try the <tt>GUI_WatchAnalogSensor</tt> tool.</p><p>The main point I wanted to make: As you can see, <tt>GetSound</tt> / <tt>GetLight</tt> etc. can peacefully coexist with the <tt>NXT_</tt> functions.</p><p>Clean up when you are done!</p><pre class="codeinput"><span class="comment">% don't forget :-)</span>
+CloseSensor(SENSOR_1);
+CloseSensor(SENSOR_2);
+CloseSensor(SENSOR_3);
+CloseSensor(SENSOR_4);
+</pre><h2>High level motor control<a name="48"></a></h2><p>In this section we've got:</p><div><ul><li><tt>SetMotor</tt></li><li><tt>GetMotor</tt></li><li><tt>SetPower</tt></li><li><tt>SetAngleLimit</tt></li><li><tt>SetTurnRatio</tt></li><li><tt>SetRampMode</tt></li><li><tt>SpeedRegulation</tt></li><li><tt>SyncToMotor</tt></li><li><tt>SendMotorSettings</tt></li><li><tt>GetMotorSettings</tt></li><li><tt>StopMotor</tt></li><li><tt>ResetMotorAngle</tt></li><li><tt>WaitForMotor</tt></li><li><tt>SwitchLamp</tt></li></ul></div><p>These functions provide a very high level and simple way to access almost all motor features. The idea behind this is as follows: First you specify the motor number (port) you want to work with. All successive commands then affect this current motor. Once you are done setting everything you need, you submit these changes and issue a send command.</p><p>Let's just walk through this</p><pre class="codeinput">SetMotor(0); <span class="comment">% first motor is active now</span>
+</pre><p>This is a great opportunity to show that all of these functions accept also strings as input for numbers, i.e.:</p><pre class="codeinput">SetMotor(<span class="string">'0'</span>);
+</pre><p>What's the point of this? Well, we now can use this fancy syntax:</p><pre class="codeinput">SetMotor <span class="string">0</span>
+</pre><p>Another option is to use symbolic constants for port numbers, that map to easy understandable port labels just as found on the NXT:</p><pre class="codeinput">SetMotor(MOTOR_B); <span class="comment">% identical to SetMotor(1);</span>
+</pre><p>In the end it's your choice which way you use to address the ports, however we recommend the usage of constants <tt>MOTOR_A</tt>, <tt>MOTOR_B</tt> and <tt>MOTOR_C</tt>.</p><p>GetMotor just returns the motor you previously set. It can be useful when mixing <tt>NXT_</tt> functions inbetween (they need a motor port as input):</p><pre class="codeinput">NXT_ResetMotorPosition(GetMotor, true); <span class="comment">% good style, works with current motor</span>
+</pre><p>Now the active motor is set, and we can specify all the details we want. When we're done (i.e. when the motor should finally start spinning), we send.</p><pre class="codeinput"><span class="comment">% it's nice to arrange the commands like this</span>
+SetMotor <span class="string">0</span>
+    SetPower <span class="string">50</span>
+    AngleLimit <span class="string">360</span>
+SendMotorSettings
+</pre><p>Voila, motor 0 should have made a full 360&deg; turn by now...</p><p>To let the motor run forever (or until you change your mind and tell it something different), use an angle limit of 0:</p><pre class="codeinput">SetMotor <span class="string">0</span>
+    SetPower <span class="string">50</span>
+    AngleLimit <span class="string">0</span>    <span class="comment">% run till the end of time (or battery, for that matter)</span>
+SendMotorSettings
+</pre><p>If we want the motor to rotate at a constant speed as accurate as possible, we have to enable speed regulation. Like all the other commands, this affects the currently set motor only and the settings will only be applied with the <tt>SendMotorSettings</tt> command.</p><pre class="codeinput">    SpeedRegulation <span class="string">on</span>
+</pre><p>One noteworthy effect of the internal speed regulation is, that the motor will increase the power if the desired rotational speed cannot be met. Example: Consider you set a power of 20 without speed regulation, but your bot is so heavy that it does not move (although you can still hear the motors are trying to). If you enable speed regulation, the motor will internally increase its power until the wheels are moving, just like they would normally without a force acting against them. However, using speed regulation with a power of 100 does NOT give you more power. 100 percent is all that you can get.</p><p>Note: SpeedRegulation seems to somehow deteriorate the motor's precision when targeting small distances (small values for <tt>SetAngleLimit</tt>), so use with care.</p><p>For driving robots, the regulation mode "synchronization" is very interesting. It synchronizes two motors and they then act as if they were connected through an axle, so that the robot can drive straight forward. This is implemented using</p><pre class="codeinput">SetMotor <span class="string">1</span>
+    SyncToMotor <span class="string">2</span>
+    SetPower <span class="string">50</span>
+SendMotorSettings
+</pre><p>In the example above our bot will start driving forward (assuming motor 1 and 2 are the ones with wheels). From the point on where you call <tt>SyncToMotor</tt>, all settings affect both synced motors (if one of them is set active of course). Even <tt>SendMotorSettings</tt> will internally send two packets to each of the motors, so that you can use them as if they were really connected.</p><p>Only with synced motors it is possible to drive curves or turn around:</p><pre class="codeinput">SetMotor <span class="string">1</span>
+    SyncToMotor <span class="string">2</span>
+    SetPower <span class="string">50</span>
+    SetTurnRatio <span class="string">100</span>
+    SetAngleLimit <span class="string">200</span>
+SendMotorSettings
+</pre><p>The turn ratio command shifts power between synced motors. 100 means one motor is spinning forward and the other backwards, resulting in the maximal rotational effect possible. 50 means one motor is running and the other is stopped, and with values bewteen 1 and 49 you can get nice curves (both wheels spinning, but not at equal speed). Needless to say, 0 results in a straight forward direction. You can use negative values for opposite directions (i.e. left and right turning, but that depends on the robot model).</p><p>Ok, so now we want to turn off synchronisation</p><pre class="codeinput">    SyncToMotor <span class="string">off</span>
+</pre><p>Note that a motor can only be synchronized to another motor <i>or</i> speed regulated at a time! We have to manually turn off synchronization, before enabling speed regulation again, and vice versa!</p><pre class="codeinput">    SyncToMotor <span class="string">off</span>
+    SpeedRegulation <span class="string">on</span>
+</pre><p>Note that the function <tt>StopMotor</tt> also resets motor regulation and synchronization. This is by design, see documentation.</p><p>We've got one special setting left:</p><pre class="codeinput">    SetPower <span class="string">100</span>
+    SetAngleLimit <span class="string">1080</span>
+    SetRampMode <span class="string">up</span>
+</pre><p>This uses the motor's runstate <tt>RAMPUP</tt>, which basically accelerates smoothly from the old power to the new power. It's only valid when you specify an angle limit. This is the rotational distance during which the motor will adjust the power to the new value.</p><p>To decelerate ("brake" smoothly) use</p><pre class="codeinput">    SetPower <span class="string">0</span>
+    SetAngleLimit <span class="string">1080</span>
+    SetRampMode <span class="string">down</span>
+</pre><p>or turn it off again (runstate <tt>RUNNING</tt>, "normal" movement), which is also the default setting:</p><pre class="codeinput">    SetRampMode <span class="string">off</span>
+</pre><p>Once we've seen all options for the <tt>SendMotorSettings</tt>, it's worth to know that you can also access all these options with one single line.</p><pre class="codeinput">SendMotorSettings(MOTOR_A, 50, 360, <span class="string">'off'</span>, MOTOR_B, 25, <span class="string">'up'</span>)
+</pre><p>This results in <tt>MOTOR_A</tt> being synced to <tt>MOTOR_B</tt>, both running with power 50, angle-limit 360 degrees, speed-regulation turned 'off', ramp-mode is 'up', and a turn-ratio of 25. Again it's your choice which way you like better, but it is <i>clearly recommended</i> to use the long version, whose syntax is better understandable.</p><p>Ok fine. Now we've got a very handy command here:</p><pre class="codeinput">StopMotor(GetMotor, <span class="string">'off'</span>);
+</pre><p>This will turn off power to the current motor, enabling the so called COAST mode, in which you can rotate the motor freely as you like. Of course I could've also written <tt>StopMotor(0, 'off')</tt>, but I wanted to demonstrate a possible use of <tt>GetMotor</tt> again (avoid too much hardcoding of motor numbers, or of any values at all if possible).</p><p>The other option is</p><pre class="codeinput">StopMotor(GetMotor, <span class="string">'brake'</span>);
+</pre><p>This will actively stop and hold the motor at its current position. Try moving it, it is harder than you think ;-). Works like an emergency brake for driving robots. It consumes quite a lot of power, so you shouldn't leave your bot in this setting for too much time.</p><p>And finally we've got this handy version:</p><pre class="codeinput">StopMotor <span class="string">all</span> <span class="string">off</span> <span class="comment">% note the syntax, short for StopMotor('all', 'off')</span>
+</pre><p>The parameter <tt>all</tt> is special, not just because it is turning off (or braking) all motors, but because it does so <i>at once</i>. Internally only <i>one</i> packet is sent for all three motors, so you only have to expect one third of the lag (compared to sending three packets). Also, you can turn off the motors almost synchronously, compared to one by one with the usual sending delay. It's a nice command that can very often be found at the start or end of programs to ensure all motors are turned off and don't take any power...</p><p>So now we can control the motors, but how do we poll their rotation sensor? The answer is:</p><pre class="codeinput">out = GetMotorSettings(MOTOR_C);
+
+<span class="comment">% so lets look into the results:</span>
+
+out.IsRunning         <span class="comment">% boolean, true if the motor "does something"</span>
+out.Power             <span class="comment">% current power</span>
+out.AngleLimit        <span class="comment">% current set angle limit, 0 means none set</span>
+out.TurnRatio         <span class="comment">% current turn ratio</span>
+
+out.SpeedRegulation   <span class="comment">% boolean, speed regulated or not?</span>
+out.SyncToMotor       <span class="comment">% the motor this one is synced to. -1 means not synced</span>
+
+out.TachoCount        <span class="comment">% internal, non-resettable rotation-counter (in degrees)</span>
+out.Angle             <span class="comment">% current motor position, resettable using</span>
+                      <span class="comment">% ResetMotorAngle(port);</span>
+
+out.MotorBrake        <span class="comment">% boolean, is electronic braking enabled?</span>
+                      <span class="comment">%  (this has nothing to do with braking in a common</span>
+                      <span class="comment">%  sense, just ignore it, should be turned on by</span>
+                      <span class="comment">%  default anyway as it improves motor performance)</span>
+</pre><p>This should give us all information about the motor we need. Internally a <tt>NXT_GetOutputState</tt> is used of course. Note that the <tt>.Angle</tt> value is actually the NXT internal <tt>BlockTachoCount</tt>, which you can reset using <tt>ResetMotorAngle()</tt> or <tt>NXT_ResetMotorPosition(GetMotor, true)</tt> (i.e. what is called <i>relative</i> motor position in the official Mindstorms documentation).</p><pre class="codeinput">ResetMotorAngle(MOTOR_A);
+</pre><p>The <tt>.TachoCount</tt> on the other hand is much like your car's mileage counter. It gives the total amount of degrees the motor has rotated since the NXT was turned on, and it is not resettable (it will however be resetted, when a new external program is started, which you can enforce using <tt>NXT_StartProgram</tt>). You can also set it back to zero if you turn the motor back exactly the amount it was turned forward :-). Restarting the NXT brick is a more comfortable way...</p><p>We have got yet one more very handy function for you. Suppose you've just set your motor to run a certain distance, i.e. using</p><pre class="codeinput">SetMotor <span class="string">0</span>
+    SetPower <span class="string">20</span>
+    SetAngleLimit <span class="string">360</span>
+SendMotorSettigns
+</pre><p>Now power 20 is not very fast, so it will take some time for the motor until it has reached its angle limit. But how do you know when it's done? You could create a loop and constantly call <tt>GetMotorSettings</tt> to check wether <tt>.IsRunning</tt> is set or not. And this is exactly what <tt>WaitForMotor</tt> does.</p><pre class="codeinput">SetMotor <span class="string">0</span>
+    SetPower <span class="string">20</span>
+    SetAngleLimit <span class="string">360</span>
+SendMotorSettigns
+
+WaitForMotor(GetMotor) <span class="comment">% you've seen me using GetMotor before...</span>
+
+<span class="comment">% if this WaitForMotor was not here, we would send the</span>
+<span class="comment">% PlaySound command DIRECTLY after starting the motor!</span>
+<span class="comment">% Try it for yourself. Basically our Matlab is "blocked" now and holds</span>
+<span class="comment">% execution, until the motor is done...</span>
+
+NXT_PlaySound(440, 200)
+</pre><p>This will play a short beep on the NXT immediately after the motor has reached its angle limit. Of course that does <i>not</i> mean that the motor has stopped already: It's currently in coast mode and will keep turning a short while. That is why, the following commands sequence is often used to try to stop at a certain position:</p><pre class="codeinput"><span class="comment">% ...</span>
+SendMotorSettigns
+WaitForMotor(GetMotor)
+StopMotor(GetMotor, <span class="string">'brake'</span>) <span class="comment">% actively hold still</span>
+pause(1) <span class="comment">% do so for a short while</span>
+<span class="comment">% active braking has a high power consumption, so:</span>
+StopMotor(GetMotor, <span class="string">'off'</span>) <span class="comment">% release motor</span>
+</pre><p><tt>WaitForMotor</tt> has one more parameter that you can use. Imagine what happens with this code snippet:</p><pre class="codeinput">SetMotor <span class="string">0</span>
+    SetPower <span class="string">20</span>
+    SetAngleLimit <span class="string">0</span> <span class="comment">% 0 means no angle limit = run forever</span>
+SendMotorSettigns
+WaitForMotor(GetMotor)
+</pre><p>See it? You've created an endless loop. Matlab will block till the end of time (or battery in this case), as the motor will not stop. Why should it, it has no angle limit set.</p><p>Something else can happen: You can set an angle limit, let's say a certain distance for a driving robot. But there is a wall, the bot can't go any further, and again: Endless loop, because the motor will not reach its angle limit.</p><p>The solution for this is a built-in timeout. Try:</p><pre class="codeinput">WaitForMotor(GetMotor, 10)
+</pre><p>or use this syntax if you like it better:</p><pre class="codeinput">WaitForMotor <span class="string">0</span> <span class="string">10</span>
+</pre><p>This time the function will only block for a maximum of 10 seconds. If the motor is done earlier, fine. Then the function will exit of course. But if it got stuck or is in an endless loop, after the timeout period (you can use fractions by the way, like 5.7) <tt>WaitForMotor</tt> will continue execution. The price for avoiding this endless loop / Matlab block: When specifying a timeout, you cannot be sure that the motor really has stopped, or wether it timed out. So take care of the consequences on your own (e.g. by reading <tt>.Angle</tt> to see wether the specified angle limit was met, or by checking <tt>.IsRunning</tt> to see if the motor is still blocked)...</p><p>The motor ports can also be used for other actuators besides the NXT motors. Lamps can be connected, too. The following function can be used to turn the lamp  on and a short while later off.</p><pre class="codeinput">SwitchLamp(MOTOR_C, <span class="string">'on'</span>);
+pause(1)
+SwitchLamp(MOTOR_C, <span class="string">'off'</span>);
+</pre><p>It is also possible to use 'all' as port-number, just like you've seen for <tt>StopMotor</tt>:</p><pre class="codeinput">SwitchLamp <span class="string">all</span> <span class="string">off</span>
+</pre><p>There is no secret behind <tt>SwitchLamp</tt> - it just sets power 100 for the specific output port. You could have used <tt>SendMotorSettings</tt> as well, but <tt>SwitchLamp</tt> is easier in this case and better to understand.</p><h2>Lowlevel and helper functions<a name="85"></a></h2><p>Actually there is not much to see in here, just mentioning:</p><div><ul><li><tt>wordbytes2dec</tt></li><li><tt>dec2wordbytes</tt></li><li><tt>readFromIniFile</tt></li></ul></div><p>Very quickly, just to mention: We've got two functions that can help you converting numbers into the correct binary byte ordering (considering the little-endian format: LSB first, that the NXT uses). If you want more information, look it up in the documentation...</p><pre class="codeinput">x = dec2wordbytes(-1, 1, <span class="string">'signed'</span>);
+<span class="comment">% x is now a signed byte, 0xFF = 255</span>
+
+y = wordbytes2dec(bytearray, 4); <span class="comment">% default is unsigned</span>
+<span class="comment">% y is now a 32bit unsigned integer</span>
+</pre><p>And finally an easy way to read data from ini files:</p><pre class="codeinput"><span class="comment">%                         [Bluetooth]     Key=          Filename</span>
+ComPort = readFromIniFile(inisection, <span class="string">'SerialPort'</span>, <span class="string">'bluetooth.ini'</span>);
+</pre><h2>Displaying text on the screen (inside the command window)<a name="89"></a></h2><p>An important function gets its own chapter:</p><div><ul><li><tt>textOut</tt></li></ul></div><p>There are several ways in Matlab to display text in the command window, like <tt>disp</tt> or <tt>fprintf</tt>. However, we use our own creation <tt>textOut</tt>, mainly to have a general wrapper that we can modify.</p><p>Advantages: <tt>textOut</tt> supports writing to a logfile if desired and conditional output (basically turns it off for a while).</p><p>Very easy to use, the function takes a string as input (that is probably best to create with <tt>sprintf</tt>):</p><pre class="codeinput">x = <span class="string">'world'</span>;
+y = 2007;
+textOut(sprintf(<span class="string">'Hello %s, it is the year %d!\n'</span>, x, y));
+<span class="comment">% Results in:  &gt;&gt; Hello world, it is the year 2007!</span>
+</pre><p>Note the <tt>'\n'</tt> at the end to finish the line. The use of <tt>sprintf</tt> might seem uncomfortable, but it is necessary.</p><p>Now the more advanced features:</p><pre class="codeinput"><span class="keyword">global</span> EnableLogging
+<span class="keyword">global</span> Logfilename
+
+EnableLogging = true;
+Logfilename = <span class="string">'logfile.txt'</span>;
+
+textOut(sprintf(<span class="string">'Whatever I say here will be logged to the file as well.\n'</span>));
+</pre><p>Two additional paramers now:</p><pre class="codeinput">textOut(sprintf(<span class="string">'Only appears in the command window\n'</span>), <span class="string">'screenonly'</span>);
+textOut(sprintf(<span class="string">'Only appears in the logfile, if logging enabled\n'</span>), <span class="string">'logonly'</span>);
+</pre><p>And now the option you've all been waiting for: How do I shut it up? :-)</p><pre class="codeinput"><span class="keyword">global</span> DisableScreenOut
+
+DisableScreenOut = true;
+
+textOut(sprintf([<span class="string">'If logging is enabled, this goes to the logfile,'</span>, <span class="keyword">...</span>
+                  <span class="string">'if not, this goes nowhere\n'</span>]));
+</pre><p>And what do we see now? Right:</p><pre class="codeinput"><span class="comment">% nothing</span>
+</pre><p>If you mess with this global variable, it is nice to get its state before and set it back afterwards, to improve compatibility with other functions:</p><pre class="codeinput"><span class="keyword">global</span> DisableScreenOut
+oldstate = DisableScreenOut;
+DisableScreenOut = true;
+
+    <span class="comment">% do your silent stuff in here</span>
+
+DisableScreenOut = oldstate;
+</pre><h2>List of global variables<a name="97"></a></h2><p>In this section there is just a list of global variables that are being used by our functions. <b>PLEASE DO NOT EDIT THEM!</b> If available, use appropriate <tt>Get</tt> and <tt>Set</tt> functions.</p><p>As seen above, in use by <tt>textOut</tt>, modifying is allowed:</p><pre class="codeinput"><span class="keyword">global</span> DisableScreenOut
+<span class="keyword">global</span> EnableLogging
+<span class="keyword">global</span> Logfilename
+</pre><p>Bluetooth internals. Do NOT access directly!</p><pre class="codeinput"><span class="keyword">global</span> BT_DefaultHandle     <span class="comment">% has its own Get and Set functions</span>
+<span class="keyword">global</span> BT_SendSendPause     <span class="comment">% read from ini file</span>
+<span class="keyword">global</span> BT_SendReceivePause  <span class="comment">% read from ini file</span>
+<span class="keyword">global</span> BT_LastSendTime      <span class="comment">% used by BT_Send and BT_Collect</span>
+<span class="keyword">global</span> BT_LastReceiveTime   <span class="comment">% used by BT_Send and BT_Collect</span>
+</pre><p>NXT / high level motor control internals. Do NOT access directly:</p><pre class="codeinput"><span class="keyword">global</span> NXTMOTOR_CurrentMotor <span class="comment">% used by Get and SetMotor</span>
+<span class="keyword">global</span> NXTMOTOR_State        <span class="comment">% array of structs, used by almost everything</span>
+
+<span class="keyword">global</span> NXTMOTOR_LeftWheel    <span class="comment">% used later on for robot control in high level</span>
+<span class="keyword">global</span> NXTMOTOR_RightWheel   <span class="comment">% functions like TurnRobot...</span>
+
+<span class="comment">% default values here (like the BRAKE bit)</span>
+</pre><div><ul><li><tt>resetMotorRegulation</tt> is a little helper that sets a few values inside the <tt>NXTMOTOR_State</tt> struct sometimes when synchronisation mode is changed. Improves code readability...</li></ul></div><p><b>Credits</b></p><p>Thank you for reading so far. Feel free to contact me here:</p><p>atorf (at) lfb.rwth-aachen.de</p><p><i>Linus Atorf, 23.11.2007 (Version 1.4, last change before toolbox release)</i></p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% LEGO Mindstorms NXT Matlab Functions Overview
+%
+% *DOCUMENT IS OUTDATED*
+%
+% _This tutorial was written for Toolbox version 1.0 and still applies
+% partly to version 2.x, but in general it's outdated and not supposed to
+% be used anymore. Look for "Tutorial: Programming Robots" inside the
+% MATLAB help instead_
+%
+%
+% This document is a tutorial on how to use the functions that come with the 
+% RWTH - Mindstorms NXT Toolbox.
+% 
+
+
+%% Bluetooth connections and serial handles
+% In this section we've got:
+%%
+% * |BT_OpenHandle|
+% * |BT_CloseHandle|
+% * |BT_CloseAllHandles|
+% * |BT_SetDefaultHandle|
+% * |BT_GetDefaultHandle|
+% * |BT_MakeConfigFile|
+
+
+%%
+% To communicate with the NXT via bluetooth, we have to use the SPP (serial
+% port profile), which basically works like a virtual serial port. This is
+% why we can send and receive data from within MATLAB through the serial
+% port commands.
+%
+% To handle different connections or bluetooth adapters on different
+% computers easily, a certain ini-file with settings for the MATLAB functions must be
+% present in the current directory (or one that can be found through path settings).
+%
+% The ini-file format looks like this
+%%
+%  [Bluetooth]
+%  
+%  SerialPort=COM3
+%  BaudRate=57600
+%  DataBits=8
+%  
+%  SendSendPause=10
+%  SendReceivePause=30
+%  
+%  TimeOut=2
+%
+% The serial settings should be self explaining. Explanation of the
+% send-pause-values will follow later on. The |TimeOut| parameter only has
+% an effect when using Windows. It sets the period the bluetooth stack
+% should wait when it is "missing data". The MATLAB-internal default value
+% of 10 causes annoying freezes in certain robot programs on certain
+% computers (a direct cause is not yet found). By setting 2 (the toolbox default
+% value), one should get a fairly stable experience with very rare execution pauses of 2 
+% seconds. Smaller timeout values can lead to real packet loss which has
+% not been examined yet.
+%
+% To create a bluetooth configuration ini-file, a standard editor can be used.
+% A more comfortable way is to use the GUI-guided program:
+BT_MakeConfigFile;
+
+%%
+% The following functions work under Windows as well as Linux, with one big
+% exception: The returned handle will be a |serial| struct in Windows, but a
+% simple scalar file handle in Linux. All the internal functions take care
+% of this, but if you should want to access fields like |.BytesAvailable|
+% of the handle, you can only do so in Windows, i.e. you must check the
+% operating system using |if ispc| to avoid errors in Linux.
+%
+% Now first have a look how to obtain a handle to a bluetooth connection.
+
+% Before we open a handle, we clean up to avoid errors:
+BT_CloseAllHandles('bluetooth.ini');
+
+% This only closes all open serial ports matching the COM-port from the
+% ini-file. More drastical is to close all open COM-ports like this:
+BT_CloseAllHandles;
+
+%%
+% Now we can open a connection. Make sure the bluetooth dongle is connected
+% to the NXT brick (using the according software or scripts) before calling this.
+h = BT_OpenHandle('bluetooth.ini', 'check');
+%%
+% The optional argument |'check'| causes the function so send a
+% keep-alive-packet and to wait for the answer before returning a valid
+% handle. This is very comfortable as it detects a malfunctioning / closed
+% bluetooth connection before the execution of other program code.
+
+%%
+% Set the global default handle, so that later on, whenever we're calling
+% functions, we don't have to pass the handle every time.
+BT_SetDefaultHandle(h);
+
+% This is self-explanatory
+handle = BT_GetDefaultHandle;
+
+%%
+% To close an open connection / handle, just call
+BT_CloseHandle(h);
+
+% although this would also do the trick:
+BT_CloseAllHandles('bluetooth.ini');
+
+
+%% Sending and receiving data
+% In this section we've got:
+%%
+% * |BT_CreatePacket|
+% * |BT_SendPacket|
+% * |BT_CollectPacket|
+%%
+% These functions are very "low level" and you should usually not use them
+% on your own, unless you're implementing new NXT functions. All the
+% already implemented NXT functions make use of these.
+
+%%
+% First we've got
+packet = BT_CreatePacket(CommandType, Command, ReplyMode, ContentBytes);
+
+%%
+% where ReplyMode either has to be 'reply' or 'dontreply', specifying
+% wether we want an answer from the NXT or not. This command essentially
+% creates the binary data for a packet, taking care of payload size and
+% similar things.
+% For more details see inside the "Bluetooth Engine Demo" file.
+
+%%
+% Now it's getting interesting. We've got two functions to send and receive
+% data respectively. Because the LEGO NXT brick has a 30ms latency when
+% switching from transmit to receive mode, we can expect a 60ms latency for
+% a whole sensor reading request.
+%
+% Very important is that the NXT can apparently lose packets / commands,
+% because the input buffer (or queue) is of limited size. As we do not know
+% any more details about this, the send and receive functions have the option to
+% wait between subsequent send operations (i.e. to be less "aggressive").
+% This is where the earlier mentioned settings from the ini file come in:
+%%
+%  SendSendPause=10
+%  SendReceivePause=30
+%%
+% In this case we demand a 10ms delay between two consecutive send
+% operations. On the other hand, a 30ms pause is required between each send
+% and receive operation (and vice versa receive and send). This should give
+% the NXT enough time so switch between bluetooth transmission modes
+% without loosing any packets.
+%
+% Note: The functions are "intelligent" and only pause execution if it is
+% necessary. So if you only try to send a packet once every second, you
+% will not notice this automatic delay, as it is not required.
+
+% for this function, we always have to specify a valid serial port handle
+BT_SendPacket(packet, handle);
+
+%%
+% Receiving packets is as easy. Make sure you have requested one before you
+% try to collect something.
+[type cmd statusbyte content] = BT_CollectPacket(handle);
+
+%%
+% The statusbyte will be checked automatically by this function, and if it
+% contains an error message, an according warning will be issued. You can 
+% disable the automatic status byte check by calling
+% |BT_CollectPacket(handle, 'dontcheck')|. There is really just one special
+% situation where this is needed: |NXT_LSGetStatus| (see documentation and function
+% code).
+%
+% |BT_CollectPacket| exactly retrieves one packet from the internal receive buffer.
+% It does so by checking the length of the packet (first two bytes) and
+% then only reads the amount of data that belongs to this specific packet.
+% Be very careful though: If you call it without previously requesting
+% data, there will be nothing to collect, hence the function will return
+% nothing after a timeout or crash, depending on your bluetooth adapter.
+% Even worse, under Linux it will block without the possibility to break
+% until you physically turn off the bluetooth device.
+%
+
+%% NXT system commands
+% In this section we've got:
+%%
+% * |NXT_SetBrickName|
+% * |NXT_SendKeepAlive|
+% * |NXT_GetBatteryLevel|
+%%
+% All functions beginning with |NXT_| are basically just ported from the
+% official _LEGO NXT Bluetooth Protocol_ and _Direct Commands_
+% documentation.
+%
+% Specify a name up to 15 chars long (preferrably no spaces) to name your
+% brick. This can be read out by bluetooth adapters (and later on in a
+% MATLAB function as well, |NXT_GetDeviceInfo|, once it will be implemented). This
+% name will also show up in your bluetooth adapter software when browsing
+% for devices.
+
+NXT_SetBrickName('RaceRobotV3');
+
+%%
+% To keep the NXT from turning off automatically, send a keep-alive packet
+% from time to time (if needed):
+NXT_SendKeepAlive('dontreply');
+
+%%
+% If you're interested in the internal sleep time limit setting, just
+% request it:
+[status SleepTimeLimit] = NXT_SendKeepAlive('reply');
+
+% To see after how many minutes the NXT will shut down:
+minutes = SleepTimeLimit / 1000 / 60;
+
+%%
+% So how much energy does my bot have left?
+voltage = NXT_GetBatteryLevel;
+
+% actually, the unit is milli volts, so
+voltage = voltage / 1000; % :-)
+
+%%
+% Every function that retrieves (i.e. "gets") values from the
+% NXT is internally split into two parts. But this doesn't have to concern
+% you right now.
+% Note how we called the functions without passing a blutooth handle - we
+% simply set the default handle at the beginning of our program or session.
+
+
+%% NXT direct commands
+% These are the interesting ones:
+%%
+% * |NXT_PlayTone|
+% * |NXT_SetInputMode|
+% * |NXT_ResetInputScaledValue|
+% * |NXT_GetInputValues|
+% * |NXT_ResetMotorPosition|
+% * |NXT_SetOutputState|
+% * |NXT_GetOutputState|
+% * |NXT_StartProgram|, |NXT_StopProgram|
+% * |NXT_LSWrite|, |NXT_LSGetStatus|, |NXT_LSRead|
+% 
+
+%% 
+% This section only covers the syntax, for details what the functions do
+% please consider the official LEGO documentation or the function help.
+
+%%
+
+% frequency is in Hz, duration in ms
+NXT_PlayTone(frequency, duration);
+
+%%
+
+% the common way would be this
+NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, 'dontreply');
+
+% but if you want an acknowledgement (usually not needed), then use
+status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, 'reply');
+% note: the statusbyte will be automatically checked anyway (and a warning
+% issued if necessary), but you can still check the status now to handle the
+% consequences properly...
+
+%%
+NXT_ResetInputScaledValue(port);
+% in this function there is no way to request an acknowledgement...
+
+%%
+
+% only call this after you've set a proper input mode
+data = NXT_GetInputValues(port);
+
+% simple function, heavy output:
+
+out.Port            % from what port
+out.Valid           % is this sensorreading valid? if not, well... discard?
+out.Calibrated      % for future use of NXT firmware
+out.TypeByte        % sensor type
+out.TypeName        % sensor type, but human readable 
+out.ModeByte        % sensor mode
+out.ModeName        % sensor mode, human readable
+out.RawADVal        % raw digital value, do nut use
+out.NormalizedADVal % use THIS, normalized value, 10bits, between 0 and 1023
+out.ScaledVal       % use this, depends on the input mode you set
+out.CalibratedVal   % for future use of NXT firmware
+
+%%
+
+% Notation as seen in the Direct Commands doc:
+% true = relative = BlockTachoCount, false = absolute = RotationCount
+NXT_ResetMotorPosition(port, true);
+
+%%
+
+% more lines for better readability
+NXT_SetOutputState(whatmotor, ... % port
+    20, ...         % power
+    true, ...       % motoron?
+    true, ...       % brake?
+    'SPEED', ...    % regulation
+    0, ...          % turnratio
+    'RUNNING', ...  % runstate
+    0, ...          % tacho limit (0 = forever)
+    'dontreply');   % replymode    
+
+
+%% 
+
+out = NXT_GetOutputState(port);
+
+% just like with GetInputValues: simple call, complex output:
+
+out.Port                % motornumber
+out.Power               % power
+out.Mode                % complete mode-byte (bitfield), see below for easier usage
+out.ModeIsMOTORON       % boolean, state of MOTORON bit (false means motor has no power)
+out.ModeIsBRAKE         % boolean, state of electronic braking (improves motor performance)
+out.ModeIsREGULATED     % boolean, if set, see RegModeName, if not set, reg mode will be IDLE
+out.RegModeByte         % regulation mode, binary
+out.RegModeName         % name of regulation mode: IDLE, SPEED, or SYNC
+out.TurnRatio           % turn ratio, 0 = straight forward
+out.RunStateByte        % run state, binary
+out.RunStateName        % name of run state: IDLE, RUNNING, RAMPUP or RAMPDOWN
+out.TachoLimit          % current tacho limit (we'll call it AngleLimit later on)
+out.TachoCount          % TachoCount = internal cumulative motor-degree-counter.
+out.BlockTachoCount     % motor-degree-counter, resettable using "ResetMotorPosition relative"
+out.RotationCount       % motor-degree-counter, resettable using "ResetMotorPosition absolute"
+
+%%
+% To execute "real" Mindstorms programs on the NXT (i.e. programs that
+% you created using the official LEGO software and stored it locally on the
+% NXT), you can call this function:
+
+NXT_StartProgram('MyDemo.rxe');
+% the file extension '.rxe' can be omitted, it will then be automatically added
+
+%%
+% Stopping the currently running program can be accomplished with
+NXT_StopProgram();
+
+
+%% 
+% There are three more NXT direct commands: |NXT_LSGetStatus|,
+% |NXT_LSWrite|, |NXT_LSRead|. They all have one purpose: Address digital
+% sensors that use the I²C-Protocol. An example is the ultrasonic sensor,
+% and for more documentation you might want to see the sourcecode of
+% |OpenUltrasonic| and |GetUltrasonic|.
+%
+% The idea is to send data (containing I²C payload) first with |NXT_LSWrite|.
+% Then check the sensor status in a loop using |NXT_LSGetStatus| until it
+% is ready, i.e. until the status byte reports no error and all requested bytes
+% are available. Those bytes can then be received using |NXT_LSRead|. 
+%
+
+
+%% High level sensor control
+% In this section we've got:
+
+%%
+% * |OpenSwitch|
+% * |GetSwitch|
+% * |OpenSound|
+% * |GetSound|
+% * |OpenLight|
+% * |GetLight|
+% * |OpenUltrasonic|
+% * |GetUltrasonic|
+% * |CloseSensor|
+
+%%
+% The functions mentioned above provide an easy and simple way to access
+% all sensors. The ultrasonic sensor uses a digital interface and 
+% has to be handled in a different way internally, but using these high
+% level functions, you won't see a difference. The only thing worth
+% mentioning: |GetUltrasonic| is about 1.5 up to 2 times slower than the
+% other |Get*| functions (because internally 3 or sometimes 4 packets are
+% needed instead of just 2).
+%
+% The |Open*| functions use |NXT_SetInputMode|, while |Get*|
+% calls |NXT_GetInputValues|. |CloseSensor| is necessary to turn off a
+% specific sensor, e.g. turn off the light sensor's red LED in active mode.
+% This will save power.
+%
+% You can use raw port numbers starting with 0 just as seen in the official Mindstorms
+% documentation, or you can use the named constants |SENSOR_1| to |SENSOR_4| for better
+% readability. So let's open a few sensors:
+
+OpenSwitch(SENSOR_1);
+OpenSound(SENSOR_2, 'DB');     % have to specify mode, DB or DBA
+OpenLight(SENSOR_3, 'ACTIVE'); % have to specify mode, ACTIVE or INACTIVE
+OpenUltrasonic(SENSOR_4);
+
+%%
+% Sensors are ready to be used now, very easy:
+
+if GetSwitch(SENSOR_1) % always specify port number!
+    % the touch sensor is "pressed" now, do something
+end%if
+
+if GetSound(SENSOR_2) < 100 % remember, values range from 0 to 1023
+    % quite silent right now
+end%if    
+
+if GetLight(SENSOR_3) > 1000
+    % VERY bright sunshine :-)
+end%if
+
+if GetUltrasonic(SENSOR_4) < 30 % unit is cm
+    % we seem close to a wall
+end%if
+
+%%
+% Note that it is possible to use |NXT_SetInputMode| with a custom mode you
+% like instead of |Open*|, and the |Get|-functions will still work (this is
+% not true for the ultrasonic sensor, but it has totally different modes 
+% anyway).
+% Internally they just return the |.NormalizedADVal| value. This makes it
+% possible to automatically count claps and still use the simple
+% functions. Example:
+
+% your old code looks like this
+OpenSound(SENSOR_2, 'DB');  
+% do something
+
+while(something)
+    % note how you continously have to poll the sensor
+    if GetSound(SENSOR_2) > 700
+        ClapCount = ClapCount + 1;
+    end%if
+end%while
+
+%%
+
+% now replace OpenSound by this
+NXT_SetInputMode(SENSOR_2, 'SOUND_DB', 'PERIODCOUNTERMODE', 'dontreply');
+NXT_ResetInputScaledValue(SENSOR_2); % this is needed if you want to start with 0
+
+if GetSound(SENSOR_2) > 500 % GetSound still works!
+    % hey, this is a loud atmosphere...
+end%if
+
+% we could do whatever we wanted here:
+pause(10) % take a little 10s nap
+
+data = NXT_GetInputValues(SENSOR_2);
+ClapCount = data.ScaledVal;
+
+%%
+% That was easy. The NXT did the counting for us. For more details about
+% sensor modes see the LEGO documentation, but in a few words: A
+% "transition" (|TRANSITIONCNTMODE|) is whenever the value (|.NormalizedADVal|)
+% changes between the 45% threshold (45% of 1023 is 460). As "period"
+% (|PERIODCOUNTERMODE|) counts when the value goes down from somewhere above
+% 45%, and then changes back up. The "count" happens during the raising
+% part. To see what exactly is happening try the |GUI_WatchAnalogSensor|
+% tool.
+%
+% The main point I wanted to make: As you can see, |GetSound| / |GetLight|
+% etc. can peacefully coexist with the |NXT_| functions.
+
+%%
+% Clean up when you are done!
+
+% don't forget :-)
+CloseSensor(SENSOR_1);
+CloseSensor(SENSOR_2);
+CloseSensor(SENSOR_3);
+CloseSensor(SENSOR_4);
+
+
+%% High level motor control
+% In this section we've got:
+
+%%
+% * |SetMotor|
+% * |GetMotor|
+% * |SetPower|
+% * |SetAngleLimit|
+% * |SetTurnRatio|
+% * |SetRampMode|
+% * |SpeedRegulation|
+% * |SyncToMotor|
+% * |SendMotorSettings|
+% * |GetMotorSettings|
+% * |StopMotor|
+% * |ResetMotorAngle|
+% * |WaitForMotor|
+% * |SwitchLamp|
+
+%%
+% These functions provide a very high level and simple way to access almost
+% all motor features. The idea behind this is as follows: First you specify
+% the motor number (port) you want to work with. All successive commands
+% then affect this current motor. Once you are done setting everything you
+% need, you submit these changes and issue a send command.
+%
+% Let's just walk through this
+
+SetMotor(0); % first motor is active now
+
+%%
+% This is a great opportunity to show that all of these functions accept
+% also strings as input for numbers, i.e.:
+
+SetMotor('0');
+
+%%
+% What's the point of this? Well, we now can use this fancy syntax:
+
+SetMotor 0
+
+%%
+% Another option is to use symbolic constants for port numbers, that map to
+% easy understandable port labels just as found on the NXT:
+
+SetMotor(MOTOR_B); % identical to SetMotor(1);
+
+%%
+% In the end it's your choice which way you use to address the ports,
+% however we recommend the usage of constants |MOTOR_A|, |MOTOR_B| and
+% |MOTOR_C|.
+
+
+%%
+% GetMotor just returns the motor you previously set. It can be useful when
+% mixing |NXT_| functions inbetween (they need a motor port as input):
+
+NXT_ResetMotorPosition(GetMotor, true); % good style, works with current motor
+
+%%
+% Now the active motor is set, and we can specify all the details we want.
+% When we're done (i.e. when the motor should finally start spinning), we
+% send.
+
+% it's nice to arrange the commands like this
+SetMotor 0
+    SetPower 50
+    AngleLimit 360
+SendMotorSettings
+
+%%
+% Voila, motor 0 should have made a full 360° turn by now...
+%
+% To let the motor run forever (or until you change your mind and tell it
+% something different), use an angle limit of 0:
+%
+
+SetMotor 0
+    SetPower 50
+    AngleLimit 0    % run till the end of time (or battery, for that matter)
+SendMotorSettings
+
+
+%%
+% If we want the motor to rotate at a constant speed as accurate as
+% possible, we have to enable speed regulation. Like all the other
+% commands, this affects the currently set motor only and the settings will
+% only be applied with the |SendMotorSettings| command.
+
+    SpeedRegulation on
+
+%%
+% One noteworthy effect of the internal speed regulation is, that the motor
+% will increase the power if the desired rotational speed cannot be met.
+% Example: Consider you set a power of 20 without speed regulation, but
+% your bot is so heavy that it does not move (although you can still hear
+% the motors are trying to). If you enable speed regulation, the motor will
+% internally increase its power until the wheels are moving, just like they
+% would normally without a force acting against them. However, using speed
+% regulation with a power of 100 does NOT give you more power. 100 percent
+% is all that you can get.
+%
+% Note: SpeedRegulation seems to somehow deteriorate the motor's precision
+% when targeting small distances (small values for |SetAngleLimit|), so use
+% with care.
+%
+% For driving robots, the regulation mode "synchronization" is very
+% interesting. It synchronizes two motors and they then act as if they were
+% connected through an axle, so that the robot can drive straight forward.
+% This is implemented using
+%
+
+SetMotor 1
+    SyncToMotor 2
+    SetPower 50
+SendMotorSettings
+
+%%
+% In the example above our bot will start driving forward (assuming motor 1 and
+% 2 are the ones with wheels). From the point on where you call 
+% |SyncToMotor|, all settings affect both synced motors (if one of them is
+% set active of course). Even |SendMotorSettings| will internally send two
+% packets to each of the motors, so that you can use them as if they were
+% really connected.
+%
+% Only with synced motors it is possible to drive curves or turn around:
+
+SetMotor 1
+    SyncToMotor 2
+    SetPower 50
+    SetTurnRatio 100
+    SetAngleLimit 200
+SendMotorSettings
+
+%%
+% The turn ratio command shifts power between synced motors. 100 means one
+% motor is spinning forward and the other backwards, resulting in the
+% maximal rotational effect possible. 50 means one motor is running and the
+% other is stopped, and with values bewteen 1 and 49 you can get nice
+% curves (both wheels spinning, but not at equal speed). Needless to say, 0
+% results in a straight forward direction. You can use negative values for
+% opposite directions (i.e. left and right turning, but that depends on the
+% robot model).
+%
+% Ok, so now we want to turn off synchronisation
+
+    SyncToMotor off
+    
+%%
+% Note that a motor can only be synchronized to
+% another motor _or_ speed regulated at a time! We have to manually turn
+% off synchronization, before enabling speed regulation again, and vice
+% versa!
+
+    SyncToMotor off
+    SpeedRegulation on
+
+%%
+% Note that the function |StopMotor| also resets motor regulation and synchronization. This is
+% by design, see documentation.
+
+    
+%% 
+% We've got one special setting left:
+
+    SetPower 100
+    SetAngleLimit 1080
+    SetRampMode up
+
+%%
+% This uses the motor's runstate |RAMPUP|, which basically accelerates
+% smoothly from the old power to the new power. It's only valid when you
+% specify an angle limit. This is the rotational distance during which the
+% motor will adjust the power to the new value.
+%
+% To decelerate ("brake" smoothly) use
+
+    SetPower 0
+    SetAngleLimit 1080
+    SetRampMode down
+    
+%%
+% or turn it off again (runstate |RUNNING|, "normal" movement), which is
+% also the default setting:
+
+    SetRampMode off
+    
+%%
+% Once we've seen all options for the |SendMotorSettings|, it's worth to
+% know that you can also access all these options with one single line.
+
+SendMotorSettings(MOTOR_A, 50, 360, 'off', MOTOR_B, 25, 'up')
+
+%%
+% This results in |MOTOR_A| being synced to |MOTOR_B|, both running with power
+% 50, angle-limit 360 degrees, speed-regulation turned 'off', ramp-mode is
+% 'up', and a turn-ratio of 25.
+% Again it's your choice which way you like better, but it is _clearly
+% recommended_ to use the long version, whose syntax is better
+% understandable.
+%
+
+    
+%%
+% Ok fine. Now we've got a very handy command here:
+
+StopMotor(GetMotor, 'off');
+
+%%
+% This will turn off power to the current motor, enabling the so called
+% COAST mode, in which you can rotate the motor freely as you like.
+% Of course I could've also written |StopMotor(0, 'off')|, but I wanted to
+% demonstrate a possible use of |GetMotor| again (avoid too much hardcoding of
+% motor numbers, or of any values at all if possible).
+%
+% The other option is 
+
+StopMotor(GetMotor, 'brake');
+
+%%
+% This will actively stop and hold the motor at its current position. Try
+% moving it, it is harder than you think ;-). Works like an emergency brake
+% for driving robots. It consumes quite a lot of power, so you shouldn't
+% leave your bot in this setting for too much time.
+%
+% And finally we've got this handy version:
+
+StopMotor all off % note the syntax, short for StopMotor('all', 'off')
+
+%%
+% The parameter |all| is special, not just because it is turning off (or
+% braking) all motors, but because it does so _at once_. Internally only
+% _one_ packet is sent for all three motors, so you only have to expect one
+% third of the lag (compared to sending three packets). Also, you can turn
+% off the motors almost synchronously, compared to one by one with the
+% usual sending delay. It's a nice command that can very often be found at
+% the start or end of programs to ensure all motors are turned off and don't take any power...
+%
+% So now we can control the motors, but how do we poll their rotation
+% sensor? The answer is:
+
+out = GetMotorSettings(MOTOR_C);
+
+% so lets look into the results:
+                   
+out.IsRunning         % boolean, true if the motor "does something"
+out.Power             % current power
+out.AngleLimit        % current set angle limit, 0 means none set
+out.TurnRatio         % current turn ratio
+
+out.SpeedRegulation   % boolean, speed regulated or not?
+out.SyncToMotor       % the motor this one is synced to. -1 means not synced
+
+out.TachoCount        % internal, non-resettable rotation-counter (in degrees)
+out.Angle             % current motor position, resettable using
+                      % ResetMotorAngle(port);
+
+out.MotorBrake        % boolean, is electronic braking enabled?
+                      %  (this has nothing to do with braking in a common
+                      %  sense, just ignore it, should be turned on by
+                      %  default anyway as it improves motor performance)
+
+                      
+                      
+%%
+% This should give us all information about the motor we need. Internally a
+% |NXT_GetOutputState| is used of course. Note that the |.Angle| value is
+% actually the NXT internal |BlockTachoCount|, which you can reset using
+% |ResetMotorAngle()| or |NXT_ResetMotorPosition(GetMotor, true)| 
+% (i.e. what is called _relative_ motor position in the official Mindstorms documentation).
+%
+
+ResetMotorAngle(MOTOR_A);
+
+
+%%
+% The |.TachoCount| on the other hand is much like your car's mileage
+% counter. It gives the total amount of degrees the motor has rotated since
+% the NXT was turned on, and it is not resettable (it will however be resetted, when a 
+% new external program is started, which you can enforce using |NXT_StartProgram|). 
+% You can also set it back to zero if you turn the motor back exactly the amount it was turned forward
+% :-). Restarting the NXT brick is a more comfortable way...
+
+%%
+% We have got yet one more very handy function for you. Suppose you've just
+% set your motor to run a certain distance, i.e. using
+
+SetMotor 0
+    SetPower 20
+    SetAngleLimit 360
+SendMotorSettigns
+
+%%
+% Now power 20 is not very fast, so it will take some time for the motor
+% until it has reached its angle limit. But how do you know when it's done?
+% You could create a loop and constantly call |GetMotorSettings| to check
+% wether |.IsRunning| is set or not. And this is exactly what
+% |WaitForMotor| does.
+%
+
+SetMotor 0
+    SetPower 20
+    SetAngleLimit 360
+SendMotorSettigns
+
+WaitForMotor(GetMotor) % you've seen me using GetMotor before...
+
+% if this WaitForMotor was not here, we would send the
+% PlaySound command DIRECTLY after starting the motor!
+% Try it for yourself. Basically our Matlab is "blocked" now and holds
+% execution, until the motor is done...
+
+NXT_PlaySound(440, 200)
+
+%%
+% This will play a short beep on the NXT immediately after the motor has
+% reached its angle limit. Of course that does _not_ mean that the motor
+% has stopped already: It's currently in coast mode and will keep turning a
+% short while. That is why, the following commands sequence is often used
+% to try to stop at a certain position:
+
+% ...
+SendMotorSettigns
+WaitForMotor(GetMotor)
+StopMotor(GetMotor, 'brake') % actively hold still
+pause(1) % do so for a short while
+% active braking has a high power consumption, so:
+StopMotor(GetMotor, 'off') % release motor
+
+%%
+% |WaitForMotor| has one more
+% parameter that you can use. Imagine what happens with this code snippet:
+
+SetMotor 0
+    SetPower 20
+    SetAngleLimit 0 % 0 means no angle limit = run forever
+SendMotorSettigns
+WaitForMotor(GetMotor)
+
+%%
+% See it? You've created an endless loop. Matlab will block till the end of
+% time (or battery in this case), as the motor will not stop. Why should
+% it, it has no angle limit set.
+%
+% Something else can happen: You can set an angle limit, let's say a certain 
+% distance for a driving robot. But there is a wall, the bot can't go any
+% further, and again: Endless loop, because the motor will not reach its
+% angle limit.
+%
+% The solution for this is a built-in timeout. Try:
+
+WaitForMotor(GetMotor, 10)
+
+%%
+% or use this syntax if you like it better:
+WaitForMotor 0 10
+
+%%
+% This time the function will only block for a maximum of 10 seconds. If
+% the motor is done earlier, fine. Then the function will exit of course.
+% But if it got stuck or is in an endless loop, after the timeout period
+% (you can use fractions by the way, like 5.7) |WaitForMotor| will continue
+% execution. The price for avoiding this endless loop / Matlab block: When
+% specifying a timeout, you cannot be sure that the motor really has
+% stopped, or wether it timed out. So take care of the consequences on
+% your own (e.g. by reading |.Angle| to see wether the specified angle limit
+% was met, or by checking |.IsRunning| to see if the motor is still blocked)...
+
+%%
+% The motor ports can also be used for other actuators besides the NXT
+% motors. Lamps can be connected, too. The following function can be
+% used to turn the lamp  on and a short while later off.
+
+SwitchLamp(MOTOR_C, 'on');
+pause(1)
+SwitchLamp(MOTOR_C, 'off');
+
+%%
+% It is also possible to use 'all' as port-number, just like you've seen
+% for |StopMotor|:
+
+SwitchLamp all off
+
+%%
+% There is no secret behind |SwitchLamp| - it just sets power 100 for the
+% specific output port. You could have used |SendMotorSettings| as well,
+% but |SwitchLamp| is easier in this case and better to understand.
+
+
+%% Lowlevel and helper functions
+% Actually there is not much to see in here, just mentioning:
+%%
+% * |wordbytes2dec|
+% * |dec2wordbytes|
+% * |readFromIniFile|
+
+%%
+% Very quickly, just to mention: We've got two functions that can help you
+% converting numbers into the correct binary byte ordering (considering the
+% little-endian format: LSB first, that the NXT uses). If you want more 
+% information, look it up in the documentation...
+
+x = dec2wordbytes(-1, 1, 'signed');
+% x is now a signed byte, 0xFF = 255
+
+y = wordbytes2dec(bytearray, 4); % default is unsigned
+% y is now a 32bit unsigned integer
+
+%%
+% And finally an easy way to read data from ini files:
+
+%                         [Bluetooth]     Key=          Filename
+ComPort = readFromIniFile(inisection, 'SerialPort', 'bluetooth.ini');
+
+
+%% Displaying text on the screen (inside the command window)
+% An important function gets its own chapter:
+%%
+% * |textOut|
+
+%%
+% There are several ways in Matlab to display text in the command window,
+% like |disp| or |fprintf|. However, we use our own creation |textOut|,
+% mainly to have a general wrapper that we can modify.
+%
+% Advantages: |textOut| supports writing to a logfile if desired and
+% conditional output (basically turns it off for a while).
+%
+% Very easy to use, the function takes a string as input (that is probably
+% best to create with |sprintf|):
+
+x = 'world';
+y = 2007;
+textOut(sprintf('Hello %s, it is the year %d!\n', x, y));
+% Results in:  >> Hello world, it is the year 2007!
+
+%%
+% Note the |'\n'| at the end to finish the line. The use of |sprintf| might
+% seem uncomfortable, but it is necessary.
+%
+% Now the more advanced features:
+
+global EnableLogging
+global Logfilename
+
+EnableLogging = true;
+Logfilename = 'logfile.txt';
+
+textOut(sprintf('Whatever I say here will be logged to the file as well.\n'));
+
+%%
+% Two additional paramers now:
+
+textOut(sprintf('Only appears in the command window\n'), 'screenonly');
+textOut(sprintf('Only appears in the logfile, if logging enabled\n'), 'logonly');
+
+%%
+% And now the option you've all been waiting for: How do I shut it up? :-)
+
+global DisableScreenOut
+
+DisableScreenOut = true;
+
+textOut(sprintf(['If logging is enabled, this goes to the logfile,', ...
+                  'if not, this goes nowhere\n']));
+
+%%
+% And what do we see now? Right:
+
+% nothing
+
+%%
+% If you mess with this global variable, it is nice to get its state before
+% and set it back afterwards, to improve compatibility with other
+% functions:
+
+global DisableScreenOut
+oldstate = DisableScreenOut;
+DisableScreenOut = true;
+
+    % do your silent stuff in here
+
+DisableScreenOut = oldstate;
+              
+
+%% List of global variables
+% In this section there is just a list of global variables that are being
+% used by our functions. *PLEASE DO NOT EDIT THEM!*
+% If available, use appropriate |Get| and |Set| functions.
+
+%%
+% As seen above, in use by |textOut|, modifying is allowed:
+global DisableScreenOut
+global EnableLogging
+global Logfilename
+
+%%
+% Bluetooth internals. Do NOT access directly!
+global BT_DefaultHandle     % has its own Get and Set functions
+global BT_SendSendPause     % read from ini file
+global BT_SendReceivePause  % read from ini file
+global BT_LastSendTime      % used by BT_Send and BT_Collect
+global BT_LastReceiveTime   % used by BT_Send and BT_Collect
+
+%%
+% NXT / high level motor control internals. Do NOT access directly:
+global NXTMOTOR_CurrentMotor % used by Get and SetMotor
+global NXTMOTOR_State        % array of structs, used by almost everything
+
+global NXTMOTOR_LeftWheel    % used later on for robot control in high level
+global NXTMOTOR_RightWheel   % functions like TurnRobot...
+
+% default values here (like the BRAKE bit)
+
+%%
+% * |resetMotorRegulation| 
+% is a little helper that sets a few values inside the |NXTMOTOR_State| struct 
+% sometimes when synchronisation mode is changed. Improves code readability...
+%
+
+%%
+%
+%
+%
+
+%% 
+% *Credits*
+%
+% Thank you for reading so far. Feel free to contact me here:
+%
+% atorf (at) lfb.rwth-aachen.de
+%%
+% _Linus Atorf, 23.11.2007 (Version 1.4, last change before toolbox release)_
+
+##### SOURCE END #####
+--></body></html>

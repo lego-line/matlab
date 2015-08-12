@@ -1,0 +1,92 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>CalibrateColor</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_CalibrateColor.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>CalibrateColor</h1><!--introduction--><p>Enables calibration mode of the HiTechnic color sensor V1</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#13">Example</a></li><li><a href="#15">See also</a></li><li><a href="#17">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>CalibrateColor(port, mode)</tt></p><p><tt>CalibrateColor(port, mode, handle)</tt></p><h2>Description<a name="5"></a></h2><p>Do not use this function with the HiTechnic Color Sensor V2. It has a bright white flashing LED. This function is intended for the HiTechnic Color Sensor V1 (milky, weak white LED).</p><p>Calibrate the color sensor with white and black reference value. It's not known whether calibration of the color sensor makes sense. HiTechnic doku says nothing, some people say it is necessary, but it works and has effect ;-). The sensor LEDs make a short flash after successful calibration. When calibrated, the sensor keeps this information in non-volatile memory. There are two different modes for calibration:</p><div><ul><li><tt>mode</tt> = 1: white balance calibration Puts the sensor into white balance calibration mode. For best results the sensor should be pointed at a diffuse white surface at a distance of approximately 15mm before calling this method. After a fraction of a second the sensor lights will flash and the calibration is done.</li></ul></div><div><ul><li><tt>mode</tt> = 2: black level calibration Puts the sensor into black/ambient level calibration mode. For best results the sensor should be pointed in a direction with no obstacles for 50cm or so. This reading the sensor will use as a base level for other readings. After a fraction of a second the sensor lights will flash and the calibration is done. When calibrated, the sensor keeps this information in non-volatile memory.</li></ul></div><p>The color sensor has to be opened (using <tt>OpenColor</tt>) before execution.</p><p>The given <tt>port</tt> number specifies the connection port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Example<a name="13"></a></h2><pre class="codeinput">     <span class="comment">% color must be open for calibration</span>
+     OpenColor(SENSOR_2);
+
+     <span class="comment">% white calibration mode</span>
+     CalibrateColor(SENSOR_2, 1);
+     <span class="comment">% pause for changing position</span>
+     pause(5);
+     <span class="comment">% black calibration mode</span>
+     CalibrateColor(SENSOR_2, 2);
+</pre><h2>See also<a name="15"></a></h2><p><a href="OpenColor.html">OpenColor</a>, <a href="GetColor.html">GetColor</a>, <a href="CloseSensor.html">CloseSensor</a>, </p><h2>Signature<a name="17"></a></h2><div><ul><li><b>Author:</b> Rainer Schnitzler, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2010/09/16</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% CalibrateColor
+% Enables calibration mode of the HiTechnic color sensor V1
+%%
+%% Syntax
+% |CalibrateColor(port, mode)|
+%%
+% |CalibrateColor(port, mode, handle)|
+%%
+%% Description
+% Do not use this function with the HiTechnic Color Sensor V2. It has a
+% bright white flashing LED.
+% This function is intended for the HiTechnic Color Sensor V1 (milky,
+% weak white LED).
+%%
+% Calibrate the color sensor with white and black reference value.
+% It's not known whether calibration of the color sensor makes sense.
+% HiTechnic doku says nothing, some people say it is necessary,
+% but it works and has effect ;-). The sensor LEDs make a short flash
+% after successful calibration. When calibrated, the sensor keeps this
+% information in non-volatile memory.
+% There are two different modes for calibration:
+%%
+% * |mode| = 1: white balance calibration
+% Puts the sensor into white balance calibration mode. For best results
+% the sensor should be pointed at a diffuse white surface at a distance
+% of approximately 15mm before calling this method. After a fraction of
+% a second the sensor lights will flash and the calibration is
+% done.
+%%
+% * |mode| = 2: black level calibration
+% Puts the sensor into black/ambient level calibration mode. For best
+% results the sensor should be pointed in a direction with no obstacles
+% for 50cm or so. This reading the sensor will use as a base level for
+% other readings. After a fraction of a second the sensor lights will
+% flash and the calibration is done. When calibrated, the sensor keeps
+% this information in non-volatile memory.
+%%
+% The color sensor has to be opened (using |OpenColor|) before execution.
+%%
+% The given |port| number specifies the connection port. The value |port| can be
+% addressed by the symbolic constants |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4|
+% analog to the labeling on the NXT Brick.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%% Example
+     % color must be open for calibration
+     OpenColor(SENSOR_2);
+
+     % white calibration mode
+     CalibrateColor(SENSOR_2, 1);
+     % pause for changing position
+     pause(5);
+     % black calibration mode
+     CalibrateColor(SENSOR_2, 2);
+%%
+%% See also
+% OpenColor, GetColor, CloseSensor
+%%
+%% Signature
+%%
+% * *Author:* Rainer Schnitzler, Linus Atorf (see AUTHORS)
+% * *Date:* 2010/09/16
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

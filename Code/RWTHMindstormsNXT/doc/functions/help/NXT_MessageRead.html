@@ -1,0 +1,88 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_MessageRead</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_MessageRead.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_MessageRead</h1><!--introduction--><p>Retrieves a "NXT-to-NXT message" from the specified inbox</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#7">Description</a></li><li><a href="#19">Examples</a></li><li><a href="#21">See also</a></li><li><a href="#24">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[message localInboxReturn] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote)</tt></p><p><tt>[message localInboxReturn] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote, handle)</tt></p><p><tt>[message localInboxReturn statusByte] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote)</tt></p><p><tt>[message localInboxReturn statusByte] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote, handle)</tt></p><h2>Description<a name="7"></a></h2><p>This function reads a NXT-to-NXT bluetooth message from a mailbox queue on the NXT. <tt>LocalInbox</tt> and <tt>RemoteInbox</tt> are the mailbox numbers and must be between 0 and 9. The difference between local and remote mailbox is not fully understood, so it's best to use the same value for both parameters. For more details see the official LEGO Mindstorms communication protocol.</p><p>Set <tt>RemoveFromRemote</tt> to <tt>true</tt> to clear the just retrieved message from the NXT's mailbox (and free occupied memory). Set it to <tt>false</tt> to just "look into" the message while it will still remain on the NXT's message queue.</p><p><tt>message</tt> contains the actual message (string) that has been retrieved. <tt>localInboxReturn</tt> is just the mailbox number that the message was read from (again, see official Mindstorms communication protocol).</p><p>Optionally, the packet's statusbyte is returned in the output argument <tt>statusByte</tt>, if requested. Warning from this functions will then be supressed (i.e. no warnings are raised then).</p><p>If no NXT handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p><b>Note:</b></p><p>This command can only be used when an external program (e.g. written in NXT-G, NXC or NBC) is running on the NXT. Otherwise a warning will be thrown (and an empty message will be returned).</p><p>Use this function to read data locally stored on the NXT. There are 10 usable mailbox queues, each with a certain size (so be careful to avoid overflows). Maximum message limit is 58 bytes / chars. This function can be used to communicate with NXC programs (the NXC-function "SendMessage" can be used to write the data on the NXT).</p><h2>Examples<a name="19"></a></h2><pre class="codeinput"> NXT_MessageWrite(<span class="string">'Test message'</span>, 0);
+ pause(1)
+ <span class="comment">% an NXC program will process this message from inbox 0</span>
+ <span class="comment">% and generate / "send" an answer to inbox 1 for us</span>
+ reply = NXT_MessageRead(1, 1, true);
+</pre><h2>See also<a name="21"></a></h2><p><a href="NXT_MessageWrite.html">NXT_MessageWrite</a>, </p><h2>Signature<a name="24"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/08/31</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_MessageRead
+% Retrieves a "NXT-to-NXT message" from the specified inbox
+%%
+%% Syntax
+% |[message localInboxReturn] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote)|
+%%
+% |[message localInboxReturn] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote, handle)|
+%%
+% |[message localInboxReturn statusByte] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote)|
+%%
+% |[message localInboxReturn statusByte] = NXT_MessageRead(LocalInbox, RemoteInbox, RemoveFromRemote, handle)|
+%%
+%% Description
+% This function reads a NXT-to-NXT bluetooth message from a mailbox queue
+% on the NXT. |LocalInbox| and |RemoteInbox| are the mailbox numbers and
+% must be between 0 and 9. The difference between local and remote
+% mailbox is not fully understood, so it's best to use the same value for
+% both parameters. For more details see the official LEGO Mindstorms
+% communication protocol.
+%%
+% Set |RemoveFromRemote| to |true| to clear the just retrieved message
+% from the NXT's mailbox (and free occupied memory). Set it to |false| to
+% just "look into" the message while it will still remain on the NXT's
+% message queue.
+%%
+% |message| contains the actual message (string) that has been retrieved.
+% |localInboxReturn| is just the mailbox number that the message was read
+% from (again, see official Mindstorms communication protocol).
+%%
+% Optionally, the packet's statusbyte is returned in the output argument
+% |statusByte|, if requested. Warning from this functions will then be
+% supressed (i.e. no warnings are raised then).
+%%
+% If no NXT handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+%%
+%%
+% *Note:*
+%%
+% This command can only be used when an external program (e.g. written in NXT-G,
+% NXC or NBC) is running on the NXT. Otherwise a warning will be thrown
+% (and an empty message will be returned).
+%%
+% Use this function to read data locally stored on the NXT. There are 10 usable
+% mailbox queues, each with a certain size (so be careful to avoid
+% overflows). Maximum message limit is 58 bytes / chars. This function
+% can be used to communicate with NXC programs (the NXC-function
+% "SendMessage" can be used to write the data on the NXT).
+%%
+%%
+%% Examples
+ NXT_MessageWrite('Test message', 0);
+ pause(1)
+ % an NXC program will process this message from inbox 0
+ % and generate / "send" an answer to inbox 1 for us
+ reply = NXT_MessageRead(1, 1, true);
+%%
+%% See also
+% NXT_MessageWrite
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/08/31
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

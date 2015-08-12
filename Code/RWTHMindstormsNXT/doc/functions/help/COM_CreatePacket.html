@@ -1,0 +1,68 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>COM_CreatePacket</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_COM_CreatePacket.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>COM_CreatePacket</h1><!--introduction--><p>Generates a valid Bluetooth packet ready for transmission (i.e. sets length)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#10">Example</a></li><li><a href="#12">See also</a></li><li><a href="#14">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>bytes = COM_CreatePacket(CommandType, Command, ReplyMode, ContentBytes)</tt></p><h2>Description<a name="4"></a></h2><p><tt>bytes = COM_CreatePacket(CommandType, Command, ReplyMode, ContentBytes)</tt> creates a valid Bluetooth packet conform to the LEGO Mindstorms communication protocol. The <tt>CommandType</tt> specifies the telegram type (direct or system command (see the LEGO Mindstorms communication protocol documentation for more details)). This type is determined from the function <tt>name2commandbytes</tt>. The <tt>Command</tt> specifies the actual command according to the LEGO Mindstorms communication protocol. By the <tt>ReplyMode</tt> one can request an acknowledgement for the packet transmission. The two strings <tt>'reply'</tt> and <tt>'dontreply'</tt> are valid. The content byte-array is given by the <tt>ContentBytes</tt>.</p><p>The return value <tt>bytes</tt> represents the complete Bluetooth packet conform to the LEGO Mindstorms Communication protocol.</p><p><b>Note:</b></p><p>The activated <tt>ReplyMode</tt> should only be used if it is necessary. According to the official LEGO statement "Testing during development has shown that the Bluetooth Serial Port communication has some disadvantages when it comes to streaming data. ... One problem is a time penalty (of around 30ms) within the Bluecore chip when switching from receive-mode to transmit-mode. ... To handle the problem of the time penalty within the Bluecore chip, users should send data using Bluetooth without requesting a reply package. This will mean that the Bluecore chip won't have to switch direction for every received package and will not incur a 30ms penalty for every data package."</p><h2>Example<a name="10"></a></h2><pre class="codeinput">   [type cmd] = name2commandbytes(<span class="string">'PLAYTONE'</span>);
+   content(1:2) = dec2wordbytes(frequency, 2);
+   content(3:4) = dec2wordbytes(duration, 2);
+
+   packet = COM_CreatePacket(type, cmd, <span class="string">'dontreply'</span>, content);
+</pre><h2>See also<a name="12"></a></h2><p><a href="COM_SendPacket.html">COM_SendPacket</a>, <a href="COM_CollectPacket.html">COM_CollectPacket</a>, <a href="name2commandbytes.html">name2commandbytes</a>, <a href="dec2wordbytes.html">dec2wordbytes</a>, </p><h2>Signature<a name="14"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/07/09</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% COM_CreatePacket
+% Generates a valid Bluetooth packet ready for transmission (i.e. sets length)
+%%
+%% Syntax
+% |bytes = COM_CreatePacket(CommandType, Command, ReplyMode, ContentBytes)|
+%%
+%% Description
+% |bytes = COM_CreatePacket(CommandType, Command, ReplyMode, ContentBytes)| creates a valid
+% Bluetooth packet conform to the LEGO Mindstorms communication protocol. The |CommandType|
+% specifies the telegram type (direct or system command (see the
+% LEGO Mindstorms communication protocol documentation for more details)). This type is determined
+% from the function |name2commandbytes|. The |Command| specifies the actual command according to
+% the LEGO Mindstorms communication protocol. By the |ReplyMode| one can request an
+% acknowledgement for the packet transmission. The two strings |'reply'| and |'dontreply'| are
+% valid. The content byte-array is given by the |ContentBytes|.
+%%
+% The return value |bytes| represents the complete Bluetooth packet conform to the LEGO Mindstorms
+% Communication protocol.
+%%
+%%
+% *Note:*
+%%
+% The activated |ReplyMode| should only be used if it is necessary. According to the official
+% LEGO statement "Testing during development has shown that the Bluetooth Serial Port
+% communication has some disadvantages when it comes to streaming data. ... One problem is a time
+% penalty (of around 30ms) within the Bluecore chip when switching from receive-mode to
+% transmit-mode. ... To handle the problem of the time penalty within the Bluecore chip, users
+% should send data using Bluetooth without requesting a reply package. This will mean that the
+% Bluecore chip won't have to switch direction for every received package and will not incur a
+% 30ms penalty for every data package."
+%%
+%% Example
+   [type cmd] = name2commandbytes('PLAYTONE');
+   content(1:2) = dec2wordbytes(frequency, 2);
+   content(3:4) = dec2wordbytes(duration, 2);
+
+   packet = COM_CreatePacket(type, cmd, 'dontreply', content);
+%%
+%% See also
+% COM_SendPacket, COM_CollectPacket, name2commandbytes, dec2wordbytes
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2008/07/09
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

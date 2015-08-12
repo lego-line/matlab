@@ -1,0 +1,306 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Troubleshooting</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Troubleshooting.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Troubleshooting</h1><!--introduction--><p>This document describes common problems that occur when working with the RWTH - Mindstorms NXT toolbox and how to avoid or work around them.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Bluetooth communication</a></li><li><a href="#3">Windows 64Bit</a></li><li><a href="#5">Light sensor</a></li><li><a href="#7">Ultrasonic sensor</a></li><li><a href="#9">Motors</a></li><li><a href="#12">Performance</a></li><li><a href="#15">Debugging</a></li></ul></div><h2>Bluetooth communication<a name="1"></a></h2><p><b>Packet loss and timeouts</b></p><p>During bluetooth communication there is usually a short lag between each command transmission. This lag can be expected to not exceed 30ms at most, as stated in the official Mindstorms protocol documentation. From time to time however a significantly higher lag can be observed. A packet will then be delayed up to 10 seconds (this behaviour has only been verified when using Windows). The causes for this are likely to originate in the bluetooth stack or protocol itself and have yet to be closer examined. They seem to depend on the bluetooth signal strength, the used adapter model, the battery power of the robot and the system specification of the host computer.</p><p>When such a packet loss happens, the robot cannot be controlled during this time, e.g. a <tt>StopMotor</tt> command might not reach its target in time. That is why you should try to specify a certain tacho limit for the motor using <tt>NXTMotor.TachoLimit</tt>. That way the motor will automatically stop at the correct position, even if the delay happens at the wrong time.</p><p>Fact is that we are experiencing a timeout period whose length can be adjusted. The default setting is 2 seconds, which reduces this period to a tolerable length. You can experiment with lower values, however do they have a drawback: Too short timeout periouds might cause <i>real</i> packet loss, meaning that data will actually be lost (because the bluetooth stack cannot retransmit the lost data in time). This usually results in error messages or strange warnings ("trying to collect a packet that was not requested"). Best performance depends on many factors, and the effects are unfortunately not always reproducable.</p><p>
+See also section "Tutorial: Programming Robots" of the toolbox
+documentation, chapter
+"<a href="pc_nxt_communication.html">PC - NXT communication</a>".
+</p><h2>Windows 64Bit<a name="3"></a></h2><p><b>Problems with USB-Connection</b></p><p>If you have problems connecting your NXT make sure you installed "libusb_win32" correctly(using the Inf-Wizard). Your NXT is installed correctly if it appears in the "libusb-win32 devices" category in your Windows Device Manager. Make sure you uninstall every other NXT Driver (e.g. the official Fantom Driver) if you still experience problems. If you want both Drivers (libusb_win32 and the official Fantom) at the same time you have to install libusb_win32 for EVERY NXT seperatly. If you want to use the Fantom Driver again, simply uninstall the NXT that appears in the "libusb-win32 devices" category in your Windows Device Manager"</p><h2>Light sensor<a name="5"></a></h2><p><b>Varying sensitivity</b></p><p>The NXT light sensor measures brightness, actively or passively. Unfortunately, the detected intensity depends on the wavelength of the light and is not a linear function. Commonly spoken, <i>warm light</i> like sunlight or that produced by light bulbs results in a <i>higher</i> intensity, whereas <i>cold light</i> such as from neon lamps or white-blue LEDs only gets detected with <i>lower</i> intensity.</p><p>Hence a common problem is that daylight cannot be compensated by artifical light in such a way, that repeated measurements always yield the same values. So how do we cope with this?</p><p>If a robot should be able to work in all scenarios with different illumination, there are mainly two possibilities:</p><p>Either the program requests a reference each time it is started, i.e. one always has to measure a red and blue standard color if the program has to distinguish between those two colors. This is basically a calibration process, that might even be supported by future NXT firmware versions (an according datafield is already reserved).</p><p>The other way is to take the surrounding light into account: Measure the daylight (or artificial light) of the environment. This brightness can then be used to calculate the real brightness using the value obtained from the sensor.</p><p>Maybe the easiest way is to make sure the robot always operates in similar illuminated situations.</p><h2>Ultrasonic sensor<a name="7"></a></h2><p><b>Multiple US sensors</b></p><p>Please note that multiple ultrasonic sensors in one room (or on one NXT) could influence each other. To avoid such interference, don't let multiple US sensors point towards each other, or use the so called "snapshot mode", see documentation of the functions <tt>OpenUltrasonic</tt>, <tt>USMakeSnapshot</tt>, and <tt>USGetSnapshotResults</tt>.</p><p><b>Inaccurate results</b></p><p>For certain objects the ultrasonic sensor seems to not work at all, while for other objects the results are very precise (&plusmn;1 cm). First of all you need surfaces that reflect ultrasound. Not suitable are usually things with very soft surfaces, especially cloth or fur-like structures. One of the most important things to consider is the angle the sensor is facing towards the object: Always try to make it 90&deg;, e.g. drive straight towards a wall instead of askew.</p><p><b>Important:</b> Round surfaces, just like bottles, are extremly difficult to outline accurately. They reflect the ultrasonic impulses in too many directions, hence you get echos of imaginary objects that are not really there. The spreading of the ultrasonic sensor is very wide anyway: Reflections from up to 30&deg; degrees to each side are not uncommon. It is probably best to stick to flat, hard, big objects at first.</p><h2>Motors<a name="9"></a></h2><p><b>Internal error correction</b></p><p><i>This section does not apply when using the <tt>NXTMotor</tt> class! It is intended for users of the commands <tt>DirectMotorCommand</tt> and <tt>NXT_SetOutputState</tt>.</i></p><p>The NXT motors have a certain way they always try to reach the most accurate position. This may lead to some unexpected effects. It only happens when using a certain rotation limit (specified by <tt>TachoLimit</tt>).</p><p>Imagine you want to rotate a motor 400 degrees. As you set a relatively high power, and a certain rotational moment is involved, the motor will turn further than its set angle limit. Basically at the exact position of 400, the power will be turned off, leaving the motor spinning in coast mode until it comes to a stop. Let us just imagine this would be at 500 degrees. The motor now "remembers" that is has just turned 100 degrees too much. The next time, when you issue another "rotate by 400" command, what do you expect? It will NOT be 900 = 500 (current position) + 400 (next step to move) and the additional coasting part (which was about 100 the last time in this given example).</p><p>The motor keeps an internal memory of cumulative commands containing angle limits. This means, when you send the second "move 400" command, the internal sum is now at 800. This is the new target to be reached. In this case it does not matter that you start at 500 already. The motor "realizes" that there are only 300 degrees missing until 800. Of course, there might be some spinning in coast mode again, so we will not end up at 800, but more likely at 800 + something (maybe = 900). Note that using the wrong point of view from the paragraph above, the calculation would have yielded 900 + something (maybe = 1000).</p><p>To put it another way, if the motor is off by 100 degrees one time, it will try to correct it the next time. This results in periodic movements that are "too far" or "too short", depending on what you send, and what you expect.</p><p><b>Important:</b> Do not turn any motors by hand while the NXT is still turned on, unless you know exactly what you are doing. If the internal counters do not get reset properly, the NXT motor will try to "correct" these changes you made by hand the next time it receives a command containing an angle limit. If you want to make sure nothing of this has a bad influence, reboot the NXT or start an external program using the command <tt>NXT_StartProgram</tt>.</p><p><i>There is a function to reset the internal error memory of the NXT, for details see documentation of <tt>NXC_ResetErrorCorrection</tt>.</i></p><p><b>Synchronization and turn ratio</b></p><p><i>This section does not apply when using the <tt>NXTMotor</tt> class! It is intended for users of the commands <tt>DirectMotorCommand</tt> and <tt>NXT_SetOutputState</tt>.</i></p><p>For driving robots, the regulation mode "synchronization" is very handy to drive straight lines or curves (parameters <tt>SyncToMotor</tt> and <tt>TurnRatio</tt> of <tt>DirectMotorCommand</tt>). When sending multiple commands to synced motors, e.g. to drive a straight line, turn around, and drive another line, there might be some strange behaviour that looks like the previously mentioned error correction mechanism. It has been found that these problems can be fixed by calling the following functions inbetween the different track sections:</p><pre class="codeinput"><span class="comment">% turn off motors (to reset NXT-internal regulation/synchronization bits)</span>
+StopMotor(LeftWheelPort, <span class="string">'off'</span>);
+StopMotor(RightWheelPort, <span class="string">'off'</span>);
+<span class="comment">% reset angle counters (aka "BlockTachoCount")</span>
+NXT_ResetMotorPosition(LeftWheelPort, true);
+NXT_ResetMotorPosition(RightWheelPort, true);
+</pre><h2>Performance<a name="12"></a></h2><p>For better performance (especially when using USB connections on slow machines), it is recommended to run this toolbox function:</p><pre class="codeinput">OptimizeToolboxPerformance
+</pre><p>The command will replace some of the lowlevel functions with faster binary versions from your MATLAB installation. For more details, see help section "Optimizing Performance".</p><h2>Debugging<a name="15"></a></h2><p><b>Debug messages</b></p><p>If you have problems creating a connection to your NXT via USB or Bluetooth, enabling debug messages might be useful. It can also help when you want to trace certain conditions leading to errors, or when you're experiencing timeout problems. To enable debug messages inside the command window, just type:</p><pre class="codeinput">DebugMode <span class="string">on</span>
+</pre><p>Note that debug messages decrease execution speed significantly!</p><p><b>Warnings and error messages</b></p><p>When an error in your MATLAB program occurs, there is usually more than one error message. The complexer the functions get, the longer those error messages will be. Read them carefully! Most of the time, they are the best clue you have in order to find out what went wrong. It can be a bit confusing when all those red words take up lots of space inside your command window, or when errors repeatedly occur again and again.</p><p>It might help you to clean up your command window from time to time using this handy command:</p><pre class="codeinput">clc
+</pre><p>Note that your command history will not be touched by this. The last results from your command window will be cleared however.</p><p>It can be amazing how clean an error message suddenly looks when starting the program again in an empty command window...</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Troubleshooting
+% This document describes common problems that occur when working with the 
+% RWTH - Mindstorms NXT toolbox and how to avoid or work around them.
+% 
+%
+
+
+%% Bluetooth communication
+%
+
+%%
+%
+% *Packet loss and timeouts* 
+%
+% During bluetooth communication there is usually a short lag between each
+% command transmission. This lag can be expected to not exceed 30ms at most, as
+% stated in the official Mindstorms protocol documentation. From time to
+% time however a significantly higher lag can be observed. A packet will
+% then be delayed up to 10 seconds (this behaviour has only been verified
+% when using Windows). The causes for this are likely to originate in the 
+% bluetooth stack or protocol itself and have yet to be closer examined.
+% They seem to depend on the bluetooth signal strength, the used adapter
+% model, the battery power of the robot and the system specification of the
+% host computer.
+%
+% When such a packet loss happens, the robot cannot be controlled during
+% this time, e.g. a |StopMotor| command might not reach its target in time.
+% That is why you should try to specify a certain tacho limit for the 
+% motor using |NXTMotor.TachoLimit|. That way the motor will automatically stop
+% at the correct position, even if the delay happens at the wrong time.
+%
+% Fact is that we are experiencing a timeout period whose length can be
+% adjusted. The default setting is 2 seconds, which reduces this period to
+% a tolerable length. You can experiment with lower values, however do they
+% have a drawback: Too short timeout periouds might cause _real_ packet
+% loss, meaning that data will actually be lost (because the bluetooth stack 
+% cannot retransmit the lost data in time). This usually results in
+% error messages or strange warnings ("trying to collect a packet that was
+% not requested"). Best performance depends on many factors, and the
+% effects are unfortunately not always reproducable.
+%
+% <html>
+% See also section "Tutorial: Programming Robots" of the toolbox
+% documentation, chapter
+% "<a href="pc_nxt_communication.html">PC - NXT communication</a>".
+% </html>
+
+%% Windows 64Bit
+%
+
+%%
+%
+% *Problems with USB-Connection* 
+%
+% If you have problems connecting your NXT make sure you installed
+% "libusb_win32" correctly(using the Inf-Wizard).
+% Your NXT is installed correctly if it appears in the "libusb-win32
+% devices" category in your Windows Device Manager.
+% Make sure you uninstall every other NXT Driver 
+% (e.g. the official Fantom Driver) if you still experience problems.
+% If you want both Drivers (libusb_win32 and the official Fantom) at the
+% same time you have to install libusb_win32 for EVERY NXT seperatly.
+% If you want to use the Fantom Driver again, simply uninstall the NXT that
+% appears in the "libusb-win32 devices" category in your Windows Device
+% Manager"
+
+
+
+%% Light sensor
+%
+
+%%
+%
+% *Varying sensitivity*
+%
+% The NXT light sensor measures brightness, actively or passively.
+% Unfortunately, the detected intensity depends on the wavelength of the
+% light and is not a linear function. Commonly spoken, _warm light_ like
+% sunlight or that produced by light bulbs results in a _higher_ intensity,
+% whereas _cold light_ such as from neon lamps or white-blue LEDs only gets
+% detected with _lower_ intensity.
+%
+% Hence a common problem is that daylight cannot be compensated by
+% artifical light in such a way, that repeated measurements always yield
+% the same values. So how do we cope with this?
+%
+% If a robot should be able to work in all scenarios with different
+% illumination, there are mainly two possibilities:
+%
+% Either the program requests a reference each time it is started, i.e. one
+% always has to measure a red and blue standard color if the program has to
+% distinguish between those two colors. This is basically a calibration process,
+% that might even be supported by future NXT firmware versions (an
+% according datafield is already reserved).
+%
+% The other way is to take the surrounding light into account: Measure the
+% daylight (or artificial light) of the environment. This brightness can
+% then be used to calculate the real brightness using the value obtained
+% from the sensor.
+%
+% Maybe the easiest way is to make sure the robot always operates in
+% similar illuminated situations.
+%
+%
+
+%% Ultrasonic sensor
+%
+
+%%
+%
+% *Multiple US sensors*
+% 
+% Please note that multiple ultrasonic sensors in one room (or on one NXT)
+% could influence each other. To avoid such interference, don't let
+% multiple US sensors point towards each other, or use the so called
+% "snapshot mode", see documentation of the functions |OpenUltrasonic|,
+% |USMakeSnapshot|, and |USGetSnapshotResults|.
+%
+%
+% *Inaccurate results*
+%
+% For certain objects the ultrasonic sensor seems to not work at all, while
+% for other objects the results are very precise (±1 cm). First of all you
+% need surfaces that reflect ultrasound. Not suitable are usually things
+% with very soft surfaces, especially cloth or fur-like structures. One of
+% the most important things to consider is the angle the sensor is facing
+% towards the object: Always try to make it 90°, e.g. drive straight
+% towards a wall instead of askew.
+% 
+% *Important:* Round surfaces, just like bottles, are extremly difficult to
+% outline accurately. They reflect the ultrasonic impulses in too many
+% directions, hence you get echos of imaginary objects that are not really
+% there. The spreading of the ultrasonic sensor is very wide anyway:
+% Reflections from up to 30° degrees to each side are not uncommon. It is
+% probably best to stick to flat, hard, big objects at first. 
+
+
+
+%% Motors
+%
+
+%%
+%
+% *Internal error correction*
+%
+% _This section does not apply when using the |NXTMotor| class! It
+% is intended for users of the commands |DirectMotorCommand| and 
+% |NXT_SetOutputState|._ 
+%
+% The NXT motors have a certain way they always try to reach the most
+% accurate position. This may lead to some unexpected effects. It only
+% happens when using a certain rotation limit (specified by
+% |TachoLimit|).
+%
+% Imagine you want to rotate a motor 400 degrees. As you set a relatively
+% high power, and a certain rotational moment is involved, the motor will
+% turn further than its set angle limit. Basically at the exact position of
+% 400, the power will be turned off, leaving the motor spinning in coast
+% mode until it comes to a stop. Let us just imagine this would be at 500
+% degrees. The motor now "remembers" that is has just turned 100 degrees
+% too much. The next time, when you issue another "rotate by 400" command,
+% what do you expect? It will NOT be 900 = 500 (current position) + 400 (next
+% step to move) and the additional coasting part (which was about 100 the last
+% time in this given example).
+%
+% The motor keeps an internal memory of cumulative commands containing
+% angle limits. This means, when you send the second "move 400" command,
+% the internal sum is now at 800. This is the new target to be reached. In
+% this case it does not matter that you start at 500 already. The motor
+% "realizes" that there are only 300 degrees missing until 800. Of course,
+% there might be some spinning in coast mode again, so we will not end up
+% at 800, but more likely at 800 + something (maybe = 900). Note that using
+% the wrong point of view from the paragraph above, the calculation would
+% have yielded 900 + something (maybe = 1000).
+%
+% To put it another way, if the motor is off by 100 degrees one time, it
+% will try to correct it the next time. This results in periodic movements
+% that are "too far" or "too short", depending on what you send, and what
+% you expect.
+%
+% *Important:* Do not turn any motors by hand while the NXT is still
+% turned on, unless you know exactly what you are doing. If the internal
+% counters do not get reset properly, the NXT motor will try to "correct"
+% these changes you made by hand the next time it receives a command
+% containing an angle limit. If you want to make sure nothing of this has a
+% bad influence, reboot the NXT or start an external program using the
+% command |NXT_StartProgram|.
+%
+% _There is a function to reset the internal error memory of the NXT,
+% for details see documentation of |NXC_ResetErrorCorrection|._ 
+
+
+%%
+%
+% *Synchronization and turn ratio*
+%
+% _This section does not apply when using the |NXTMotor| class! It
+% is intended for users of the commands |DirectMotorCommand| and 
+% |NXT_SetOutputState|._ 
+%
+% For driving robots, the regulation mode "synchronization" is very handy
+% to drive straight lines or curves (parameters |SyncToMotor| and
+% |TurnRatio| of |DirectMotorCommand|). When sending multiple commands to synced motors, e.g.
+% to drive a straight line, turn around, and drive another line, there
+% might be some strange behaviour that looks like the previously mentioned
+% error correction mechanism. It has been found that these problems can be
+% fixed by calling the following functions inbetween the different track sections:
+
+% turn off motors (to reset NXT-internal regulation/synchronization bits)
+StopMotor(LeftWheelPort, 'off');
+StopMotor(RightWheelPort, 'off');
+% reset angle counters (aka "BlockTachoCount")
+NXT_ResetMotorPosition(LeftWheelPort, true);
+NXT_ResetMotorPosition(RightWheelPort, true);
+
+
+%% Performance
+
+
+%%
+% For better performance (especially when using USB connections on slow
+% machines), it is recommended to run this toolbox function:
+
+OptimizeToolboxPerformance
+
+%%
+% The command will replace some of the lowlevel functions with faster
+% binary versions from your MATLAB installation. For more details, see help
+% section "Optimizing Performance".
+
+
+
+%% Debugging
+%
+
+%%
+%
+% *Debug messages*
+%
+% If you have problems creating a connection to your NXT via USB or
+% Bluetooth, enabling debug messages might be useful. It can also help when
+% you want to trace certain conditions leading to errors, or when you're
+% experiencing timeout problems. To enable debug messages inside the command
+% window, just type:
+
+DebugMode on
+
+%%
+% Note that debug messages decrease execution speed significantly!
+
+%%
+%
+
+%%
+%
+% *Warnings and error messages*
+%
+% When an error in your MATLAB program occurs, there is usually more than
+% one error message. The complexer the functions get, the longer those
+% error messages will be. Read them carefully! Most of the time, they are
+% the best clue you have in order to find out what went wrong. It can be a
+% bit confusing when all those red words take up lots of space inside your
+% command window, or when errors repeatedly occur again and again.
+%
+% It might help you to clean up your command window from time to time using
+% this handy command:
+
+clc
+
+%% 
+% Note that your command history will not be touched by this. The last results
+% from your command window will be cleared however.
+%
+% It can be amazing how clean an error message suddenly looks when
+% starting the program again in an empty command window...
+
+
+
+##### SOURCE END #####
+--></body></html>

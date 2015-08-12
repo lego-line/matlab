@@ -1,0 +1,86 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>USGetSnapshotResults</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_USGetSnapshotResults.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>USGetSnapshotResults</h1><!--introduction--><p>Retrieves up to eight echos (distances) stored inside the US sensor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#13">Example</a></li><li><a href="#16">See also</a></li><li><a href="#18">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>echos = USGetSnapshotResults(port)</tt></p><p><tt>echos = USGetSnapshotResults(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>echos = USGetSnapshotResults(port)</tt> retrieves the echos originating from the ping that was sent out with <tt>USMakeSnapshot(port)</tt> for the ultrasonic sensor connected to <tt>port</tt>. In order for this to work, the sensor must have been opened in snapshot mode using <tt>OpenUltrasonic(port, 'snapshot')</tt>.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>The return-vector <tt>echos</tt> always contains exactly 8 readings for up to 8 echos that were recorded from one single signal. Depending on the structure and reflections, this can only be one valid echo, or a lot of interference. The values are distances, just as you'd expect from <tt>GetUltrasonic</tt>. The values are sorted in order of appearance, so they should also be sorted with increasing distances.</p><p>It is not known how exactly the measurements are to be interpreted!</p><p>Please make sure that after calling <tt>USGetSnapshotResults</tt>, there is a little time period for the sound waves to travel, to be reflected, and be recorded by the sensor. You can estimate this using the speed of sound and the maximum distance you expect to measure.</p><p><b>Note:</b> When the US sensor is opened in snapshot mode, the function <tt>GetUltrasonic</tt> does not work correctly!</p><h2>Example<a name="13"></a></h2><pre class="codeinput">  port = SENSOR_4;
+  OpenUltrasonic(port, <span class="string">'snapshot'</span>);
+  <span class="comment">% send out the ping</span>
+  USMakeSnapshot(port);
+  <span class="comment">% wait some time for the sound to travel</span>
+  pause(0.1); <span class="comment">% 100ms is probably too much, calculate using c_sound ;-)</span>
+  <span class="comment">% retrieve all the echos in 1 step</span>
+  echos = USGetSnapshotResults(port);
+  CloseSensor(SENSOR_4);
+</pre><pre class="codeinput"> <span class="comment">% You should also try the file Example_4_NextGenerationUltrasound.m</span>
+ <span class="comment">% from the demos-folder</span>
+</pre><h2>See also<a name="16"></a></h2><p><a href="OpenUltrasonic.html">OpenUltrasonic</a>, <a href="GetUltrasonic.html">GetUltrasonic</a>, <a href="USMakeSnapshot.html">USMakeSnapshot</a>, <a href="CloseSensor.html">CloseSensor</a>, </p><h2>Signature<a name="18"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/01/08</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% USGetSnapshotResults
+% Retrieves up to eight echos (distances) stored inside the US sensor
+%%
+%% Syntax
+% |echos = USGetSnapshotResults(port)|
+%%
+% |echos = USGetSnapshotResults(port, handle)|
+%%
+%% Description
+% |echos = USGetSnapshotResults(port)| retrieves the echos originating
+% from the ping that was sent out with |USMakeSnapshot(port)| for the ultrasonic
+% sensor connected to |port|. In order for this to work, the sensor must
+% have been opened in snapshot mode using |OpenUltrasonic(port, 'snapshot')|.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% The return-vector |echos| always contains exactly 8 readings for up to
+% 8 echos that were recorded from one single signal. Depending on the
+% structure and reflections, this can only be one valid echo, or a lot of
+% interference. The values are distances, just as you'd expect from
+% |GetUltrasonic|. The values are sorted in order of appearance, so they
+% should also be sorted with increasing distances.
+%%
+% It is not known how exactly the measurements are to be interpreted!
+%%
+% Please make sure that after calling |USGetSnapshotResults|, there is a
+% little time period for the sound waves to travel, to be reflected, and
+% be recorded by the sensor. You can estimate this using the speed of
+% sound and the maximum distance you expect to measure.
+%%
+%%
+% *Note:* When the US sensor is opened in snapshot mode, the function
+% |GetUltrasonic| does not work correctly!
+%%
+%% Example
+  port = SENSOR_4;
+  OpenUltrasonic(port, 'snapshot');
+  % send out the ping
+  USMakeSnapshot(port);
+  % wait some time for the sound to travel
+  pause(0.1); % 100ms is probably too much, calculate using c_sound ;-)
+  % retrieve all the echos in 1 step
+  echos = USGetSnapshotResults(port);
+  CloseSensor(SENSOR_4);
+%%
+ % You should also try the file Example_4_NextGenerationUltrasound.m
+ % from the demos-folder
+%%
+%% See also
+% OpenUltrasonic, GetUltrasonic, USMakeSnapshot, CloseSensor
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/01/08
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

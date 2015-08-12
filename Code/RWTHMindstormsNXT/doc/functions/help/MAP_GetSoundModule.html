@@ -1,0 +1,64 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>MAP_GetSoundModule</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_MAP_GetSoundModule.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>MAP_GetSoundModule</h1><!--introduction--><p>Reads the IO map of the sound module</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#4">Description</a></li><li><a href="#16">Examples</a></li><li><a href="#18">See also</a></li><li><a href="#20">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>map = MAP_GetSoundModule()</tt></p><h2>Description<a name="4"></a></h2><p><tt>map = MAP_GetSoundModule()</tt> returns the IO map of the sound module. The return value <tt>map</tt> is a struct variable. It contains all sound module information.</p><p><b>Output:</b></p><p><tt>map.Frequency</tt>          % frequency of the last played ton in Hz</p><p><tt>map.Duration</tt>           % duration of the last played ton in ms</p><p><tt>map.SamplingRate</tt>       % current sound sample rate</p><p><tt>map.SoundFileName</tt>      % sound file name of the last played sound file</p><p><tt>map.Flags</tt>              % sound module flag, 'IDLE': sound module is idle, 'UPDATE': a request for plackback is pending, 'RUNNING': playback in progress.</p><p><tt>map.State</tt>              % sound module state, 'IDLE'; sound module is idel, 'PLAYING_FILE': sound module is playing a .rso file, 'PLAYING_TONE': a tone is playing, 'STOP': a request to stop playback is in progress.</p><p><tt>map.Mode</tt>               % sound module mode, 'ONCE': only play file once , 'LOOP': play file in a loop, 'TONE': play tone.</p><p><tt>map.Volume</tt>             % volume: 0: diabled, 1: 25%, 2:50%, 3:75%, 4:100% of full volume</p><h2>Examples<a name="16"></a></h2><pre class="codeinput">   map = MAP_GetSoundModule();
+</pre><h2>See also<a name="18"></a></h2><p><a href="NXT_ReadIOMap.html">NXT_ReadIOMap</a>, </p><h2>Signature<a name="20"></a></h2><div><ul><li><b>Author:</b> Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/05/22</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% MAP_GetSoundModule
+% Reads the IO map of the sound module
+%%
+%% Syntax
+% |map = MAP_GetSoundModule()|
+%%
+%% Description
+% |map = MAP_GetSoundModule()| returns the IO map of the sound module. The return value |map| is
+% a struct variable. It contains all sound module information.
+%%
+%%
+% *Output:*
+%%
+% |map.Frequency|          % frequency of the last played ton in Hz
+%%
+% |map.Duration|           % duration of the last played ton in ms
+%%
+% |map.SamplingRate|       % current sound sample rate
+%%
+% |map.SoundFileName|      % sound file name of the last played sound file
+%%
+% |map.Flags|              % sound module flag, 'IDLE': sound module is idle, 'UPDATE': a
+% request for plackback is pending, 'RUNNING': playback in
+% progress.
+%%
+% |map.State|              % sound module state, 'IDLE'; sound module is idel,
+% 'PLAYING_FILE': sound module is playing a .rso file,
+% 'PLAYING_TONE': a tone is playing, 'STOP': a request to stop
+% playback is in progress.
+%%
+% |map.Mode|               % sound module mode, 'ONCE': only play file once , 'LOOP': play
+% file in a loop, 'TONE': play tone.
+%%
+% |map.Volume|             % volume: 0: diabled, 1: 25%, 2:50%, 3:75%, 4:100% of full volume
+%%
+%% Examples
+   map = MAP_GetSoundModule();
+%%
+%% See also
+% NXT_ReadIOMap
+%%
+%% Signature
+%%
+% * *Author:* Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/05/22
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

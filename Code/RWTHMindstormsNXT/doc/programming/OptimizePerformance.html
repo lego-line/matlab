@@ -1,0 +1,85 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Optimizing performance</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="OptimizePerformance.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Optimizing performance</h1><!--introduction--><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Run optimization script</a></li><li><a href="#6">Blueooth connection performance (shorter delays)</a></li></ul></div><h2>Run optimization script<a name="1"></a></h2><p>When working with RWTH - Mindstorms NXT Toolbox and USB connections, high packet rates of more than 100 sensor or motor readings per second are common. In order to achieve such short latency for MATLAB - NXT communication, high CPU load is generated, being the speed limit on slow machines.</p><p>To improve performance, a function called</p><pre class="codeinput">OptimizeToolboxPerformance
+</pre><p>is provided. It will replace the frequently called function <tt>typecast</tt> with a faster binary version (<tt>typecastc</tt>). The binary MEX-files are already included in your MATLAB installation directory. But since they reside in a private directory, they cannot be accessed from the outside. That is why <tt>OptimizeToolboxPerformance</tt> will try to copy all binary files to the toolboxes own private directory. So, before calling the function, make sure you got write access where you installed RWTH - Mindstorms NXT Toolbox.</p><p>The function <tt>OptimizeToolboxPerformance</tt> is fail-safe and verifies each step. The user is asked before action is taken. Just run the command to improve your toolbox performance by a factor of up to 3 (depending on your machine of course). If it succeeds, the lowlevel functions <tt>wordbytes2dec</tt> and <tt>dec2wordbytes</tt> will have been replaced by faster versions, leading to less CPU load needed (and hence faster toolbox speed).</p><p>Please note that the function only copies files that are already present in you MATLAB installation. So the optimization will most likely only work for the specific MATLAB version, and only for the operating system you ran the command from.</p><h2>Blueooth connection performance (shorter delays)<a name="6"></a></h2><p>
+Poor Bluetooth performance / large delays / low packet rates are cause by
+the NXT's Bluetooth hardware. You can read more about tweaking the
+parameters in the section "Programming Robots" of the toolbox
+documentation, chapter
+"<a href="pc_nxt_communication.html">PC - NXT communication</a>".
+Also consider the help
+section "<a href="Troubleshooting.html">Troubleshooting</a>".
+</p><p>As a general approach, you can try to disable the waiting periods in your <tt>bluetooth.ini</tt> config file, i.e. by setting</p><pre>SendSendPause=0
+SendReceivePause=0</pre><p>This may however increase the probability to get timeouts.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Optimizing performance
+
+%% Run optimization script
+% When working with RWTH - Mindstorms NXT Toolbox and USB connections, high
+% packet rates of more than 100 sensor or motor readings per second are
+% common. In order to achieve such short latency for MATLAB - NXT
+% communication, high CPU load is generated, being the speed limit on slow
+% machines.
+
+%%
+% To improve performance, a function called
+
+OptimizeToolboxPerformance
+
+%%
+% is provided. It will replace the frequently called function
+% |typecast| with a faster binary version (|typecastc|). The
+% binary MEX-files are already included in your MATLAB installation
+% directory. But since they reside in a private directory, they cannot be
+% accessed from the outside. That is why |OptimizeToolboxPerformance| will
+% try to copy all binary files to the toolboxes own private directory. So,
+% before calling the function, make sure you got write access where you
+% installed RWTH - Mindstorms NXT Toolbox.
+
+%%
+% The function |OptimizeToolboxPerformance| is fail-safe and verifies each step.
+% The user is asked before action is taken. Just run the command to improve
+% your toolbox performance by a factor of up to 3 (depending on your
+% machine of course). If it succeeds, the lowlevel functions
+% |wordbytes2dec| and |dec2wordbytes| will have been replaced by faster
+% versions, leading to less CPU load needed (and hence faster toolbox speed).
+%
+
+%%
+% Please note that the function only copies files that are already present
+% in you MATLAB installation. So the optimization will most likely only
+% work for the specific MATLAB version, and only for the operating system
+% you ran the command from.
+
+
+%% Blueooth connection performance (shorter delays)
+%
+% <html>
+% Poor Bluetooth performance / large delays / low packet rates are cause by
+% the NXT's Bluetooth hardware. You can read more about tweaking the
+% parameters in the section "Programming Robots" of the toolbox
+% documentation, chapter
+% "<a href="pc_nxt_communication.html">PC - NXT communication</a>".
+% Also consider the help
+% section "<a href="Troubleshooting.html">Troubleshooting</a>".
+% </html>
+%
+% As a
+% general approach, you can try to disable the waiting periods in your
+% |bluetooth.ini| config file, i.e. by setting
+% 
+%  SendSendPause=0
+%  SendReceivePause=0
+% 
+% This may however increase the probability to get timeouts.
+##### SOURCE END #####
+--></body></html>

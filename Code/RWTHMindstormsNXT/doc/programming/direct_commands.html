@@ -1,0 +1,252 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Direct NXT commands</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="direct_commands.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Direct NXT commands</h1><!--introduction--><p>In this final chapter we only list some more examples and commands. Usually they aren't needed in the daily life of a MATLAB Mindstorms NXT programmer.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#3">Keep alive and battery level</a></li><li><a href="#7">Important direct commands</a></li></ul></div><p>All functions beginning with <tt>NXT_</tt> are basically just ported from the official <i>LEGO NXT Bluetooth Protocol</i> and <i>Direct Commands</i> documentation (download Bluetooth Developer Kit from LEGO).</p><p>We just list some examples and commands...</p><h2>Keep alive and battery level<a name="3"></a></h2><p>To keep the NXT from turning off automatically, send a keep-alive packet from time to time (if needed):</p><pre class="codeinput">NXT_SendKeepAlive(<span class="string">'dontreply'</span>);
+</pre><p>If you're interested in the internal sleep time limit setting, just request it:</p><pre class="codeinput">[status SleepTimeLimit] = NXT_SendKeepAlive(<span class="string">'reply'</span>);
+
+<span class="comment">% To see after how many minutes the NXT will shut down:</span>
+minutes = SleepTimeLimit / 1000 / 60;
+</pre><p>So how much energy does my bot have left?</p><pre class="codeinput">voltage = NXT_GetBatteryLevel;
+
+<span class="comment">% actually, the unit is milli volts, so</span>
+voltage = voltage / 1000; <span class="comment">% :-)</span>
+</pre><p>Every function that retrieves (i.e. "gets") values from the NXT is internally split into two parts. But this doesn't have to concern you right now. Note how we called the functions without passing a blutooth handle - we simply set the default handle at the beginning of our program or session.</p><h2>Important direct commands<a name="7"></a></h2><p>These are the interesting ones. The list is not complete however!</p><div><ul><li><tt>NXT_PlayTone</tt></li><li><tt>NXT_SetInputMode</tt></li><li><tt>NXT_ResetInputScaledValue</tt></li><li><tt>NXT_GetInputValues</tt></li><li><tt>NXT_ResetMotorPosition</tt></li><li><tt>NXT_SetOutputState</tt></li><li><tt>NXT_GetOutputState</tt></li><li><tt>NXT_StartProgram</tt>, <tt>NXT_StopProgram</tt></li><li><tt>NXT_LSWrite</tt>, <tt>NXT_LSGetStatus</tt>, <tt>NXT_LSRead</tt></li></ul></div><p>This section only covers the syntax, for details what the functions do please consider the official LEGO documentation or the function help.</p><pre class="codeinput"><span class="comment">% frequency is in Hz, duration in ms</span>
+NXT_PlayTone(frequency, duration);
+</pre><pre class="codeinput"><span class="comment">% the common way would be this</span>
+NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, <span class="string">'dontreply'</span>);
+
+<span class="comment">% but if you want an acknowledgement (usually not needed), then use</span>
+status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, <span class="string">'reply'</span>);
+<span class="comment">% note: the statusbyte will be automatically checked anyway (and a warning</span>
+<span class="comment">% issued if necessary), but you can still check the status now to handle the</span>
+<span class="comment">% consequences properly...</span>
+</pre><pre class="codeinput">NXT_ResetInputScaledValue(port);
+<span class="comment">% in this function there is no way to request an acknowledgement...</span>
+</pre><pre class="codeinput"><span class="comment">% only call this after you've set a proper input mode</span>
+data = NXT_GetInputValues(port);
+
+<span class="comment">% simple function, heavy output:</span>
+
+out.Port            <span class="comment">% from what port</span>
+out.Valid           <span class="comment">% is this sensorreading valid? if not, well... discard?</span>
+out.Calibrated      <span class="comment">% for future use of NXT firmware</span>
+out.TypeByte        <span class="comment">% sensor type</span>
+out.TypeName        <span class="comment">% sensor type, but human readable</span>
+out.ModeByte        <span class="comment">% sensor mode</span>
+out.ModeName        <span class="comment">% sensor mode, human readable</span>
+out.RawADVal        <span class="comment">% raw digital value, do nut use</span>
+out.NormalizedADVal <span class="comment">% use THIS, normalized value, 10bits, between 0 and 1023</span>
+out.ScaledVal       <span class="comment">% use this, depends on the input mode you set</span>
+out.CalibratedVal   <span class="comment">% for future use of NXT firmware</span>
+</pre><pre class="codeinput"><span class="comment">% Notation as seen in the Direct Commands doc:</span>
+<span class="comment">% true = relative = BlockTachoCount, false = absolute = RotationCount</span>
+NXT_ResetMotorPosition(port, true);
+</pre><pre class="codeinput"><span class="comment">% more lines for better readability</span>
+NXT_SetOutputState(whatmotor, <span class="keyword">...</span><span class="comment"> % port</span>
+    20, <span class="keyword">...</span><span class="comment">         % power</span>
+    true, <span class="keyword">...</span><span class="comment">       % motoron?</span>
+    true, <span class="keyword">...</span><span class="comment">       % brake?</span>
+    <span class="string">'SPEED'</span>, <span class="keyword">...</span><span class="comment">    % regulation</span>
+    0, <span class="keyword">...</span><span class="comment">          % turnratio</span>
+    <span class="string">'RUNNING'</span>, <span class="keyword">...</span><span class="comment">  % runstate</span>
+    0, <span class="keyword">...</span><span class="comment">          % tacho limit (0 = forever)</span>
+    <span class="string">'dontreply'</span>);   <span class="comment">% replymode</span>
+</pre><pre class="codeinput">out = NXT_GetOutputState(port);
+
+<span class="comment">% just like with GetInputValues: simple call, complex output:</span>
+
+out.Port                <span class="comment">% motornumber</span>
+out.Power               <span class="comment">% power</span>
+out.Mode                <span class="comment">% complete mode-byte (bitfield), see below for easier usage</span>
+out.ModeIsMOTORON       <span class="comment">% boolean, state of MOTORON bit (false means motor has no power)</span>
+out.ModeIsBRAKE         <span class="comment">% boolean, state of electronic braking (improves motor performance)</span>
+out.ModeIsREGULATED     <span class="comment">% boolean, if set, see RegModeName, if not set, reg mode will be IDLE</span>
+out.RegModeByte         <span class="comment">% regulation mode, binary</span>
+out.RegModeName         <span class="comment">% name of regulation mode: IDLE, SPEED, or SYNC</span>
+out.TurnRatio           <span class="comment">% turn ratio, 0 = straight forward</span>
+out.RunStateByte        <span class="comment">% run state, binary</span>
+out.RunStateName        <span class="comment">% name of run state: IDLE, RUNNING, RAMPUP or RAMPDOWN</span>
+out.TachoLimit          <span class="comment">% current tacho limit (we'll call it AngleLimit later on)</span>
+out.TachoCount          <span class="comment">% TachoCount = internal cumulative motor-degree-counter.</span>
+out.BlockTachoCount     <span class="comment">% motor-degree-counter, resettable using "ResetMotorPosition relative"</span>
+out.RotationCount       <span class="comment">% motor-degree-counter, resettable using "ResetMotorPosition absolute"</span>
+</pre><p>To execute "real" Mindstorms programs on the NXT (i.e. programs that you created using the official LEGO software and stored it locally on the NXT), you can call this function:</p><pre class="codeinput">NXT_StartProgram(<span class="string">'MyDemo.rxe'</span>);
+<span class="comment">% the file extension '.rxe' can be omitted, it will then be automatically added</span>
+</pre><p>Stopping the currently running program can be accomplished with</p><pre class="codeinput">NXT_StopProgram();
+</pre><p>There are three more NXT direct commands: <tt>NXT_LSGetStatus</tt>, <tt>NXT_LSWrite</tt>, <tt>NXT_LSRead</tt>. They all have one purpose: Address digital sensors that use the I&sup2;C-Protocol. An example is the ultrasonic sensor, and for more documentation you might want to see the sourcecode of <tt>OpenUltrasonic</tt> and <tt>GetUltrasonic</tt>.</p><p>The idea is to send data (containing I&sup2;C payload) first with <tt>NXT_LSWrite</tt>. Then check the sensor status in a loop using <tt>NXT_LSGetStatus</tt> until it is ready, i.e. until the status byte reports no error and all requested bytes are available. Those bytes can then be received using <tt>NXT_LSRead</tt>.</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Direct NXT commands
+% In this final chapter we only list some more examples and commands.
+% Usually they aren't needed in the daily life of a MATLAB Mindstorms NXT
+% programmer. 
+
+%%
+% All functions beginning with |NXT_| are basically just ported from the
+% official _LEGO NXT Bluetooth Protocol_ and _Direct Commands_
+% documentation (download Bluetooth Developer Kit from LEGO).
+
+%%
+% We just list some examples and commands...
+
+%% Keep alive and battery level
+% To keep the NXT from turning off automatically, send a keep-alive packet
+% from time to time (if needed):
+NXT_SendKeepAlive('dontreply');
+
+%%
+% If you're interested in the internal sleep time limit setting, just
+% request it:
+[status SleepTimeLimit] = NXT_SendKeepAlive('reply');
+
+% To see after how many minutes the NXT will shut down:
+minutes = SleepTimeLimit / 1000 / 60;
+
+%%
+% So how much energy does my bot have left?
+voltage = NXT_GetBatteryLevel;
+
+% actually, the unit is milli volts, so
+voltage = voltage / 1000; % :-)
+
+%%
+% Every function that retrieves (i.e. "gets") values from the
+% NXT is internally split into two parts. But this doesn't have to concern
+% you right now.
+% Note how we called the functions without passing a blutooth handle - we
+% simply set the default handle at the beginning of our program or session.
+
+
+%% Important direct commands
+% These are the interesting ones. The list is not complete however!
+%%
+% * |NXT_PlayTone|
+% * |NXT_SetInputMode|
+% * |NXT_ResetInputScaledValue|
+% * |NXT_GetInputValues|
+% * |NXT_ResetMotorPosition|
+% * |NXT_SetOutputState|
+% * |NXT_GetOutputState|
+% * |NXT_StartProgram|, |NXT_StopProgram|
+% * |NXT_LSWrite|, |NXT_LSGetStatus|, |NXT_LSRead|
+% 
+
+%% 
+% This section only covers the syntax, for details what the functions do
+% please consider the official LEGO documentation or the function help.
+
+%%
+
+% frequency is in Hz, duration in ms
+NXT_PlayTone(frequency, duration);
+
+%%
+
+% the common way would be this
+NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, 'dontreply');
+
+% but if you want an acknowledgement (usually not needed), then use
+status = NXT_SetInputMode(InputPort, SensorTypeDesc, SensorModeDesc, 'reply');
+% note: the statusbyte will be automatically checked anyway (and a warning
+% issued if necessary), but you can still check the status now to handle the
+% consequences properly...
+
+%%
+NXT_ResetInputScaledValue(port);
+% in this function there is no way to request an acknowledgement...
+
+%%
+
+% only call this after you've set a proper input mode
+data = NXT_GetInputValues(port);
+
+% simple function, heavy output:
+
+out.Port            % from what port
+out.Valid           % is this sensorreading valid? if not, well... discard?
+out.Calibrated      % for future use of NXT firmware
+out.TypeByte        % sensor type
+out.TypeName        % sensor type, but human readable 
+out.ModeByte        % sensor mode
+out.ModeName        % sensor mode, human readable
+out.RawADVal        % raw digital value, do nut use
+out.NormalizedADVal % use THIS, normalized value, 10bits, between 0 and 1023
+out.ScaledVal       % use this, depends on the input mode you set
+out.CalibratedVal   % for future use of NXT firmware
+
+%%
+
+% Notation as seen in the Direct Commands doc:
+% true = relative = BlockTachoCount, false = absolute = RotationCount
+NXT_ResetMotorPosition(port, true);
+
+%%
+
+% more lines for better readability
+NXT_SetOutputState(whatmotor, ... % port
+    20, ...         % power
+    true, ...       % motoron?
+    true, ...       % brake?
+    'SPEED', ...    % regulation
+    0, ...          % turnratio
+    'RUNNING', ...  % runstate
+    0, ...          % tacho limit (0 = forever)
+    'dontreply');   % replymode    
+
+
+%% 
+
+out = NXT_GetOutputState(port);
+
+% just like with GetInputValues: simple call, complex output:
+
+out.Port                % motornumber
+out.Power               % power
+out.Mode                % complete mode-byte (bitfield), see below for easier usage
+out.ModeIsMOTORON       % boolean, state of MOTORON bit (false means motor has no power)
+out.ModeIsBRAKE         % boolean, state of electronic braking (improves motor performance)
+out.ModeIsREGULATED     % boolean, if set, see RegModeName, if not set, reg mode will be IDLE
+out.RegModeByte         % regulation mode, binary
+out.RegModeName         % name of regulation mode: IDLE, SPEED, or SYNC
+out.TurnRatio           % turn ratio, 0 = straight forward
+out.RunStateByte        % run state, binary
+out.RunStateName        % name of run state: IDLE, RUNNING, RAMPUP or RAMPDOWN
+out.TachoLimit          % current tacho limit (we'll call it AngleLimit later on)
+out.TachoCount          % TachoCount = internal cumulative motor-degree-counter.
+out.BlockTachoCount     % motor-degree-counter, resettable using "ResetMotorPosition relative"
+out.RotationCount       % motor-degree-counter, resettable using "ResetMotorPosition absolute"
+
+%%
+% To execute "real" Mindstorms programs on the NXT (i.e. programs that
+% you created using the official LEGO software and stored it locally on the
+% NXT), you can call this function:
+
+NXT_StartProgram('MyDemo.rxe');
+% the file extension '.rxe' can be omitted, it will then be automatically added
+
+%%
+% Stopping the currently running program can be accomplished with
+NXT_StopProgram();
+
+
+%% 
+% There are three more NXT direct commands: |NXT_LSGetStatus|,
+% |NXT_LSWrite|, |NXT_LSRead|. They all have one purpose: Address digital
+% sensors that use the I²C-Protocol. An example is the ultrasonic sensor,
+% and for more documentation you might want to see the sourcecode of
+% |OpenUltrasonic| and |GetUltrasonic|.
+%
+% The idea is to send data (containing I²C payload) first with |NXT_LSWrite|.
+% Then check the sensor status in a loop using |NXT_LSGetStatus| until it
+% is ready, i.e. until the status byte reports no error and all requested bytes
+% are available. Those bytes can then be received using |NXT_LSRead|. 
+%
+##### SOURCE END #####
+--></body></html>

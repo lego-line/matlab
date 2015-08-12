@@ -1,0 +1,85 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 1: Play Tone and Get Battery Level</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Example_1_PlayTone.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Example 1: Play Tone and Get Battery Level</h1><p>Example to play a tone on the brick and retrieve the current battery level:</p><p>Signature</p><div><ul><li> Author: Linus Atorf, Alexander Behrens</li><li> Date: 2009/07/17</li><li> License: BSD</li><li> RWTH - Mindstorms NXT Toolbox: <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></li></ul></div><pre class="codeinput"><span class="comment">% verify that the RWTH - Mindstorms NXT toolbox is installed.</span>
+<span class="keyword">if</span> verLessThan(<span class="string">'RWTHMindstormsNXT'</span>, <span class="string">'2.00'</span>);
+    error(strcat(<span class="string">'This program requires the RWTH - Mindstorms NXT Toolbox '</span> <span class="keyword">...</span>
+        ,<span class="string">'version 2.00 or greater. Go to http://www.mindstorms.rwth-aachen.de '</span> <span class="keyword">...</span>
+        ,<span class="string">'and follow the installation instructions!'</span>));
+<span class="keyword">end</span><span class="comment">%if</span>
+
+
+<span class="comment">% Close previous handles (if existing)</span>
+COM_CloseNXT <span class="string">all</span>
+<span class="comment">% Prepare workspace by cleaning all old settings to be on the safe side.</span>
+clear <span class="string">all</span>
+close <span class="string">all</span>
+
+<span class="comment">% Open new NXT connection</span>
+<span class="comment">%  - Tries to open a connection via USB. The first NXT device that is found will be used.</span>
+<span class="comment">%  - Device drivers (Fantom on Windows, libusb on Linux) have to be already installed for USB to work.</span>
+<span class="comment">%  - For using Bluetooth a previous configuration file has to be generated COM_MakeBTConfigFile)</span>
+<span class="comment">%  - This call will not try to open a Bluetooth connection...</span>
+handle = COM_OpenNXT();
+<span class="comment">% at this place we could call COM_SetDefaultNXT(handle);</span>
+
+<span class="comment">% Play tone with frequency 800Hz and duration of 500ms.</span>
+NXT_PlayTone(800,500, handle);
+
+<span class="comment">% Get current battery level.</span>
+voltage = NXT_GetBatteryLevel(handle)
+
+<span class="comment">% Close NXT connection.</span>
+COM_CloseNXT(handle);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 1: Play Tone and Get Battery Level
+% Example to play a tone on the brick and retrieve the current battery level: 
+%
+% Signature
+%
+% *  Author: Linus Atorf, Alexander Behrens
+% *  Date: 2009/07/17
+% *  License: BSD
+% *  RWTH - Mindstorms NXT Toolbox: http://www.mindstorms.rwth-aachen.de
+
+% verify that the RWTH - Mindstorms NXT toolbox is installed.
+if verLessThan('RWTHMindstormsNXT', '2.00');
+    error(strcat('This program requires the RWTH - Mindstorms NXT Toolbox ' ...
+        ,'version 2.00 or greater. Go to http://www.mindstorms.rwth-aachen.de ' ...
+        ,'and follow the installation instructions!'));
+end%if
+
+
+% Close previous handles (if existing)
+COM_CloseNXT all
+% Prepare workspace by cleaning all old settings to be on the safe side. 
+clear all
+close all
+
+% Open new NXT connection 
+%  - Tries to open a connection via USB. The first NXT device that is found will be used.
+%  - Device drivers (Fantom on Windows, libusb on Linux) have to be already installed for USB to work.
+%  - For using Bluetooth a previous configuration file has to be generated COM_MakeBTConfigFile)
+%  - This call will not try to open a Bluetooth connection...
+handle = COM_OpenNXT();
+% at this place we could call COM_SetDefaultNXT(handle);
+
+% Play tone with frequency 800Hz and duration of 500ms. 
+NXT_PlayTone(800,500, handle);
+
+% Get current battery level. 
+voltage = NXT_GetBatteryLevel(handle)
+
+% Close NXT connection. 
+COM_CloseNXT(handle);
+##### SOURCE END #####
+--></body></html>

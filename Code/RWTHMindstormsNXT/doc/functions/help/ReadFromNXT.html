@@ -1,0 +1,169 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ReadFromNXT</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_ReadFromNXT.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>ReadFromNXT</h1><!--introduction--><p>Reads current state of specified motor(s) from NXT brick</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#7">Description</a></li><li><a href="#32">Limitations:</a></li><li><a href="#35">Examples:</a></li><li><a href="#40">See also</a></li><li><a href="#42">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>DATA = OBJ.ReadFromNXT</tt></p><p><tt>DATA = OBJ.ReadFromNXT(HANDLE)</tt></p><p><tt>[DATA1 DATA2] = OBJ.ReadFromNXT</tt></p><p><tt>[DATA1 DATA2] = OBJ.ReadFromNXT(HANDLE)</tt></p><h2>Description<a name="7"></a></h2><p>Request the current state of the motor object <tt>OBJ</tt> from the NXT brick. NXTMotor object <tt>OBJ</tt> is not modified. <tt>DATA</tt> is a structure with property/value pairs.</p><p>If the NXTMotor object <tt>OBJ</tt> controls two motors, <tt>DATA1</tt> and <tt>DATA2</tt> hold the parameters of the first and the second motor respectively. If only one output argument is given, the parameters of the first motor are returned.</p><p>Use the optional parameter <tt>HANDLE</tt> to identifiy the connection to use for this command. Otherwise  the default handle (see <tt>COM_SetDefaultNXT</tt>) will be used.</p><p>The returned struct contains the following fields:</p><div><ul><li><tt>Port</tt> - The motor port these data apply to.</li></ul></div><div><ul><li><tt>Power</tt> - The currently set power level (from -100 to 100).</li></ul></div><div><ul><li><tt>Position</tt> - The motor's position in degrees (of the internal rotation sensor). These encoders should be accurate to +/- 1 degree. Values will increase positively during forward motion, and decrease during reverse motion. You can reset this counter by using the method <tt>.ResetPosition</tt>.</li></ul></div><div><ul><li><tt>IsRunning</tt> - A boolean indicating whether the motor is currently spinning or actively braking (basically whether the motor <i>"is turned on or off"</i>). It will only be false once the motor is in free-running "coast" mode, i.e. when the power to this motor is turned off (e.g. after calling <tt>Stop('off')</tt> or when the set <tt>TachoLimit</tt> was reached). To clarify: if a motor was stopped using <tt>.Stop('brake')</tt>, or if <tt>.ActionAtTachoLimit</tt> was set to <tt>'HoldBrake'</tt>, <tt>IsRunning</tt> will keep returning true! Use the method <tt>.WaitFor</tt> to check wether a motor is ready to accept new commands!</li></ul></div><div><ul><li><tt>SpeedRegulation</tt> - A boolean indicating wether the motor currently uses speed regulation. This is turned off during synchronous driving (when driving with 2 motors at the same time).</li></ul></div><div><ul><li><tt>TachoLimit</tt> - The currently set goal for the motor to reach. If set to 0, the motor is spinning forever.</li></ul></div><div><ul><li><tt>TachoCount</tt> - This counter indicates the progress of the motor for its current goal -- i.e. if a <tt>TachoLimit ~= 0</tt> is set, <tt>TachoCount</tt> will count up to this value during movement.</li></ul></div><p><b>Note:</b></p><p>The values of <tt>TachoCount</tt> and <tt>TachoLimit</tt> (which can nicely be used as progress indicators) are not guaranteed to keep being valid once motor movement has finished. They can/will be cleared by the next <tt>SendToNXT</tt>, <tt>Stop</tt>, <tt>StopMotor</tt> or maybe even <tt>DirectMotorCommand</tt>.</p><p>For advanced users: The field <tt>Position</tt> maps to the NXT firmware's register / IOmap counter <tt>RotationCount</tt>, and <tt>TachoCount</tt> maps to <tt>TachoCount</tt> as expected.</p><h2>Limitations:<a name="32"></a></h2><p>Apart from the previously mentioned limitation of <tt>IsRunning</tt> (return values slightly differ from what would be expected), the value of <tt>SpeedRegulation</tt> can sometimes be unexpected: The <tt>DATA</tt> struct returned by <tt>ReadFromNXT</tt> always returns the true state of the NXT's firmware registers (it's basically just a wrapper for <tt>NXT_GetOutputState</tt>). When using an <tt>NXTMotor</tt> object with <tt>SpeedRegulation = true</tt>, the regulation will only be enabled during driving. When the motor control starts braking, regulation will be disabled, and this is what <tt>ReadFromNXT</tt> shows you. So don't worry when you receive <tt>SpeedRegulation = false</tt> using this method, even though you clearly enabled speed regulation. This is by design, and the motor did in fact use speed regulation during its movement.</p><h2>Examples:<a name="35"></a></h2><pre class="codeinput">  <span class="comment">% Move motor A and show its state after 3 seconds</span>
+  motorA = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 50);
+  motorA.SendToNXT();
+  pause(3);
+  data = motorA.ReadFromNXT();
+</pre><pre class="codeinput">  <span class="comment">% Construct a NXTMotor object on port 'A' with a power of</span>
+  <span class="comment">% 50, TachoLimit of 1000, and send the motor settings to the NXT.</span>
+  <span class="comment">% Show the progress of the motor movement "on the fly".</span>
+
+  motorA = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 50, <span class="string">'TachoLimit'</span>, 1000);
+  <span class="comment">% this example wouldn't work with 'HoldBrake'</span>
+  motorA.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+
+  motorA.SendToNXT();
+
+  <span class="comment">% monitor during movement</span>
+  data = motorA.ReadFromNXT();
+  <span class="keyword">while</span>(data.IsRunning)
+      percDone = abs(data.TachoCount / data.TachoLimit) * 100;
+      disp(sprintf(<span class="string">'Motor movement is %d % complete/n'</span>, percDone));
+      data = motorA.ReadFromNXT(); <span class="comment">% refresh</span>
+  <span class="keyword">end</span><span class="comment">%while</span>
+</pre><h2>See also<a name="40"></a></h2><p><a href="NXTMotor.html">NXTMotor</a>, <a href="SendToNXT.html">SendToNXT</a>, <a href="ResetPosition.html">ResetPosition</a>, <a href="NXT_GetOutputState.html">NXT_GetOutputState</a>, </p><h2>Signature<a name="42"></a></h2><div><ul><li><b>Author:</b> Aulis Telle, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2008/11/12</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% ReadFromNXT
+% Reads current state of specified motor(s) from NXT brick
+%%
+%% Syntax
+% |DATA = OBJ.ReadFromNXT|
+%%
+% |DATA = OBJ.ReadFromNXT(HANDLE)|
+%%
+% |[DATA1 DATA2] = OBJ.ReadFromNXT|
+%%
+% |[DATA1 DATA2] = OBJ.ReadFromNXT(HANDLE)|
+%%
+%% Description
+% Request the current state of the motor object |OBJ| from the NXT brick.
+% NXTMotor object |OBJ| is not modified. |DATA| is a structure with
+% property/value pairs.
+%%
+% If the NXTMotor object |OBJ| controls two motors, |DATA1| and |DATA2| hold the parameters
+% of the first and the second motor respectively. If only one
+% output argument is given, the parameters of the first motor
+% are returned.
+%%
+% Use the optional parameter |HANDLE| to identifiy the connection to use
+% for this command. Otherwise  the default handle (see
+% |COM_SetDefaultNXT|) will be used.
+%%
+%%
+% The returned struct contains the following fields:
+%%
+%%
+% * |Port| - The motor port these data apply to.
+%%
+%%
+% * |Power| - The currently set power level (from -100 to 100).
+%%
+%%
+% * |Position| - The motor's position in degrees (of the internal rotation
+% sensor). These encoders should be accurate to +/- 1 degree. Values will
+% increase positively during forward motion, and decrease during reverse
+% motion. You can reset this counter by using the method |.ResetPosition|.
+%%
+%%
+% * |IsRunning| - A boolean indicating whether the motor is currently
+% spinning or actively braking (basically whether the motor _"is turned on or off"_). It
+% will only be false once the motor is in free-running "coast" mode, i.e.
+% when the power to this motor is turned off (e.g. after calling
+% |Stop('off')| or when the set |TachoLimit| was reached). To clarify:
+% if a motor was stopped using |.Stop('brake')|, or if
+% |.ActionAtTachoLimit| was set to |'HoldBrake'|, |IsRunning| will keep
+% returning true! Use the method |.WaitFor| to check wether a motor is
+% ready to accept new commands!
+%%
+%%
+% * |SpeedRegulation| - A boolean indicating wether the motor currently
+% uses speed regulation. This is turned off during synchronous driving
+% (when driving with 2 motors at the same time).
+%%
+%%
+% * |TachoLimit| - The currently set goal for the motor to reach. If set to
+% 0, the motor is spinning forever.
+%%
+%%
+% * |TachoCount| - This counter indicates the progress of the motor for its
+% current goal REPLACE_WITH_DASH_DASH i.e. if a |TachoLimit ~= 0| is set, |TachoCount| will
+% count up to this value during movement.
+%%
+%%
+%%
+% *Note:*
+%%
+% The values of |TachoCount| and |TachoLimit| (which can nicely be used as
+% progress indicators) are not guaranteed to keep being valid once motor
+% movement has finished. They can/will be cleared by the next
+% |SendToNXT|, |Stop|, |StopMotor| or maybe even |DirectMotorCommand|.
+%%
+% For advanced users: The field |Position| maps to the NXT firmware's
+% register / IOmap counter |RotationCount|, and |TachoCount| maps to
+% |TachoCount| as expected.
+%%
+%% Limitations:
+%%
+% Apart from the previously mentioned limitation of |IsRunning| (return
+% values slightly differ from what would be expected), the value of
+% |SpeedRegulation| can sometimes be unexpected: The |DATA| struct
+% returned by |ReadFromNXT| always returns the true state of the NXT's
+% firmware registers (it's basically just a wrapper for
+% |NXT_GetOutputState|). When using an |NXTMotor| object with
+% |SpeedRegulation = true|, the regulation will only be enabled during
+% driving. When the motor control starts braking, regulation will be
+% disabled, and this is what |ReadFromNXT| shows you. So don't worry when
+% you receive |SpeedRegulation = false| using this method, even though you
+% clearly enabled speed regulation. This is by design, and the motor did
+% in fact use speed regulation during its movement.
+%%
+%% Examples:
+%%
+  % Move motor A and show its state after 3 seconds
+  motorA = NXTMotor('A', 'Power', 50);
+  motorA.SendToNXT();
+  pause(3);
+  data = motorA.ReadFromNXT();
+%%
+  % Construct a NXTMotor object on port 'A' with a power of
+  % 50, TachoLimit of 1000, and send the motor settings to the NXT.
+  % Show the progress of the motor movement "on the fly".
+
+  motorA = NXTMotor('A', 'Power', 50, 'TachoLimit', 1000);
+  % this example wouldn't work with 'HoldBrake'
+  motorA.ActionAtTachoLimit = 'Brake';
+
+  motorA.SendToNXT();
+
+  % monitor during movement
+  data = motorA.ReadFromNXT();
+  while(data.IsRunning)
+      percDone = abs(data.TachoCount / data.TachoLimit) * 100;
+      disp(sprintf('Motor movement is %d % complete/n', percDone));
+      data = motorA.ReadFromNXT(); % refresh
+  end%while
+
+%%
+%%
+%% See also
+% NXTMotor, SendToNXT, ResetPosition, NXT_GetOutputState
+%%
+%% Signature
+%%
+% * *Author:* Aulis Telle, Linus Atorf (see AUTHORS)
+% * *Date:* 2008/11/12
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

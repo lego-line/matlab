@@ -1,0 +1,87 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>GetEOPD</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_GetEOPD.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>GetEOPD</h1><!--introduction--><p>Reads the current value of the HiTechnic EOPD sensor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#12">Example</a></li><li><a href="#14">See also</a></li><li><a href="#16">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[calcedDist rawVal] = GetEOPD(port)</tt></p><p><tt>[calcedDist rawVal] = GetEOPD(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p>This function returns both a calculated distance and the measured raw value from the HiTechnic EOPD sensor.</p><p>The given port number specifies the connection port. The value port can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>Returned raw values are always between 0 and 1023 and indicate reflected light intensity. In <tt>'SHORT'</tt> range mode, the values are usually very low, i.e. &lt; 100 or &lt; 200. For increased sensitivity (<tt>'LONG'</tt> range mode), they can also be higher. This mostly depends on the target surface material.</p><p>The <tt>rawVal</tt> output argument is always valid. <tt>calcedDist</tt> however will only have a meaningful value if the sensor is correctly calibrated using <tt>CalibrateEOPD</tt>. Otherwise values might not make sense or are <tt>NaN</tt>. If <tt>rawVal</tt> is 0, <tt>calcedDist</tt> will be set to <tt>Inf</tt>.</p><p>More on how to interpret the EOPD sensor values, and a detailed explanation of the calibration formula can be found here: <a href="http://www.hitechnic.com/blog/eopd-sensor/eopd-how-to-measure-distance/#more-178">http://www.hitechnic.com/blog/eopd-sensor/eopd-how-to-measure-distance/#more-178</a></p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Example<a name="12"></a></h2><pre class="codeinput">   port = SENSOR_2;
+   OpenEOPD(port, <span class="string">'SHORT'</span>);
+
+   <span class="comment">% set calibration matrix</span>
+   calibMatrix = [3 91; 9 19];
+   CalibrateEOPD(port, <span class="string">'SETMATRIX'</span>, calibMatrix);
+
+   <span class="comment">% now the sensor can be used</span>
+   [dist raw] = GetEOPD(port);
+
+   <span class="comment">% clean up, as usual. LED stays on anyway</span>
+   CloseSensor(port);
+</pre><h2>See also<a name="14"></a></h2><p><a href="OpenEOPD.html">OpenEOPD</a>, <a href="CalibrateEOPD.html">CalibrateEOPD</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, </p><h2>Signature<a name="16"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2010/09/17</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% GetEOPD
+% Reads the current value of the HiTechnic EOPD sensor
+%%
+%% Syntax
+% |[calcedDist rawVal] = GetEOPD(port)|
+%%
+% |[calcedDist rawVal] = GetEOPD(port, handle)|
+%%
+%% Description
+% This function returns both a calculated distance and the measured raw
+% value from the HiTechnic EOPD sensor.
+%%
+% The given port number specifies the connection port. The value port can be
+% addressed by the symbolic constants |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to
+% the labeling on the NXT Brick.
+%%
+% Returned raw values are always between 0 and 1023 and indicate
+% reflected light intensity. In |'SHORT'| range mode, the values are
+% usually very low, i.e. < 100 or < 200. For increased sensitivity
+% (|'LONG'| range mode), they can also be higher. This mostly depends on the
+% target surface material.
+%%
+% The |rawVal| output argument is always valid. |calcedDist| however will
+% only have a meaningful value if the sensor is correctly calibrated using |CalibrateEOPD|.
+% Otherwise values might not make sense or are |NaN|. If |rawVal| is 0,
+% |calcedDist| will be set to |Inf|.
+%%
+% More on how to
+% interpret the EOPD sensor values, and a detailed explanation of the calibration
+% formula can be found here:
+% http://www.hitechnic.com/blog/eopd-sensor/eopd-how-to-measure-distance/#more-178
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%% Example
+   port = SENSOR_2;
+   OpenEOPD(port, 'SHORT');
+
+   % set calibration matrix
+   calibMatrix = [3 91; 9 19];
+   CalibrateEOPD(port, 'SETMATRIX', calibMatrix);
+
+   % now the sensor can be used
+   [dist raw] = GetEOPD(port);
+
+   % clean up, as usual. LED stays on anyway
+   CloseSensor(port);
+%%
+%% See also
+% OpenEOPD, CalibrateEOPD, CloseSensor, NXT_SetInputMode, NXT_GetInputValues
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2010/09/17
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

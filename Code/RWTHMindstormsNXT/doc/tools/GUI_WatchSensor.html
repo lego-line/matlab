@@ -1,0 +1,25 @@
+<html>
+<head>
+<title>Watch Analog Sensor GUI</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<link type="text/css" rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+<p class="header">RWTH - Mindstorms NXT Toolbox</p>
+<h1>Watch Sensor GUI</h1>
+<hr>
+"Watch Sensor GUI" is a tool to read the NXT sensors and monitor the data values.
+<br><br>
+<img src="GUI_WatchSensor.png" alt="Watch Sensor GUI" width="100%">
+<br><br>
+
+
+<h3>Select Sensor Port and Type</h3>
+At first a sensor port and the sensor type have to be given. The information polling (reading) is started and stopped by pressing the "Start" and "Stop" button.
+<h3>GetOutputState Data</h3>
+This display monitors the data values read by the selected analog sensor over time. The "Reset Count" button can be used to reset the period counter. This counter displays the sensor's <tt>.ScaledVal</tt>. Its <tt>InputMode</tt> is set to <tt>PERIODCOUNTERMODE</tt>. Basically the sensor counts the times that the value (which you can see in the <tt>.NormalizedADVal</tt> field) jumps above the 45% threshold and stays above it, until it goes down again. So the picture above shows exactly one period.
+<h3>Connection Data</h3>
+Information about the communication channel is given in group field "Connection Data".
+
+</body>

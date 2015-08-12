@@ -1,0 +1,5 @@
+State 0 0 0 
+Flag Error_Correcting_Feed_2 0
+Flag Pallet_Status_2 0
+Flag FeedingFlag_2 0
+Flag FeedingFlag2_2 1

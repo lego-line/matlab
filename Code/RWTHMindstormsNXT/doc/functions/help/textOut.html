@@ -1,0 +1,98 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>textOut</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_textOut.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>textOut</h1><!--introduction--><p>Wrapper for fprintf() which can optionally write screen output to a logfile</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#6">Description</a></li><li><a href="#15">Examples</a></li><li><a href="#23">See also</a></li><li><a href="#25">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>textOut(strMsg)</tt></p><p><tt>textOut(strMsg, 'screenonly')</tt></p><p><tt>textOut(strMsg, 'logonly')</tt></p><h2>Description<a name="6"></a></h2><p><tt>textOut(strMsg)</tt> will write to screen (command window) AND logfile, if global logging is enabled.</p><p><tt>textOut(strMsg, 'screenonly')</tt> writes to screen (command window) only.</p><p><tt>textOut(strMsg, 'logonly')</tt> writes to logfile only (global logging must be enabled). If logging is disabled or somehow failes, the message will not be logged or displayed at all...</p><p><b>Note:</b></p><p>To enable logging (to file), set the global var <tt>EnableLogging</tt> to <tt>true</tt> and set <tt>Logfilename</tt> to a valid filename. This function distinguishes between Windows and Linux systems to use proper linebreaks. The global variable <tt>DisableScreenOut</tt> is an on/off switch for the complete textOut()-messages that would appear on the command window. Default setting is <tt>false</tt>, i.e. there will be no output.</p><p>Recommended usage is together with sprintf(), in order to add linebreaks for example.</p><h2>Examples<a name="15"></a></h2><pre class="codeinput">  textOut(<span class="string">'This is a message\n'</span>);
+</pre><pre class="codeinput">  x = <span class="string">'world'</span>;
+  y = 2007;
+  textOut(sprintf(<span class="string">'Hello %s, it is the year %d!\n'</span>, x, y));
+  <span class="comment">%Results in:  &gt;&gt; Hello world, it is the year 2007!</span>
+</pre><pre class="codeinput">  <span class="keyword">global</span> EnableLogging
+  <span class="keyword">global</span> Logfilename
+  EnableLogging = true;
+  Logfilename = <span class="string">'logfile.txt'</span>;
+  textOut(sprintf(<span class="string">'Whatever I say here will be logged to the file as well.\n'</span>));
+</pre><pre class="codeinput">  textOut(sprintf(<span class="string">'Only appears in the command window\n'</span>), <span class="string">'screenonly'</span>);
+</pre><pre class="codeinput">  textOut(sprintf(<span class="string">'Only appears in the logfile, if logging enabled\n'</span>), <span class="string">'logonly'</span>);
+</pre><pre class="codeinput">  <span class="keyword">global</span> DisableScreenOut
+  DisableScreenOut = true;
+  textOut(sprintf([<span class="string">'If logging is enabled, this goes to the logfile, '</span>, <span class="keyword">...</span>
+                   <span class="string">'if not, this goes nowhere\n'</span>]));
+</pre><h2>See also<a name="23"></a></h2><p><a href="DebugMode.html">DebugMode</a>, <a href="isdebug (private).html">isdebug (private)</a>, </p><h2>Signature<a name="25"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% textOut
+% Wrapper for fprintf() which can optionally write screen output to a logfile
+%%
+%% Syntax
+% |textOut(strMsg)|
+%%
+% |textOut(strMsg, 'screenonly')|
+%%
+% |textOut(strMsg, 'logonly')|
+%%
+%% Description
+% |textOut(strMsg)| will write to screen (command window) AND logfile, if global logging is
+% enabled.
+%%
+% |textOut(strMsg, 'screenonly')| writes to screen (command window) only.
+%%
+% |textOut(strMsg, 'logonly')| writes to logfile only (global logging must be enabled). If logging
+% is disabled or somehow failes, the message will not be logged or displayed at all...
+%%
+%%
+% *Note:*
+%%
+% To enable logging (to file), set the global var |EnableLogging| to |true| and
+% set |Logfilename| to a valid filename. This function distinguishes between
+% Windows and Linux systems to use proper linebreaks.
+% The global variable |DisableScreenOut| is an on/off switch for the
+% complete textOut()-messages that would appear on the command window.
+% Default setting is |false|, i.e. there will be no output.
+%%
+% Recommended usage is together with sprintf(), in order to add
+% linebreaks for example.
+%%
+%%
+%% Examples
+  textOut('This is a message\n');
+%%
+  x = 'world';
+  y = 2007;
+  textOut(sprintf('Hello %s, it is the year %d!\n', x, y));
+  %Results in:  >> Hello world, it is the year 2007!
+%%
+  global EnableLogging
+  global Logfilename
+  EnableLogging = true;
+  Logfilename = 'logfile.txt';
+  textOut(sprintf('Whatever I say here will be logged to the file as well.\n'));
+%%
+  textOut(sprintf('Only appears in the command window\n'), 'screenonly');
+%%
+  textOut(sprintf('Only appears in the logfile, if logging enabled\n'), 'logonly');
+%%
+  global DisableScreenOut
+  DisableScreenOut = true;
+  textOut(sprintf(['If logging is enabled, this goes to the logfile, ', ...
+                   'if not, this goes nowhere\n']));
+%%
+%%
+%% See also
+% DebugMode, isdebug (private)
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

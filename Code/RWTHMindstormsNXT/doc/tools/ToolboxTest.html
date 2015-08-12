@@ -1,0 +1,1455 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>ToolboxTest</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="ToolboxTest.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#2">ToolboxTest</a></li><li><a href="#3">Clean up previous handles</a></li><li><a href="#4">Set up Matlab</a></li><li><a href="#7">Connect to NXT</a></li><li><a href="#8">Try the commands WITHOUT default handle</a></li><li><a href="#9"><b>*</b> SENSORS</a></li><li><a href="#10">analog</a></li><li><a href="#11">I2C</a></li><li><a href="#12">MOTORS</a></li><li><a href="#13">Direct Commands</a></li><li><a href="#14">Set Default!</a></li><li><a href="#15">Try the commands WITH default handle</a></li><li><a href="#16"><b>*</b> SENSORS</a></li><li><a href="#17">analog</a></li><li><a href="#18">I2C</a></li><li><a href="#19">MOTORS</a></li><li><a href="#20">Direct Commands</a></li><li><a href="#23">Set up parameters</a></li><li><a href="#24">Connect to NXT</a></li><li><a href="#25">Create basic object</a></li><li><a href="#26">Precall method to fill MATLAB cache;</a></li><li><a href="#27">Main test</a></li><li><a href="#28">Clean up</a></li><li><a href="#30">Prepare</a></li><li><a href="#31">Set up parameters</a></li><li><a href="#32">Create basic motor object</a></li><li><a href="#33">Connect to NXT</a></li><li><a href="#34">Main testing loop</a></li><li><a href="#36">Prepare</a></li><li><a href="#37">Set up parameters</a></li><li><a href="#38">Create basic motor object</a></li><li><a href="#39">Connect to NXT</a></li><li><a href="#40">Main testing loop</a></li><li><a href="#41">Clean up</a></li><li><a href="#43">Prepare</a></li><li><a href="#44">Set up parameters</a></li><li><a href="#45">Create basic motor object</a></li><li><a href="#46">Create decoy sync object</a></li><li><a href="#47">Connect to NXT</a></li><li><a href="#48">Main testing loop</a></li><li><a href="#49">Clean up</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> ToolboxTest
+</pre><h2>ToolboxTest<a name="2"></a></h2><p>This tool offers multiple toolbox tests, originally written to track or confirm certain bugs. The quality of these tests isn't very high, but running and passing them should make sure the bugs are gone and don't return after certain changes.</p><p>For the tests you have to connect the following hardware equipment to your NXT:</p><div><ul><li>All 3 motors to ports A, B, C</li><li>The NXT light sensor to port 1</li><li>Any digital sensor to port 4 (e.g. ultrasonic).</li></ul></div><p>The following tests are available. They can (and should) all be tested with USB and Bluetooth connections:</p><div><ol><li>Command syntax check: Many toolbox commands are called and tested, with or without default handles. This detects syntax errors and obvious mistakes when changing / braking a function.</li><li>Check USB connection after cable has been removed -- versions prior to 4.01 would crash MATLAB on Linux here.</li><li>Motor control timing and multitasking tests: Does the motor control lock up or stall when braking multiple motors at once, etc.?</li><li>Motor precision torture test: Many random movements, does it work for a long time? What is the overall precision?</li><li>Motor precision torture as above, but with all motors running simultaneously (and independently)</li><li>Same as above, but this time two motors are synced and the other one runs independently.</li></ol></div><p>Signature   Author: Linus Atorf (see AUTHORS)   Date: 2009/10/07   Copyright: 2007-2010, RWTH Aachen University</p><pre class="codeinput">;
+<span class="comment">%</span>
+<span class="comment">% ***********************************************************************************************</span>
+<span class="comment">% *  This file is part of the RWTH - Mindstorms NXT Toolbox.                                    *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  The RWTH - Mindstorms NXT Toolbox is free software: you can redistribute it and/or modify  *</span>
+<span class="comment">% *  it under the terms of the GNU General Public License as published by the Free Software     *</span>
+<span class="comment">% *  Foundation, either version 3 of the License, or (at your option) any later version.        *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  The RWTH - Mindstorms NXT Toolbox is distributed in the hope that it will be useful,       *</span>
+<span class="comment">% *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  *</span>
+<span class="comment">% *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.             *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  You should have received a copy of the GNU General Public License along with the           *</span>
+<span class="comment">% *  RWTH - Mindstorms NXT Toolbox. If not, see &lt;http://www.gnu.org/licenses/&gt;.                 *</span>
+<span class="comment">% ***********************************************************************************************</span>
+</pre><h2>Clean up previous handles<a name="3"></a></h2><pre class="codeinput">    COM_CloseNXT <span class="string">all</span>
+</pre><h2>Set up Matlab<a name="4"></a></h2><pre class="codeinput">    clear <span class="string">all</span> <span class="comment">% if you use clear all, call COM_CloseNXT all before, as we did!</span>
+    close <span class="string">all</span>
+    format <span class="string">compact</span>
+
+    DebugMode <span class="string">off</span>
+
+    disp(sprintf([<span class="string">'Available tests:\n'</span>, <span class="keyword">...</span>
+          <span class="string">' 1. Test syntax of most commands (test terminates)\n'</span>, <span class="keyword">...</span>
+          <span class="string">' 2. Test "MATLAB crash on Linux after USB cable removed bug"\n'</span>, <span class="keyword">...</span>
+          <span class="string">'    fixed in ver4.02, see also ticket 39 (test terminates)\n'</span>, <span class="keyword">...</span>
+          <span class="string">' 3. Test certain MotorControl timing/latency (test terminates)\n'</span>, <span class="keyword">...</span>
+          <span class="string">' 4. Torture test for MotorControl precsion, single motor\n'</span>, <span class="keyword">...</span>
+          <span class="string">'    (test runs infinitely, break with CTRL+C)\n'</span>, <span class="keyword">...</span>
+          <span class="string">' 5. Torture test for MotorControl precsion, all motors\n'</span>, <span class="keyword">...</span>
+          <span class="string">'    (test runs infinitely, break with CTRL+C)\n'</span>, <span class="keyword">...</span>
+          <span class="string">' 6. Torture test for MotorControl precsion, two motors synced\n'</span>, <span class="keyword">...</span>
+          <span class="string">'    one motor single (test runs infinitely, break with CTRL+C)\n'</span>, <span class="keyword">...</span>
+           ]))
+
+    answer = NaN;
+    <span class="keyword">while</span>(isnan(answer))
+        answer = str2double(input(<span class="string">'Enter your choice: '</span>, <span class="string">'s'</span>));
+    <span class="keyword">end</span><span class="comment">%if</span>
+
+    testFunc{1} = @TestCommandSyntax;
+    testFunc{2} = @TestNoUSBCableBug;
+    testFunc{3} = @CheckLatenciesBetweenStopAndSend;
+    testFunc{4} = @SingleMotorPrecisionTorture;
+    testFunc{5} = @AllMotorsPrecisionTorture;
+    testFunc{6} = @TwoSyncedOneSingleMotorsPrecisionTorture;
+
+
+    disp(sprintf(<span class="string">'\nStarting test no. %d ...\n'</span>, answer));
+
+    testFunc{answer}();
+</pre><pre class="codeinput"><span class="keyword">end</span><span class="comment">%function</span>
+
+<span class="keyword">function</span> TestCommandSyntax
+</pre><pre class="codeinput">    analogPort = SENSOR_1;
+    digitalPort = SENSOR_4;
+</pre><h2>Connect to NXT<a name="7"></a></h2><pre class="codeinput">    disp(<span class="string">'    Connecting...'</span>)
+
+    <span class="comment">% different syntaxes and things</span>
+    h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+    COM_CloseNXT(h);
+    h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+    COM_CloseNXT(<span class="string">'all'</span>);
+
+    h = COM_OpenNXTEx(<span class="string">'Any'</span>, <span class="string">''</span>, <span class="string">'bluetooth.ini'</span>);
+</pre><h2>Try the commands WITHOUT default handle<a name="8"></a></h2><pre class="codeinput">    disp(<span class="string">'    *** Commands without default handle'</span>)
+</pre><h2><b>*</b> SENSORS<a name="9"></a></h2><pre class="codeinput">    disp(<span class="string">'    Sensors...'</span>)
+
+    port = analogPort;
+</pre><h2>analog<a name="10"></a></h2><pre class="codeinput">    <span class="comment">%light</span>
+    OpenLight(port, <span class="string">'active'</span>, h);
+    NXT_ResetInputScaledValue(port, h);
+    GetLight(port, h);
+    CloseSensor(port, h);
+
+    OpenLight(port, <span class="string">'inactive'</span>, h);
+    GetLight(port, h);
+    CloseSensor(port, h);
+
+    <span class="comment">%sound</span>
+    OpenSound(port, <span class="string">'db'</span>, h);
+    GetSound(port, h);
+    CloseSensor(port, h);
+
+    OpenSound(port, <span class="string">'dba'</span>, h);
+    GetSound(port, h);
+    CloseSensor(port, h);
+
+    <span class="comment">%switch</span>
+    OpenSwitch(port, h);
+    GetSwitch(port, h);
+    CloseSensor(port, h);
+
+    <span class="comment">% gyro</span>
+    OpenGyro(port, h);
+    CalibrateGyro(port, <span class="string">'Auto'</span>, h);
+    GetGyro(port, h);
+    CloseSensor(port, h);
+
+
+    port = digitalPort;
+</pre><h2>I2C<a name="11"></a></h2><pre class="codeinput">    disp(<span class="string">'    I2C...'</span>)
+
+    <span class="comment">%ultrasonic</span>
+    OpenUltrasonic(port, <span class="string">''</span>, h);
+    GetUltrasonic(port, h);
+    CloseSensor(port, h);
+
+    OpenUltrasonic(port, <span class="string">'snapshot'</span>, h);
+    USMakeSnapshot(port, h);
+    USGetSnapshotResults(port, h);
+    CloseSensor(port, h);
+
+    <span class="comment">%compass</span>
+    OpenCompass(port, h);
+    GetCompass(port, h);
+    CalibrateCompass(port, true, h);
+    pause(0.5);
+    CalibrateCompass(port, false, h);
+    CloseSensor(port, h);
+
+    <span class="comment">%acceleration</span>
+    OpenAccelerator(port, h);
+    GetAccelerator(port, h);
+    CloseSensor(port, h);
+
+    <span class="comment">%infrared</span>
+    OpenInfrared(port, h);
+    GetInfrared(port, h);
+    CloseSensor(port, h);
+</pre><h2>MOTORS<a name="12"></a></h2><pre class="codeinput">    port = MOTOR_B;
+    port2 = MOTOR_C;
+    disp(<span class="string">'    Motors...'</span>)
+
+    StopMotor(<span class="string">'all'</span>, <span class="string">'brake'</span>, h);
+    StopMotor(<span class="string">'all'</span>, <span class="string">'off'</span>, h);
+
+    SwitchLamp(port, <span class="string">'on'</span>, h);
+    SwitchLamp(port, <span class="string">'off'</span>, h);
+
+    m   = NXTMotor(port);
+    m2  = NXTMotor([port; port2]);
+
+    tmp1 = m.ReadFromNXT(h);
+    m.ResetPosition(h);
+    m.Stop(<span class="string">'brake'</span>, h);
+    m.Stop(<span class="string">'off'</span>, h);
+
+    [tmp1 tmp2] = m2.ReadFromNXT(h);
+    m2.ResetPosition(h);
+    m2.Stop(<span class="string">'brake'</span>, h);
+    m2.Stop(<span class="string">'off'</span>, h);
+
+    m.WaitFor(5, h);
+    m2.WaitFor(5, h);
+
+    m.Power = 50;
+    m.TachoLimit = 300;
+    m.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+    m.SpeedRegulation = true;
+    m.SmoothStart = true;
+    m.SendToNXT(h);
+    m.WaitFor(10, h);
+
+    m.SpeedRegulation = false;
+    m.SmoothStart = true;
+    m.ActionAtTachoLimit = <span class="string">'HoldBrake'</span>;
+    m.SendToNXT(h);
+    m.WaitFor(10, h);
+
+    m.ActionAtTachoLimit = <span class="string">'Coast'</span>;
+    m.SmoothStart = false;
+    m.SendToNXT(h);
+    m.WaitFor(10, h);
+
+    m.Stop(<span class="string">'off'</span>, h);
+
+    m2.Power = -50;
+    m2.TachoLimit = 400;
+    m2.SpeedRegulation = false;
+    m2.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+    m2.SmoothStart = true;
+    m2.SendToNXT(h);
+    m2.WaitFor(10, h);
+
+    m2.Stop(<span class="string">'off'</span>, h);
+</pre><h2>Direct Commands<a name="13"></a></h2><pre class="codeinput">    disp(<span class="string">'    Some direct commands...'</span>)
+
+
+    NXT_ResetMotorPosition(port, true, h);
+    NXT_ResetMotorPosition(port, false, h);
+
+    NXT_SendKeepAlive(<span class="string">'dontreply'</span>, h);
+
+    NXT_PlayTone(800, 500, h);
+
+    [status sleeptime]  = NXT_SendKeepAlive(<span class="string">'reply'</span>, h);
+    battery             = NXT_GetBatteryLevel(h);
+    [protocol firmware] = NXT_GetFirmwareVersion(h);
+
+    battery
+    sleeptime
+    firmware
+</pre><h2>Set Default!<a name="14"></a></h2><pre class="codeinput">    COM_SetDefaultNXT(h);
+</pre><h2>Try the commands WITH default handle<a name="15"></a></h2><pre class="codeinput">    disp(<span class="string">'    *** Commands with default handle'</span>)
+</pre><h2><b>*</b> SENSORS<a name="16"></a></h2><pre class="codeinput">    disp(<span class="string">'    Sensors...'</span>)
+
+    port = analogPort;
+</pre><h2>analog<a name="17"></a></h2><pre class="codeinput">    <span class="comment">%light</span>
+    OpenLight(port, <span class="string">'active'</span>);
+    NXT_ResetInputScaledValue(port);
+    GetLight(port);
+    CloseSensor(port);
+
+    OpenLight(port, <span class="string">'inactive'</span>);
+    GetLight(port);
+    CloseSensor(port);
+
+    <span class="comment">%sound</span>
+    OpenSound(port, <span class="string">'db'</span>);
+    GetSound(port);
+    CloseSensor(port);
+
+    OpenSound(port, <span class="string">'dba'</span>);
+    GetSound(port);
+    CloseSensor(port);
+
+    <span class="comment">%switch</span>
+    OpenSwitch(port);
+    GetSwitch(port);
+    CloseSensor(port);
+
+    <span class="comment">% gyro</span>
+    OpenGyro(port);
+    CalibrateGyro(port, <span class="string">'Auto'</span>);
+    GetGyro(port);
+    CloseSensor(port);
+
+
+    port = digitalPort;
+</pre><h2>I2C<a name="18"></a></h2><pre class="codeinput">    disp(<span class="string">'    I2C...'</span>)
+
+    <span class="comment">%ultrasonic</span>
+    OpenUltrasonic(port, <span class="string">''</span>);
+    GetUltrasonic(port);
+    CloseSensor(port);
+
+    OpenUltrasonic(port, <span class="string">'snapshot'</span>);
+    USMakeSnapshot(port);
+    USGetSnapshotResults(port);
+    CloseSensor(port);
+
+    <span class="comment">%compass</span>
+    OpenCompass(port);
+    GetCompass(port);
+    CalibrateCompass(port, true);
+    pause(0.5);
+    CalibrateCompass(port, false);
+    CloseSensor(port);
+
+    <span class="comment">%acceleration</span>
+    OpenAccelerator(port);
+    GetAccelerator(port);
+    CloseSensor(port);
+
+    <span class="comment">%infrared</span>
+    OpenInfrared(port);
+    GetInfrared(port);
+    CloseSensor(port);
+</pre><h2>MOTORS<a name="19"></a></h2><pre class="codeinput">    port = MOTOR_B;
+    port2 = MOTOR_C;
+    disp(<span class="string">'    Motors...'</span>)
+
+    StopMotor(<span class="string">'all'</span>, <span class="string">'brake'</span>);
+    StopMotor(<span class="string">'all'</span>, <span class="string">'off'</span>);
+
+    SwitchLamp(port, <span class="string">'on'</span>);
+    SwitchLamp(port, <span class="string">'off'</span>);
+
+    m   = NXTMotor(port);
+    m2  = NXTMotor([port; port2]);
+
+    tmp1 = m.ReadFromNXT();
+    m.ResetPosition();
+    m.Stop(<span class="string">'brake'</span>);
+    m.Stop(<span class="string">'off'</span>);
+
+    [tmp1 tmp2] = m2.ReadFromNXT();
+    m2.ResetPosition();
+    m2.Stop(<span class="string">'brake'</span>);
+    m2.Stop(<span class="string">'off'</span>);
+
+    m.WaitFor();
+    m2.WaitFor();
+
+    m.Power = 50;
+    m.TachoLimit = 300;
+    m.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+    m.SpeedRegulation = true;
+    m.SmoothStart = true;
+    m.SendToNXT();
+    m.WaitFor();
+
+    m.SpeedRegulation = false;
+    m.SmoothStart = true;
+    m.ActionAtTachoLimit = <span class="string">'HoldBrake'</span>;
+    m.SendToNXT();
+    m.WaitFor();
+
+    m.ActionAtTachoLimit = <span class="string">'Coast'</span>;
+    m.SmoothStart = false;
+    m.SendToNXT();
+    m.WaitFor();
+
+    m.Stop(<span class="string">'off'</span>);
+
+    m2.Power = -50;
+    m2.SpeedRegulation = false;
+    m2.TachoLimit = 400;
+    m2.ActionAtTachoLimit = <span class="string">'Brake'</span>;
+    m2.SmoothStart = true;
+    m2.SendToNXT();
+    m2.WaitFor();
+
+    m2.Stop(<span class="string">'off'</span>);
+</pre><h2>Direct Commands<a name="20"></a></h2><pre class="codeinput">    disp(<span class="string">'    Some direct commands...'</span>)
+
+
+    NXT_ResetMotorPosition(port, true);
+    NXT_ResetMotorPosition(port, false);
+
+    NXT_SendKeepAlive(<span class="string">'dontreply'</span>);
+
+    NXT_PlayTone(800, 500);
+
+    [status sleeptime]  = NXT_SendKeepAlive(<span class="string">'reply'</span>);
+    battery             = NXT_GetBatteryLevel(h);
+    [protocol firmware] = NXT_GetFirmwareVersion(h);
+
+    battery
+    sleeptime
+    firmware
+
+
+
+
+
+    COM_CloseNXT(h);
+
+    disp(<span class="string">'    *** Test successful so far ***'</span>)
+</pre><pre class="codeinput"><span class="keyword">end</span><span class="comment">%function</span>
+
+<span class="keyword">function</span> TestNoUSBCableBug
+    COM_CloseNXT <span class="string">all</span>
+    clear <span class="string">all</span>
+
+    disp(<span class="string">'    No MATLAB crash means: TEST SUCCESSFUL!'</span>)
+    disp(<span class="string">'    Any error message is a good thing!'</span>)
+    disp(<span class="string">'    '</span>)
+
+    DebugMode <span class="string">off</span>
+
+    <span class="comment">% USB Verbindung herstellen</span>
+    myNXT = COM_OpenNXT();
+    COM_CloseNXT(myNXT);
+
+
+    disp(<span class="string">'    UNPLUG USB CABLE'</span>)
+    disp(<span class="string">'    Press ENTER to continue'</span>)
+    pause;
+
+
+    <span class="comment">% Bluetooth Verbindung herstellen (actually USB ^^)</span>
+    myNXT = COM_OpenNXT();
+
+    COM_CloseNXT(myNXT);
+
+<span class="keyword">end</span><span class="comment">%function</span>
+
+<span class="keyword">function</span> CheckLatenciesBetweenStopAndSend()
+</pre><pre class="codeinput">    COM_CloseNXT <span class="string">all</span>
+
+    disp(<span class="string">'    Listen for the NXT to beep. It should NOT do that!'</span>);
+    disp(<span class="string">'    Beeping means a dropped motor command, this is bad.'</span>);
+    disp(<span class="string">'    Motors B and C should spin, stop, then motor B spin.'</span>);
+    disp(<span class="string">'    Press ENTER to continue...'</span>);
+    pause;
+</pre><h2>Set up parameters<a name="23"></a></h2><pre class="codeinput">    port                = MOTOR_B;
+    port2               = MOTOR_C;
+</pre><h2>Connect to NXT<a name="24"></a></h2><pre class="codeinput">    hNXT = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+    COM_SetDefaultNXT(hNXT);
+</pre><h2>Create basic object<a name="25"></a></h2><pre class="codeinput">    m = NXTMotor;
+    m.Port                  = port;
+    m.Power                 = 80;
+    m.TachoLimit            = 1000;
+    m.SpeedRegulation       = true;
+    m.SmoothStart           = true;
+    m.ActionAtTachoLimit    = <span class="string">'Brake'</span>;
+
+    m2 = m;
+    m2.Port = port2;
+</pre><h2>Precall method to fill MATLAB cache;<a name="26"></a></h2><p>the order here makes sense, even with the multiple commands :-) it's the proper way to use .WaitFor after .Stop! It might be a bit slower sometimes, but it can never go wrong!</p><pre class="codeinput">    m.Stop();
+    m.WaitFor();
+    m.SendToNXT();
+    m.Stop();
+    m.WaitFor();
+
+    pause(0.5);
+</pre><h2>Main test<a name="27"></a></h2><pre class="codeinput">    <span class="comment">% start 1st motor</span>
+    m.SendToNXT();
+    <span class="comment">% now the trick that let's us create very fine granulated pauses:</span>
+    <span class="comment">% what we wait here will be the time we get to use .Stop before</span>
+    <span class="comment">% the motor stops, so we can get right into the interesting</span>
+    <span class="comment">% last braking section</span>
+    pause(0.1);
+    m2.SendToNXT();
+
+    <span class="comment">% when waiting for the 1st motor is done, the 2nd will be exactly the</span>
+    <span class="comment">% amount of pause before finishing (if the motors run exact equally).</span>
+    m.WaitFor()
+
+    <span class="comment">% now the test:</span>
+    m2.Stop();
+    <span class="comment">% can we already start the next command with m2?</span>
+    m2.SendToNXT();
+</pre><h2>Clean up<a name="28"></a></h2><pre class="codeinput">    COM_CloseNXT(hNXT);
+
+     disp(<span class="string">'Test completed (no NXT beep and 2 separate movements means: successful)'</span>);
+</pre><pre class="codeinput"><span class="keyword">end</span><span class="comment">%function</span>
+
+<span class="keyword">function</span> SingleMotorPrecisionTorture()
+</pre><h2>Prepare<a name="30"></a></h2><pre class="codeinput">    COM_CloseNXT <span class="string">all</span>
+
+    disp(<span class="string">'   Running torture test. Beeping NXT or'</span>)
+    disp(<span class="string">'   TIME OUT warnings are bad!'</span>)
+    disp(<span class="string">'   Terminate with CTRL+C'</span>)
+</pre><h2>Set up parameters<a name="31"></a></h2><pre class="codeinput">    port                = MOTOR_B;
+    ActionAtTachoLimit  = <span class="string">'Brake'</span>;
+
+    minAbsPower         =    10;
+    maxAbsPower         =   100;
+    minTachoLimit       =    8;
+    maxTachoLimit       =  1200;
+</pre><h2>Create basic motor object<a name="32"></a></h2><pre class="codeinput">    m = NXTMotor;
+    m.Port                  = port;
+    <span class="comment">%m.SpeedRegulation       = SpeedRegulation;</span>
+    <span class="comment">%m.SmoothStart           = SmoothStart;</span>
+    m.ActionAtTachoLimit    = ActionAtTachoLimit;
+</pre><h2>Connect to NXT<a name="33"></a></h2><pre class="codeinput">    hNXT = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+    COM_SetDefaultNXT(hNXT);
+</pre><h2>Main testing loop<a name="34"></a></h2><pre class="codeinput">    figure;
+    j = 0;
+    <span class="keyword">while</span> (true)
+        j = j + 1;
+
+        m.SpeedRegulation   = (rand &gt; 0.5);
+        m.SmoothStart       = (rand &gt; 0.5);
+
+
+        powerSgn    = 1 - (rand &gt; 0.5) * 2;
+        absPower    = floor(minAbsPower + (maxAbsPower - minAbsPower) * rand);
+        tachoLimit  = floor(minTachoLimit + (maxTachoLimit - minTachoLimit) * rand);
+
+        m.Power         = absPower * powerSgn;
+        m.TachoLimit    = tachoLimit;
+
+        m.SendToNXT();
+        <span class="keyword">if</span> m.WaitFor(20)
+            disp(<span class="string">'TIME OUT'</span>)
+            NXT_PlayTone(600, 500);
+            stat = NXT_GetOutputState(m.Port(1))
+            m
+            m.Stop(<span class="string">'off'</span>);
+        <span class="keyword">end</span><span class="comment">%if</span>
+
+
+
+        data = m.ReadFromNXT();
+
+        error(j) = (data.TachoCount * powerSgn) - tachoLimit;
+
+        hist(error);
+        xlabel(<span class="string">'Absolute error (relative to target position) in degrees'</span>)
+        ylabel(<span class="string">'Absolute number of error values occured'</span>)
+        title(<span class="string">'Histogram for motor precision'</span>)
+        drawnow
+
+    <span class="keyword">end</span><span class="comment">%while</span>
+</pre><pre class="codeinput"><span class="keyword">end</span><span class="comment">%function</span>
+
+<span class="keyword">function</span> AllMotorsPrecisionTorture()
+</pre><h2>Prepare<a name="36"></a></h2><pre class="codeinput">    COM_CloseNXT <span class="string">all</span>
+
+    disp(<span class="string">'   Running torture test. Beeping NXT or'</span>)
+    disp(<span class="string">'   TIME OUT warnings are bad!'</span>)
+    disp(<span class="string">'   Terminate with CTRL+C'</span>)
+</pre><h2>Set up parameters<a name="37"></a></h2><pre class="codeinput">    port                = MOTOR_B;
+    port2               = MOTOR_C;
+    port3               = MOTOR_A;
+
+    ActionAtTachoLimit  = <span class="string">'Brake'</span>;
+
+    minAbsPower         =    10;
+    maxAbsPower         =   100;
+    minTachoLimit       =    8;
+    maxTachoLimit       =  1200;
+</pre><h2>Create basic motor object<a name="38"></a></h2><pre class="codeinput">    m = NXTMotor;
+    m.Port                  = port;
+    m.ActionAtTachoLimit    = ActionAtTachoLimit;
+</pre><h2>Connect to NXT<a name="39"></a></h2><pre class="codeinput">    hNXT = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+    COM_SetDefaultNXT(hNXT);
+</pre><h2>Main testing loop<a name="40"></a></h2><pre class="codeinput">    figure;
+    j = 0;
+    <span class="keyword">while</span> (true)
+        j = j + 1;
+
+        powerSgn    = 1 - (rand &gt; 0.5) * 2;
+        absPower    = floor(minAbsPower + (maxAbsPower - minAbsPower) * rand);
+        tachoLimit  = floor(minTachoLimit + (maxTachoLimit - minTachoLimit) * rand);
+
+        m.SpeedRegulation   = (rand &gt; 0.5);
+        m.SmoothStart       = (rand &gt; 0.5);
+
+
+        m.Power         = absPower * powerSgn;
+        m.TachoLimit    = tachoLimit;
+
+        m2 = m;
+        m2.Port = port2;
+        m3 = m;
+        m3.Port = port3;
+
+        m2.Stop();
+        m3.Stop();
+
+        <span class="comment">%pause(0.5);</span>
+
+        m.SendToNXT();
+
+        pause(0.1 * rand);
+        m2.SendToNXT();
+        pause(0.1 * rand);
+        m3.SendToNXT();
+
+        <span class="keyword">if</span> m.WaitFor(20);
+            disp(<span class="string">'TIME OUT'</span>)
+            NXT_PlayTone(600, 500);
+            stat = NXT_GetOutputState(m.Port(1))
+            m
+            m.Stop(<span class="string">'off'</span>);
+        <span class="keyword">end</span><span class="comment">%if</span>
+
+        data = m.ReadFromNXT();
+
+        error(j) = (data.TachoCount * powerSgn) - tachoLimit;
+        hist(error);
+        xlabel(<span class="string">'Absolute error (relative to target position) in degrees'</span>)
+        ylabel(<span class="string">'Absolute number of error values occured'</span>)
+        title(<span class="string">'Histogram for motor precision'</span>)
+        drawnow
+
+    <span class="keyword">end</span><span class="comment">%while</span>
+</pre><h2>Clean up<a name="41"></a></h2><pre class="codeinput">    COM_CloseNXT(hNXT);
+</pre><pre class="codeinput"><span class="keyword">end</span><span class="comment">%function</span>
+
+<span class="keyword">function</span> TwoSyncedOneSingleMotorsPrecisionTorture()
+</pre><h2>Prepare<a name="43"></a></h2><pre class="codeinput">    COM_CloseNXT <span class="string">all</span>
+
+    disp(<span class="string">'   Running torture test. Beeping NXT or'</span>)
+    disp(<span class="string">'   TIME OUT warnings are bad!'</span>)
+    disp(<span class="string">'   Terminate with CTRL+C'</span>)
+</pre><h2>Set up parameters<a name="44"></a></h2><pre class="codeinput">    singlePort          = MOTOR_A;
+    syncPort1           = MOTOR_B;
+    syncPort2           = MOTOR_C;
+
+    SpeedRegulation     = false;
+    SmoothStart         = true;
+    ActionAtTachoLimit  = <span class="string">'Brake'</span>;
+
+    minAbsPower         =    10;
+    maxAbsPower         =   100;
+    minTachoLimit       =    8;
+    maxTachoLimit       =  1200;
+</pre><h2>Create basic motor object<a name="45"></a></h2><pre class="codeinput">    m = NXTMotor;
+    m.Port                  = singlePort;
+    m.SpeedRegulation       = SpeedRegulation;
+    m.SmoothStart           = SmoothStart;
+    m.ActionAtTachoLimit    = ActionAtTachoLimit;
+</pre><h2>Create decoy sync object<a name="46"></a></h2><pre class="codeinput">    s = NXTMotor;
+    s.Port                  = [syncPort1; syncPort2];
+    s.SpeedRegulation       = false; <span class="comment">% off for sync</span>
+    s.SmoothStart           = SmoothStart;
+    s.ActionAtTachoLimit    = ActionAtTachoLimit;
+</pre><h2>Connect to NXT<a name="47"></a></h2><pre class="codeinput">    hNXT = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+    COM_SetDefaultNXT(hNXT);
+</pre><h2>Main testing loop<a name="48"></a></h2><pre class="codeinput">    figure;
+    j = 0;
+    <span class="keyword">while</span> (true)
+        j = j + 1;
+
+
+        powerSgn    = 1 - (rand &gt; 0.5) * 2;
+        absPower    = floor(minAbsPower + (maxAbsPower - minAbsPower) * rand);
+        tachoLimit  = floor(minTachoLimit + (maxTachoLimit - minTachoLimit) * rand);
+
+        m.Power           = absPower * powerSgn;
+        m.TachoLimit      = tachoLimit;
+        m.SmoothStart     = (rand &gt; 0.5);
+        m.SpeedRegulation = (rand &gt; 0.5);
+
+        s.Power         = m.Power;
+        s.TachoLimit    = m.TachoLimit;
+        s.SmoothStart   = (rand &gt; 0.5);
+
+        s.Stop();
+
+        <span class="comment">%pause(0.5);</span>
+
+        m.SendToNXT();
+
+        pause(0.1 * rand);
+        s.SendToNXT();
+
+        <span class="keyword">if</span> m.WaitFor(20)
+            disp(<span class="string">'TIME OUT'</span>)
+            NXT_PlayTone(600, 500);
+            stat = NXT_GetOutputState(m.Port(1))
+            m
+            m.Stop(<span class="string">'off'</span>);
+        <span class="keyword">end</span><span class="comment">%if</span>
+
+        data = m.ReadFromNXT();
+
+        error(j) = (data.TachoCount * powerSgn) - tachoLimit;
+        hist(error);
+        xlabel(<span class="string">'Absolute error (relative to target position) in degrees'</span>)
+        ylabel(<span class="string">'Absolute number of error values occured'</span>)
+        title(<span class="string">'Histogram for motor precision'</span>)
+        drawnow
+
+    <span class="keyword">end</span><span class="comment">%while</span>
+</pre><h2>Clean up<a name="49"></a></h2><pre class="codeinput">    COM_CloseNXT(hNXT);
+</pre><pre class="codeinput"><span class="keyword">end</span><span class="comment">%function</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+function ToolboxTest
+%% ToolboxTest
+% This tool offers multiple toolbox tests, originally written to track
+% or confirm certain bugs. The quality of these tests isn't very high,
+% but running and passing them should make sure the bugs are gone and
+% don't return after certain changes.
+%
+% For the tests you have to connect the following hardware equipment to
+% your NXT:
+%
+% * All 3 motors to ports A, B, C
+% * The NXT light sensor to port 1
+% * Any digital sensor to port 4 (e.g. ultrasonic).
+%
+% The following tests are available. They can (and should) all be tested
+% with USB and Bluetooth connections:
+%
+% # Command syntax check: Many toolbox commands are called and tested, with
+% or without default handles. This detects syntax errors and obvious
+% mistakes when changing / braking a function.
+% # Check USB connection after cable has been removed REPLACE_WITH_DASH_DASH versions prior to
+% 4.01 would crash MATLAB on Linux here.
+% # Motor control timing and multitasking tests: Does the motor control
+% lock up or stall when braking multiple motors at once, etc.?
+% # Motor precision torture test: Many random movements, does it work for a
+% long time? What is the overall precision?
+% # Motor precision torture as above, but with all motors running
+% simultaneously (and independently)
+% # Same as above, but this time two motors are synced and the other one
+% runs independently.
+%
+%
+% Signature
+%   Author: Linus Atorf (see AUTHORS)
+%   Date: 2009/10/07
+%   Copyright: 2007-2010, RWTH Aachen University
+%
+%
+;
+%
+% ***********************************************************************************************
+% *  This file is part of the RWTH - Mindstorms NXT Toolbox.                                    *
+% *                                                                                             *
+% *  The RWTH - Mindstorms NXT Toolbox is free software: you can redistribute it and/or modify  *
+% *  it under the terms of the GNU General Public License as published by the Free Software     *
+% *  Foundation, either version 3 of the License, or (at your option) any later version.        *
+% *                                                                                             *
+% *  The RWTH - Mindstorms NXT Toolbox is distributed in the hope that it will be useful,       *
+% *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  *
+% *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+% *                                                                                             *
+% *  You should have received a copy of the GNU General Public License along with the           *
+% *  RWTH - Mindstorms NXT Toolbox. If not, see <http://www.gnu.org/licenses/>.                 *
+% ***********************************************************************************************
+
+
+
+    %% Clean up previous handles
+    COM_CloseNXT all
+
+    %% Set up Matlab
+    clear all % if you use clear all, call COM_CloseNXT all before, as we did!
+    close all
+    format compact
+
+    DebugMode off
+
+    disp(sprintf(['Available tests:\n', ...
+          ' 1. Test syntax of most commands (test terminates)\n', ...
+          ' 2. Test "MATLAB crash on Linux after USB cable removed bug"\n', ...
+          '    fixed in ver4.02, see also ticket 39 (test terminates)\n', ...
+          ' 3. Test certain MotorControl timing/latency (test terminates)\n', ...
+          ' 4. Torture test for MotorControl precsion, single motor\n', ...
+          '    (test runs infinitely, break with CTRL+C)\n', ...
+          ' 5. Torture test for MotorControl precsion, all motors\n', ...
+          '    (test runs infinitely, break with CTRL+C)\n', ...
+          ' 6. Torture test for MotorControl precsion, two motors synced\n', ...
+          '    one motor single (test runs infinitely, break with CTRL+C)\n', ...
+           ]))
+       
+    answer = NaN;
+    while(isnan(answer))
+        answer = str2double(input('Enter your choice: ', 's'));
+    end%if
+
+    testFunc{1} = @TestCommandSyntax;
+    testFunc{2} = @TestNoUSBCableBug;
+    testFunc{3} = @CheckLatenciesBetweenStopAndSend;
+    testFunc{4} = @SingleMotorPrecisionTorture;
+    testFunc{5} = @AllMotorsPrecisionTorture;
+    testFunc{6} = @TwoSyncedOneSingleMotorsPrecisionTorture;
+    
+    
+    disp(sprintf('\nStarting test no. %d ...\n', answer));
+    
+    testFunc{answer}();
+ 
+
+
+end%function
+
+function TestCommandSyntax
+    analogPort = SENSOR_1;
+    digitalPort = SENSOR_4;
+    
+    %% Connect to NXT
+    disp('    Connecting...')
+
+    % different syntaxes and things
+    h = COM_OpenNXT('bluetooth.ini');
+    COM_CloseNXT(h);
+    h = COM_OpenNXT('bluetooth.ini');
+    COM_CloseNXT('all');
+
+    h = COM_OpenNXTEx('Any', '', 'bluetooth.ini');
+
+
+
+    %% Try the commands WITHOUT default handle
+    disp('    *** Commands without default handle')
+
+    %% *** SENSORS
+    disp('    Sensors...')
+
+    port = analogPort;
+    %% analog
+    %light
+    OpenLight(port, 'active', h);
+    NXT_ResetInputScaledValue(port, h);
+    GetLight(port, h);
+    CloseSensor(port, h);
+
+    OpenLight(port, 'inactive', h);
+    GetLight(port, h);
+    CloseSensor(port, h);
+
+    %sound
+    OpenSound(port, 'db', h);
+    GetSound(port, h);
+    CloseSensor(port, h);
+
+    OpenSound(port, 'dba', h);
+    GetSound(port, h);
+    CloseSensor(port, h);
+
+    %switch
+    OpenSwitch(port, h);
+    GetSwitch(port, h);
+    CloseSensor(port, h);
+    
+    % gyro
+    OpenGyro(port, h);
+    CalibrateGyro(port, 'Auto', h);
+    GetGyro(port, h);
+    CloseSensor(port, h);
+
+
+    port = digitalPort;
+
+    %% I2C
+    disp('    I2C...')
+
+    %ultrasonic
+    OpenUltrasonic(port, '', h);
+    GetUltrasonic(port, h);
+    CloseSensor(port, h);
+
+    OpenUltrasonic(port, 'snapshot', h);
+    USMakeSnapshot(port, h);
+    USGetSnapshotResults(port, h);
+    CloseSensor(port, h);
+
+    %compass
+    OpenCompass(port, h);
+    GetCompass(port, h);
+    CalibrateCompass(port, true, h);
+    pause(0.5);
+    CalibrateCompass(port, false, h);
+    CloseSensor(port, h);
+
+    %acceleration
+    OpenAccelerator(port, h);
+    GetAccelerator(port, h);
+    CloseSensor(port, h);
+
+    %infrared
+    OpenInfrared(port, h);
+    GetInfrared(port, h);
+    CloseSensor(port, h);
+
+
+    %% MOTORS
+    port = MOTOR_B;
+    port2 = MOTOR_C;
+    disp('    Motors...')
+
+    StopMotor('all', 'brake', h);
+    StopMotor('all', 'off', h);
+
+    SwitchLamp(port, 'on', h);
+    SwitchLamp(port, 'off', h);
+    
+    m   = NXTMotor(port);
+    m2  = NXTMotor([port; port2]);
+
+    tmp1 = m.ReadFromNXT(h);
+    m.ResetPosition(h);
+    m.Stop('brake', h);
+    m.Stop('off', h);
+    
+    [tmp1 tmp2] = m2.ReadFromNXT(h);
+    m2.ResetPosition(h);
+    m2.Stop('brake', h);
+    m2.Stop('off', h);
+    
+    m.WaitFor(5, h);
+    m2.WaitFor(5, h);
+    
+    m.Power = 50;
+    m.TachoLimit = 300;
+    m.ActionAtTachoLimit = 'Brake';
+    m.SpeedRegulation = true;
+    m.SmoothStart = true;
+    m.SendToNXT(h);
+    m.WaitFor(10, h);
+    
+    m.SpeedRegulation = false;
+    m.SmoothStart = true;
+    m.ActionAtTachoLimit = 'HoldBrake';
+    m.SendToNXT(h);
+    m.WaitFor(10, h);
+    
+    m.ActionAtTachoLimit = 'Coast';
+    m.SmoothStart = false;
+    m.SendToNXT(h);
+    m.WaitFor(10, h);
+    
+    m.Stop('off', h);
+    
+    m2.Power = -50;
+    m2.TachoLimit = 400;
+    m2.SpeedRegulation = false;
+    m2.ActionAtTachoLimit = 'Brake';
+    m2.SmoothStart = true;
+    m2.SendToNXT(h);
+    m2.WaitFor(10, h);
+    
+    m2.Stop('off', h);
+    
+
+
+    %% Direct Commands
+    disp('    Some direct commands...')
+
+
+    NXT_ResetMotorPosition(port, true, h);
+    NXT_ResetMotorPosition(port, false, h);
+
+    NXT_SendKeepAlive('dontreply', h);
+
+    NXT_PlayTone(800, 500, h);
+
+    [status sleeptime]  = NXT_SendKeepAlive('reply', h);
+    battery             = NXT_GetBatteryLevel(h);
+    [protocol firmware] = NXT_GetFirmwareVersion(h);
+
+    battery
+    sleeptime
+    firmware
+
+
+    %% Set Default!
+
+    COM_SetDefaultNXT(h);
+
+    %% Try the commands WITH default handle
+    disp('    *** Commands with default handle')
+
+    %% *** SENSORS
+    disp('    Sensors...')
+
+    port = analogPort;
+    %% analog
+    %light
+    OpenLight(port, 'active');
+    NXT_ResetInputScaledValue(port);
+    GetLight(port);
+    CloseSensor(port);
+
+    OpenLight(port, 'inactive');
+    GetLight(port);
+    CloseSensor(port);
+
+    %sound
+    OpenSound(port, 'db');
+    GetSound(port);
+    CloseSensor(port);
+
+    OpenSound(port, 'dba');
+    GetSound(port);
+    CloseSensor(port);
+
+    %switch
+    OpenSwitch(port);
+    GetSwitch(port);
+    CloseSensor(port);
+    
+    % gyro
+    OpenGyro(port);
+    CalibrateGyro(port, 'Auto');
+    GetGyro(port);
+    CloseSensor(port);
+
+
+    port = digitalPort;
+
+    %% I2C
+    disp('    I2C...')
+
+    %ultrasonic
+    OpenUltrasonic(port, '');
+    GetUltrasonic(port);
+    CloseSensor(port);
+
+    OpenUltrasonic(port, 'snapshot');
+    USMakeSnapshot(port);
+    USGetSnapshotResults(port);
+    CloseSensor(port);
+
+    %compass
+    OpenCompass(port);
+    GetCompass(port);
+    CalibrateCompass(port, true);
+    pause(0.5);
+    CalibrateCompass(port, false);
+    CloseSensor(port);
+
+    %acceleration
+    OpenAccelerator(port);
+    GetAccelerator(port);
+    CloseSensor(port);
+
+    %infrared
+    OpenInfrared(port);
+    GetInfrared(port);
+    CloseSensor(port);
+
+
+    %% MOTORS
+    port = MOTOR_B;
+    port2 = MOTOR_C;
+    disp('    Motors...')
+
+    StopMotor('all', 'brake');
+    StopMotor('all', 'off');
+
+    SwitchLamp(port, 'on');
+    SwitchLamp(port, 'off');
+    
+    m   = NXTMotor(port);
+    m2  = NXTMotor([port; port2]);
+
+    tmp1 = m.ReadFromNXT();
+    m.ResetPosition();
+    m.Stop('brake');
+    m.Stop('off');
+    
+    [tmp1 tmp2] = m2.ReadFromNXT();
+    m2.ResetPosition();
+    m2.Stop('brake');
+    m2.Stop('off');
+    
+    m.WaitFor();
+    m2.WaitFor();
+    
+    m.Power = 50;
+    m.TachoLimit = 300;
+    m.ActionAtTachoLimit = 'Brake';
+    m.SpeedRegulation = true;
+    m.SmoothStart = true;
+    m.SendToNXT();
+    m.WaitFor();
+    
+    m.SpeedRegulation = false;
+    m.SmoothStart = true;
+    m.ActionAtTachoLimit = 'HoldBrake';
+    m.SendToNXT();
+    m.WaitFor();
+    
+    m.ActionAtTachoLimit = 'Coast';
+    m.SmoothStart = false;
+    m.SendToNXT();
+    m.WaitFor();
+    
+    m.Stop('off');
+    
+    m2.Power = -50;
+    m2.SpeedRegulation = false;
+    m2.TachoLimit = 400;
+    m2.ActionAtTachoLimit = 'Brake';
+    m2.SmoothStart = true;
+    m2.SendToNXT();
+    m2.WaitFor();
+    
+    m2.Stop('off');
+
+
+    %% Direct Commands
+    disp('    Some direct commands...')
+
+
+    NXT_ResetMotorPosition(port, true);
+    NXT_ResetMotorPosition(port, false);
+
+    NXT_SendKeepAlive('dontreply');
+
+    NXT_PlayTone(800, 500);
+
+    [status sleeptime]  = NXT_SendKeepAlive('reply');
+    battery             = NXT_GetBatteryLevel(h);
+    [protocol firmware] = NXT_GetFirmwareVersion(h);
+
+    battery
+    sleeptime
+    firmware
+
+
+
+
+
+    COM_CloseNXT(h);
+
+    disp('    *** Test successful so far ***')
+end%function
+
+function TestNoUSBCableBug
+    COM_CloseNXT all
+    clear all
+
+    disp('    No MATLAB crash means: TEST SUCCESSFUL!')
+    disp('    Any error message is a good thing!')
+    disp('    ')
+
+    DebugMode off
+
+    % USB Verbindung herstellen
+    myNXT = COM_OpenNXT();
+    COM_CloseNXT(myNXT);
+
+
+    disp('    UNPLUG USB CABLE')
+    disp('    Press ENTER to continue')
+    pause;
+
+
+    % Bluetooth Verbindung herstellen (actually USB ^^)
+    myNXT = COM_OpenNXT();
+
+    COM_CloseNXT(myNXT);
+    
+end%function
+
+function CheckLatenciesBetweenStopAndSend()
+    COM_CloseNXT all
+
+    disp('    Listen for the NXT to beep. It should NOT do that!');
+    disp('    Beeping means a dropped motor command, this is bad.');
+    disp('    Motors B and C should spin, stop, then motor B spin.');
+    disp('    Press ENTER to continue...');
+    pause;
+    
+    %% Set up parameters
+    port                = MOTOR_B;
+    port2               = MOTOR_C;
+
+
+    %% Connect to NXT
+    hNXT = COM_OpenNXT('bluetooth.ini');
+    COM_SetDefaultNXT(hNXT);
+
+
+    %% Create basic object
+    m = NXTMotor;
+    m.Port                  = port;
+    m.Power                 = 80;
+    m.TachoLimit            = 1000;
+    m.SpeedRegulation       = true;
+    m.SmoothStart           = true;
+    m.ActionAtTachoLimit    = 'Brake';
+
+    m2 = m;
+    m2.Port = port2;
+
+    %% Precall method to fill MATLAB cache;
+    % the order here makes sense, even with the multiple commands :-)
+    % it's the proper way to use .WaitFor after .Stop! It might be a bit slower
+    % sometimes, but it can never go wrong!
+    m.Stop();
+    m.WaitFor();
+    m.SendToNXT();
+    m.Stop();
+    m.WaitFor();
+
+    pause(0.5);
+
+    %% Main test
+
+    % start 1st motor 
+    m.SendToNXT();
+    % now the trick that let's us create very fine granulated pauses:
+    % what we wait here will be the time we get to use .Stop before
+    % the motor stops, so we can get right into the interesting
+    % last braking section
+    pause(0.1);
+    m2.SendToNXT();
+
+    % when waiting for the 1st motor is done, the 2nd will be exactly the
+    % amount of pause before finishing (if the motors run exact equally).
+    m.WaitFor()
+
+    % now the test:
+    m2.Stop();
+    % can we already start the next command with m2?
+    m2.SendToNXT();
+
+
+    %% Clean up
+    COM_CloseNXT(hNXT);
+    
+     disp('Test completed (no NXT beep and 2 separate movements means: successful)');
+
+end%function
+
+function SingleMotorPrecisionTorture()
+    %% Prepare
+    COM_CloseNXT all
+    
+    disp('   Running torture test. Beeping NXT or')
+    disp('   TIME OUT warnings are bad!')
+    disp('   Terminate with CTRL+C')
+    
+
+    %% Set up parameters
+    port                = MOTOR_B;
+    ActionAtTachoLimit  = 'Brake';
+
+    minAbsPower         =    10;
+    maxAbsPower         =   100;
+    minTachoLimit       =    8;
+    maxTachoLimit       =  1200;
+
+
+    %% Create basic motor object
+    m = NXTMotor;
+    m.Port                  = port;
+    %m.SpeedRegulation       = SpeedRegulation;
+    %m.SmoothStart           = SmoothStart;
+    m.ActionAtTachoLimit    = ActionAtTachoLimit;
+
+
+    %% Connect to NXT
+    hNXT = COM_OpenNXT('bluetooth.ini');
+    COM_SetDefaultNXT(hNXT);
+
+
+    %% Main testing loop
+    figure;
+    j = 0;
+    while (true)
+        j = j + 1;
+
+        m.SpeedRegulation   = (rand > 0.5);
+        m.SmoothStart       = (rand > 0.5);
+
+
+        powerSgn    = 1 - (rand > 0.5) * 2;
+        absPower    = floor(minAbsPower + (maxAbsPower - minAbsPower) * rand);
+        tachoLimit  = floor(minTachoLimit + (maxTachoLimit - minTachoLimit) * rand);
+
+        m.Power         = absPower * powerSgn;
+        m.TachoLimit    = tachoLimit; 
+
+        m.SendToNXT();
+        if m.WaitFor(20)
+            disp('TIME OUT')
+            NXT_PlayTone(600, 500);
+            stat = NXT_GetOutputState(m.Port(1))
+            m
+            m.Stop('off');
+        end%if
+
+
+
+        data = m.ReadFromNXT();
+
+        error(j) = (data.TachoCount * powerSgn) - tachoLimit;
+
+        hist(error);
+        xlabel('Absolute error (relative to target position) in degrees')
+        ylabel('Absolute number of error values occured')
+        title('Histogram for motor precision')
+        drawnow
+
+    end%while
+end%function
+
+function AllMotorsPrecisionTorture()
+    %% Prepare
+    COM_CloseNXT all
+
+    disp('   Running torture test. Beeping NXT or')
+    disp('   TIME OUT warnings are bad!')
+    disp('   Terminate with CTRL+C')
+    
+    
+    %% Set up parameters
+    port                = MOTOR_B;
+    port2               = MOTOR_C;
+    port3               = MOTOR_A;
+
+    ActionAtTachoLimit  = 'Brake';
+
+    minAbsPower         =    10;
+    maxAbsPower         =   100;
+    minTachoLimit       =    8;
+    maxTachoLimit       =  1200;
+
+
+    %% Create basic motor object
+    m = NXTMotor;
+    m.Port                  = port;
+    m.ActionAtTachoLimit    = ActionAtTachoLimit;
+
+
+    %% Connect to NXT
+    hNXT = COM_OpenNXT('bluetooth.ini');
+    COM_SetDefaultNXT(hNXT);
+
+
+    %% Main testing loop
+    figure;
+    j = 0;
+    while (true)
+        j = j + 1;
+
+        powerSgn    = 1 - (rand > 0.5) * 2;
+        absPower    = floor(minAbsPower + (maxAbsPower - minAbsPower) * rand);
+        tachoLimit  = floor(minTachoLimit + (maxTachoLimit - minTachoLimit) * rand);
+
+        m.SpeedRegulation   = (rand > 0.5);
+        m.SmoothStart       = (rand > 0.5);
+
+
+        m.Power         = absPower * powerSgn;
+        m.TachoLimit    = tachoLimit; 
+
+        m2 = m;
+        m2.Port = port2;
+        m3 = m;
+        m3.Port = port3;
+
+        m2.Stop();
+        m3.Stop();
+
+        %pause(0.5);
+
+        m.SendToNXT();
+
+        pause(0.1 * rand);
+        m2.SendToNXT();
+        pause(0.1 * rand);
+        m3.SendToNXT();
+
+        if m.WaitFor(20);
+            disp('TIME OUT')
+            NXT_PlayTone(600, 500);
+            stat = NXT_GetOutputState(m.Port(1))
+            m
+            m.Stop('off');
+        end%if
+
+        data = m.ReadFromNXT();
+
+        error(j) = (data.TachoCount * powerSgn) - tachoLimit;
+        hist(error);
+        xlabel('Absolute error (relative to target position) in degrees')
+        ylabel('Absolute number of error values occured')
+        title('Histogram for motor precision')
+        drawnow
+
+    end%while
+
+
+
+    %% Clean up
+    COM_CloseNXT(hNXT);
+
+end%function
+
+function TwoSyncedOneSingleMotorsPrecisionTorture()
+    %% Prepare
+    COM_CloseNXT all
+    
+    disp('   Running torture test. Beeping NXT or')
+    disp('   TIME OUT warnings are bad!')
+    disp('   Terminate with CTRL+C')
+
+    %% Set up parameters
+    singlePort          = MOTOR_A;
+    syncPort1           = MOTOR_B;
+    syncPort2           = MOTOR_C;
+
+    SpeedRegulation     = false;
+    SmoothStart         = true;
+    ActionAtTachoLimit  = 'Brake';
+
+    minAbsPower         =    10;
+    maxAbsPower         =   100;
+    minTachoLimit       =    8;
+    maxTachoLimit       =  1200;
+
+
+    %% Create basic motor object
+    m = NXTMotor;
+    m.Port                  = singlePort;
+    m.SpeedRegulation       = SpeedRegulation;
+    m.SmoothStart           = SmoothStart;
+    m.ActionAtTachoLimit    = ActionAtTachoLimit;
+
+    %% Create decoy sync object
+    s = NXTMotor;
+    s.Port                  = [syncPort1; syncPort2];
+    s.SpeedRegulation       = false; % off for sync
+    s.SmoothStart           = SmoothStart;
+    s.ActionAtTachoLimit    = ActionAtTachoLimit;
+
+
+    %% Connect to NXT
+    hNXT = COM_OpenNXT('bluetooth.ini');
+    COM_SetDefaultNXT(hNXT);
+
+
+    %% Main testing loop
+    figure;
+    j = 0;
+    while (true)
+        j = j + 1;
+
+
+        powerSgn    = 1 - (rand > 0.5) * 2;
+        absPower    = floor(minAbsPower + (maxAbsPower - minAbsPower) * rand);
+        tachoLimit  = floor(minTachoLimit + (maxTachoLimit - minTachoLimit) * rand);
+
+        m.Power           = absPower * powerSgn;
+        m.TachoLimit      = tachoLimit; 
+        m.SmoothStart     = (rand > 0.5);
+        m.SpeedRegulation = (rand > 0.5);
+
+        s.Power         = m.Power;
+        s.TachoLimit    = m.TachoLimit;
+        s.SmoothStart   = (rand > 0.5);
+
+        s.Stop();
+
+        %pause(0.5);
+
+        m.SendToNXT();
+
+        pause(0.1 * rand);
+        s.SendToNXT();
+
+        if m.WaitFor(20)
+            disp('TIME OUT')
+            NXT_PlayTone(600, 500);
+            stat = NXT_GetOutputState(m.Port(1))
+            m
+            m.Stop('off');
+        end%if
+
+        data = m.ReadFromNXT();
+
+        error(j) = (data.TachoCount * powerSgn) - tachoLimit;
+        hist(error);
+        xlabel('Absolute error (relative to target position) in degrees')
+        ylabel('Absolute number of error values occured')
+        title('Histogram for motor precision')
+        drawnow
+
+    end%while
+
+
+
+    %% Clean up
+    COM_CloseNXT(hNXT);
+end%function
+##### SOURCE END #####
+--></body></html>

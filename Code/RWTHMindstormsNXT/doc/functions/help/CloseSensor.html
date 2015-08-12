@@ -1,0 +1,52 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>CloseSensor</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_CloseSensor.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>CloseSensor</h1><!--introduction--><p>Closes a sensor port (e.g. turns off active light of the light sensor)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#8">Examples</a></li><li><a href="#10">See also</a></li><li><a href="#12">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>CloseSensor(port)</tt></p><p><tt>CloseSensor(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>CloseSensor(port)</tt> closes the sensor <tt>port</tt> opened by the <tt>Open...</tt> functions. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. Closing the light sensor deactives the active light mode (the red light is turned off), closing the Ultrasonic sensor stops sending out ultrasound.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Examples<a name="8"></a></h2><pre class="codeinput">   OpenLight(SENSOR_3, <span class="string">'ACTIVE'</span>);
+   light = GetLight(SENSOR_3);
+   CloseSensor(SENSOR_3);
+</pre><h2>See also<a name="10"></a></h2><p><a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="OpenLight.html">OpenLight</a>, <a href="OpenSound.html">OpenSound</a>, <a href="OpenSwitch.html">OpenSwitch</a>, <a href="OpenUltrasonic.html">OpenUltrasonic</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="12"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% CloseSensor
+% Closes a sensor port (e.g. turns off active light of the light sensor)
+%%
+%% Syntax
+% |CloseSensor(port)|
+%%
+% |CloseSensor(port, handle)|
+%%
+%% Description
+% |CloseSensor(port)| closes the sensor |port| opened by the |Open...| functions. The value |port| can be
+% addressed by the symbolic constants |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to
+% the labeling on the NXT Brick. Closing the light sensor deactives the active light
+% mode (the red light is turned off), closing the Ultrasonic sensor stops sending out ultrasound.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%% Examples
+   OpenLight(SENSOR_3, 'ACTIVE');
+   light = GetLight(SENSOR_3);
+   CloseSensor(SENSOR_3);
+%%
+%% See also
+% NXT_SetInputMode, OpenLight, OpenSound, OpenSwitch, OpenUltrasonic, SENSOR_1, SENSOR_2,
+% SENSOR_3, SENSOR_4
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

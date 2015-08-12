@@ -1,0 +1,75 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_LSWrite</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_LSWrite.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_LSWrite</h1><!--introduction--><p>Writes given data to a digital low speed sensor port (I2C)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#14">Example</a></li><li><a href="#16">See also</a></li><li><a href="#19">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>NXT_LSWrite(port, RXLength, data, ReplyMode)</tt></p><p><tt>NXT_LSWrite(port, RXLength, data, ReplyMode, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>NXT_LSWrite(port, RXLength, data, ReplyMode)</tt> writes the given <tt>data</tt> to a low speed (digital) sensor of the given sensor <tt>port</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. The value <tt>RXLength</tt> represents the data length of the expected receiving packet. By the <tt>ReplyMode</tt> one can request an acknowledgement for the packet transmission. The two strings <tt>'reply'</tt> and <tt>'dontreply'</tt> are valid.</p><p><tt>NXT_LSWrite(port, RXLength, data, ReplyMode, handle)</tt> uses the given Bluetooth connection <tt>handle</tt>. This should be a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><p><b>Note:</b></p><p>For LS communication on the NXT, data lengths are limited to 16 bytes per command. Rx Data Length MUST be specified in the write command since reading from the device is done on a master-slave basis.</p><p>Before using LS commands, the sensor mode has to be set to <tt>LOWSPEED_9V</tt> using the NXT_SetInputMode command.</p><h2>Example<a name="14"></a></h2><pre class="codeinput">   RequestLen = 1;
+   I2Cdata = hex2dec([<span class="string">'02'</span>; <span class="string">'42'</span>]); <span class="comment">% specific ultrasonic I&sup2;C command</span>
+
+   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   NXT_SetInputMode(SENSOR_1, <span class="string">'LOWSPEED_9V'</span>, <span class="string">'RAWMODE'</span>, <span class="string">'dontreply'</span>);
+
+   NXT_LSWrite(SENSOR_1, RequestLen, I2Cdata, <span class="string">'dontreply'</span>, handle);
+</pre><h2>See also<a name="16"></a></h2><p><a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="NXT_LSRead.html">NXT_LSRead</a>, <a href="NXT_LSGetStatus.html">NXT_LSGetStatus</a>, <a href="COM_ReadI2C.html">COM_ReadI2C</a>, </p><h2>Signature<a name="19"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_LSWrite
+% Writes given data to a digital low speed sensor port (I2C)
+%%
+%% Syntax
+% |NXT_LSWrite(port, RXLength, data, ReplyMode)|
+%%
+% |NXT_LSWrite(port, RXLength, data, ReplyMode, handle)|
+%%
+%% Description
+% |NXT_LSWrite(port, RXLength, data, ReplyMode)| writes the given |data| to a low speed (digital)
+% sensor of the given sensor |port|. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick. The
+% value |RXLength| represents the data length of the expected receiving packet. By the |ReplyMode|
+% one can request an acknowledgement for the packet transmission. The two strings |'reply'| and
+% |'dontreply'| are valid.
+%%
+% |NXT_LSWrite(port, RXLength, data, ReplyMode, handle)| uses the given Bluetooth connection
+% |handle|. This should be a serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%%
+% *Note:*
+%%
+% For LS communication on the NXT, data lengths are limited to 16 bytes per command. Rx Data Length
+% MUST be specified in the write command since reading from the device is done on a master-slave
+% basis.
+%%
+% Before using LS commands, the sensor mode has to be set to
+% |LOWSPEED_9V| using the NXT_SetInputMode command.
+%%
+%% Example
+   RequestLen = 1;
+   I2Cdata = hex2dec(['02'; '42']); % specific ultrasonic I²C command
+
+   handle = COM_OpenNXT('bluetooth.ini');
+   NXT_SetInputMode(SENSOR_1, 'LOWSPEED_9V', 'RAWMODE', 'dontreply');
+
+   NXT_LSWrite(SENSOR_1, RequestLen, I2Cdata, 'dontreply', handle);
+%%
+%% See also
+% NXT_SetInputMode, NXT_LSRead, NXT_LSGetStatus, COM_ReadI2C
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

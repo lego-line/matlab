@@ -1,0 +1,95 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Example 2: Read Sound Sensor</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="Example_2_ReadSoundSensor.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Example 2: Read Sound Sensor</h1><p>Example to read the sound sensor value in dB</p><p>Signature</p><div><ul><li> Author: Linus Atorf, Alexander Behrens</li><li> Date: 2009/07/17</li><li> License: BSD</li><li> RWTH - Mindstorms NXT Toolbox: <a href="http://www.mindstorms.rwth-aachen.de">http://www.mindstorms.rwth-aachen.de</a></li></ul></div><pre class="codeinput"><span class="comment">% verify that the RWTH - Mindstorms NXT toolbox is installed.</span>
+<span class="keyword">if</span> verLessThan(<span class="string">'RWTHMindstormsNXT'</span>, <span class="string">'2.00'</span>);
+    error(strcat(<span class="string">'This program requires the RWTH - Mindstorms NXT Toolbox '</span> <span class="keyword">...</span>
+        ,<span class="string">'version 2.00 or greater. Go to http://www.mindstorms.rwth-aachen.de'</span> <span class="keyword">...</span>
+        ,<span class="string">' and follow the installation instructions!'</span>));
+<span class="keyword">end</span><span class="comment">%if</span>
+
+
+<span class="comment">% Close previous handles (if existing)</span>
+COM_CloseNXT <span class="string">all</span>
+<span class="comment">% Prepare workspace by cleaning all old settings to be on the safe side.</span>
+close <span class="string">all</span>
+clear <span class="string">all</span>
+
+
+<span class="comment">% Open new NXT Bluetooth connection according to the previously generated</span>
+<span class="comment">% configuration file. You can use COM_MakeBTConfigFile for this step.</span>
+<span class="comment">% Please note that a USB connection will be used if one is present. If no</span>
+<span class="comment">% USB device is found, the Bluetooth configuration file will be used.</span>
+handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+
+<span class="comment">% Set current NXT handle as default for subsequent toolbox function calls</span>
+COM_SetDefaultNXT(handle);
+
+<span class="comment">% Initialize the sound sensor by setting the sound sensor mode and input port.</span>
+OpenSound(SENSOR_2, <span class="string">'DB'</span>);
+
+<span class="comment">% Get the current sound sensor value in dB.</span>
+value = GetSound(SENSOR_2)
+
+<span class="comment">% Close the sound sensor.</span>
+CloseSensor(SENSOR_2);
+
+<span class="comment">% Close Bluetooth connection.</span>
+COM_CloseNXT(handle);
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Example 2: Read Sound Sensor
+% Example to read the sound sensor value in dB
+%
+% Signature
+%
+% *  Author: Linus Atorf, Alexander Behrens
+% *  Date: 2009/07/17
+% *  License: BSD
+% *  RWTH - Mindstorms NXT Toolbox: http://www.mindstorms.rwth-aachen.de
+
+% verify that the RWTH - Mindstorms NXT toolbox is installed.
+if verLessThan('RWTHMindstormsNXT', '2.00');
+    error(strcat('This program requires the RWTH - Mindstorms NXT Toolbox ' ...
+        ,'version 2.00 or greater. Go to http://www.mindstorms.rwth-aachen.de' ...
+        ,' and follow the installation instructions!'));
+end%if
+
+
+% Close previous handles (if existing)
+COM_CloseNXT all
+% Prepare workspace by cleaning all old settings to be on the safe side. 
+close all
+clear all
+
+
+% Open new NXT Bluetooth connection according to the previously generated
+% configuration file. You can use COM_MakeBTConfigFile for this step.
+% Please note that a USB connection will be used if one is present. If no
+% USB device is found, the Bluetooth configuration file will be used.
+handle = COM_OpenNXT('bluetooth.ini');
+
+% Set current NXT handle as default for subsequent toolbox function calls
+COM_SetDefaultNXT(handle);
+
+% Initialize the sound sensor by setting the sound sensor mode and input port. 
+OpenSound(SENSOR_2, 'DB');
+
+% Get the current sound sensor value in dB. 
+value = GetSound(SENSOR_2)
+
+% Close the sound sensor. 
+CloseSensor(SENSOR_2);
+
+% Close Bluetooth connection. 
+COM_CloseNXT(handle);
+##### SOURCE END #####
+--></body></html>

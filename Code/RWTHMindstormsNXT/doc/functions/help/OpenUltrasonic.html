@@ -1,0 +1,95 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OpenUltrasonic</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_OpenUltrasonic.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>OpenUltrasonic</h1><!--introduction--><p>Initializes the NXT ultrasonic sensor, sets correct sensor mode</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#6">Description</a></li><li><a href="#15">Limitations</a></li><li><a href="#18">Examples</a></li><li><a href="#21">See also</a></li><li><a href="#23">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OpenUltrasonic(port)</tt></p><p><tt>OpenUltrasonic(port, mode)</tt></p><p><tt>OpenUltrasonic(port, mode, handle)</tt></p><h2>Description<a name="6"></a></h2><p><tt>OpenUltrasonic(port)</tt> initializes the input mode of NXT ultrasonic sensor specified by the sensor <tt>port</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p><tt>OpenUltrasonic(port, mode)</tt> can enable the snapshot mode if the value <tt>mode</tt> is equal to the string <tt>'snapshot'</tt>. This mode provides the snap shot mode (or SINGLE_SHOT mode) of the NXT ultrasonic sensor, which provides several sensor readings in one step. See <tt>USMakeSnapshot</tt> for more information.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>Since the NXT ultrasonic sensor is a digital sensor (that uses the I&sup2;C protocol), the function <tt>NXT_SetInputMode</tt> cannot be used as for analog sensors.</p><p><b>Note:</b></p><p>When the US sensor is opened in snapshot mode, the function <tt>GetUltrasonic</tt> does not work correctly!</p><h2>Limitations<a name="15"></a></h2><p>Since the Ultrasonic sensors all operate at the same frequency, multiple US sensors will interfere with each other! If multiple US sensors can "see each other" (or their echos and reflections), results will be unpredictable (and probably also unusable). You can avoid this problem by turning off US sensors, or operating them in snapshot mode (see also <tt>USMakeSnapshot</tt> and <tt>USGetSnapshotResults</tt>).</p><h2>Examples<a name="18"></a></h2><pre class="codeinput">   OpenUltrasonic(SENSOR_4);
+   distance = GetUltrasonic(SENSOR_4);
+   CloseSensor(SENSOR_4);
+</pre><pre class="codeinput">  port = SENSOR_4;
+  OpenUltrasonic(port, <span class="string">'snapshot'</span>);
+  <span class="comment">% send out the ping</span>
+  USMakeSnapshot(port);
+  <span class="comment">% wait some time for the sound to travel</span>
+  pause(0.1); <span class="comment">% 100ms is probably too much, calculate using c_sound ;-)</span>
+  <span class="comment">% retrieve all the echos in 1 step</span>
+  echos = USGetSnapshotResults(port);
+  CloseSensor(SENSOR_4);
+</pre><h2>See also<a name="21"></a></h2><p><a href="GetUltrasonic.html">GetUltrasonic</a>, <a href="USMakeSnapshot.html">USMakeSnapshot</a>, <a href="USGetSnapshotResults.html">USGetSnapshotResults</a>, <a href="CloseSensor.html">CloseSensor</a>, </p><h2>Signature<a name="23"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2008/01/08</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% OpenUltrasonic
+% Initializes the NXT ultrasonic sensor, sets correct sensor mode
+%%
+%% Syntax
+% |OpenUltrasonic(port)|
+%%
+% |OpenUltrasonic(port, mode)|
+%%
+% |OpenUltrasonic(port, mode, handle)|
+%%
+%% Description
+% |OpenUltrasonic(port)| initializes the input mode of NXT ultrasonic sensor specified by the sensor
+% |port|. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick.
+%%
+% |OpenUltrasonic(port, mode)| can enable the snapshot mode if the value |mode| is equal to the string
+% |'snapshot'|. This mode provides the snap shot mode (or SINGLE_SHOT mode) of the NXT ultrasonic sensor,
+% which provides several sensor readings in one step. See
+% |USMakeSnapshot| for more information.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% Since the NXT ultrasonic sensor is a digital sensor (that uses the I²C protocol),
+% the function |NXT_SetInputMode| cannot be used as for analog sensors.
+%%
+%%
+% *Note:*
+%%
+%%
+% When the US sensor is opened in snapshot mode, the function
+% |GetUltrasonic| does not work correctly!
+%%
+%% Limitations
+% Since the Ultrasonic sensors all operate at the same frequency,
+% multiple US sensors will interfere with each other! If multiple US
+% sensors can "see each other" (or their echos and reflections),
+% results will be unpredictable (and probably also unusable). You can
+% avoid this problem by turning off US sensors, or operating them in
+% snapshot mode (see also |USMakeSnapshot| and |USGetSnapshotResults|).
+%%
+%%
+%% Examples
+   OpenUltrasonic(SENSOR_4);
+   distance = GetUltrasonic(SENSOR_4);
+   CloseSensor(SENSOR_4);
+%%
+  port = SENSOR_4;
+  OpenUltrasonic(port, 'snapshot');
+  % send out the ping
+  USMakeSnapshot(port);
+  % wait some time for the sound to travel
+  pause(0.1); % 100ms is probably too much, calculate using c_sound ;-)
+  % retrieve all the echos in 1 step
+  echos = USGetSnapshotResults(port);
+  CloseSensor(SENSOR_4);
+%%
+%% See also
+% GetUltrasonic, USMakeSnapshot, USGetSnapshotResults, CloseSensor
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2008/01/08
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

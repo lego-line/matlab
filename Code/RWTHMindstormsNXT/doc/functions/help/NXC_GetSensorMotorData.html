@@ -1,0 +1,41 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXC_GetSensorMotorData</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXC_GetSensorMotorData.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXC_GetSensorMotorData</h1><!--introduction--><p>Retrieves selected data from all analog sensors and all motors in a single packet</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#7">Limitations</a></li><li><a href="#10">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[sensorData motorData] = NXC_GetSensorMotorData(handle)</tt></p><h2>Description<a name="5"></a></h2><p>This function uses the embedded NXC program MotorControl to retrieve certain data from all analog sensors and all motors connected to the NXT. The sensors must already be opened. The function does no interprete any data for you. The big advantage of this function is that it retrieves all the data within one single Bluetooth / USB packet, which is faster than retrieving all information one by one after each other...</p><h2>Limitations<a name="7"></a></h2><p>This function is not yet implemented and does not return any data!</p><h2>Signature<a name="10"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/07/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXC_GetSensorMotorData
+% Retrieves selected data from all analog sensors and all motors in a single packet
+%%
+%% Syntax
+% |[sensorData motorData] = NXC_GetSensorMotorData(handle)|
+%%
+%%
+%% Description
+% This function uses the embedded NXC program MotorControl to retrieve
+% certain data from all analog sensors and all motors connected to the NXT. The
+% sensors must already be opened. The function does no interprete any
+% data for you. The big advantage of this function is that it retrieves
+% all the data within one single Bluetooth / USB packet, which is faster
+% than retrieving all information one by one after each other...
+%%
+%% Limitations
+% This function is not yet implemented and does not return any data!
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2009/07/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

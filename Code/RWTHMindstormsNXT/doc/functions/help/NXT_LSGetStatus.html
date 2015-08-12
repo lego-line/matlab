@@ -1,0 +1,73 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_LSGetStatus</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_LSGetStatus.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_LSGetStatus</h1><!--introduction--><p>Gets the number of available bytes for digital low speed sensors (I2C)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#15">Examples</a></li><li><a href="#18">See also</a></li><li><a href="#21">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>[BytesReady status] = NXT_LSGetStatus(port)</tt></p><p><tt>[BytesReady status] = NXT_LSGetStatus(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>[BytesReady status] = NXT_LSGetStatus(port)</tt> gets the number of available bytes from the low speed (digital) sensor reading of the given sensor <tt>port</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. The return value <tt>BytesReady</tt> contains the number of bytes available to read. <tt>status</tt> indicates if an error occures by the packet transmission. Function <tt>checkStatusBytes</tt> is interpreting this information per default.</p><p><tt>[BytesReady status] = NXT_LSGetStatus(port, handle)</tt> uses the given Bluetooth connection <tt>handle</tt>. This should be a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><p><b>Note:</b></p><p>This function's status byte sometimes contains an error message: "Pending communication transaction in progress". This is by design (see documentation of NXTCommLSCheckStatus on page 70 of the "LEGO Mindstorms NXT Executable File Specification" document).</p><p>Before using LS commands, the sensor mode has to be set to <tt>LOWSPEED_9V</tt> using the NXT_SetInputMode command.</p><h2>Examples<a name="15"></a></h2><pre class="codeinput">   [BytesReady status] = NXT_LSGetStatus(SENSOR_3);
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   NXT_SetInputMode(SENSOR_1, <span class="string">'LOWSPEED_9V'</span>, <span class="string">'RAWMODE'</span>, <span class="string">'dontreply'</span>);
+   <span class="comment">% note that status can contain errorsmessages, use checkStatusByte</span>
+   [BytesReady status] = NXT_LSGetStatus(SENSOR_1, handle);
+</pre><h2>See also<a name="18"></a></h2><p><a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="checkStatusByte.html">checkStatusByte</a>, <a href="NXT_LSWrite.html">NXT_LSWrite</a>, <a href="NXT_LSRead.html">NXT_LSRead</a>, </p><h2>Signature<a name="21"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_LSGetStatus
+% Gets the number of available bytes for digital low speed sensors (I2C)
+%%
+%% Syntax
+% |[BytesReady status] = NXT_LSGetStatus(port)|
+%%
+% |[BytesReady status] = NXT_LSGetStatus(port, handle)|
+%%
+%% Description
+% |[BytesReady status] = NXT_LSGetStatus(port)| gets the number of available bytes from the low speed (digital)
+% sensor reading of the given sensor |port|. The value |port| can be addressed by
+% the symbolic constants |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling
+% on the NXT Brick. The return value |BytesReady| contains the number of bytes available to read.
+% |status| indicates if an error occures by the packet transmission. Function |checkStatusBytes|
+% is interpreting this information per default.
+%%
+% |[BytesReady status] = NXT_LSGetStatus(port, handle)| uses the given Bluetooth connection |handle|. This should be a
+% serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%%
+% *Note:*
+%%
+% This function's status byte sometimes contains an error message: "Pending communication
+% transaction in progress". This is by design (see documentation of NXTCommLSCheckStatus
+% on page 70 of the "LEGO Mindstorms NXT Executable File Specification" document).
+%%
+% Before using LS commands, the sensor mode has to be set to
+% |LOWSPEED_9V| using the NXT_SetInputMode command.
+%%
+%%
+%% Examples
+   [BytesReady status] = NXT_LSGetStatus(SENSOR_3);
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   NXT_SetInputMode(SENSOR_1, 'LOWSPEED_9V', 'RAWMODE', 'dontreply');
+   % note that status can contain errorsmessages, use checkStatusByte
+   [BytesReady status] = NXT_LSGetStatus(SENSOR_1, handle);
+%%
+%% See also
+% NXT_SetInputMode, checkStatusByte, NXT_LSWrite, NXT_LSRead
+%%
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

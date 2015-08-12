@@ -1,0 +1,55 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OpenLight</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_OpenLight.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>OpenLight</h1><!--introduction--><p>Initializes the NXT light sensor, sets correct sensor mode</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#9">Example</a></li><li><a href="#11">See also</a></li><li><a href="#13">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OpenLight(port, mode)</tt></p><p><tt>OpenLight(port, mode, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>OpenLight(port, mode)</tt> initializes the input mode of NXT light sensor specified by the sensor <tt>port</tt> and the light <tt>mode</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. The <tt>mode</tt> represents one of two modes <tt>'ACTIVE'</tt> (active illumination: red light on) and <tt>'INACTIVE'</tt> (passive illumination red light off). To deactive the active illumination the function <tt>CloseSensor</tt> is used.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>For more complex settings the function <tt>NXT_SetInputMode</tt> can be used.</p><h2>Example<a name="9"></a></h2><pre class="codeinput">   OpenLight(SENSOR_1, <span class="string">'ACTIVE'</span>);
+   light = GetLight(SENSOR_1);
+   CloseSensor(SENSOR_1);
+</pre><h2>See also<a name="11"></a></h2><p><a href="CloseSensor.html">CloseSensor</a>, <a href="GetLight.html">GetLight</a>, <a href="OpenNXT2Color.html">OpenNXT2Color</a>, <a href="GetNXT2Color.html">GetNXT2Color</a>, <a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="13"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% OpenLight
+% Initializes the NXT light sensor, sets correct sensor mode
+%%
+%% Syntax
+% |OpenLight(port, mode)|
+%%
+% |OpenLight(port, mode, handle)|
+%%
+%% Description
+% |OpenLight(port, mode)| initializes the input mode of NXT light sensor specified by the sensor
+% |port| and the light |mode|. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick. The
+% |mode| represents one of two modes |'ACTIVE'| (active illumination: red light on) and |'INACTIVE'|
+% (passive illumination red light off). To deactive the active illumination the function
+% |CloseSensor| is used.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% For more complex settings the function |NXT_SetInputMode| can be used.
+%%
+%% Example
+   OpenLight(SENSOR_1, 'ACTIVE');
+   light = GetLight(SENSOR_1);
+   CloseSensor(SENSOR_1);
+%%
+%% See also
+% CloseSensor, GetLight, OpenNXT2Color, GetNXT2Color, NXT_SetInputMode, SENSOR_1, SENSOR_2, SENSOR_3, SENSOR_4
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

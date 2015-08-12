@@ -1,0 +1,128 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXTTest</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="NXTTest.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h2>Contents</h2><div><ul><li><a href="#3">Clean up previous handles</a></li><li><a href="#4">Set up Matlab</a></li><li><a href="#5">Connect to NXT</a></li><li><a href="#6">Play tone</a></li><li><a href="#7">Close NXT connection.</a></li></ul></div><pre class="codeinput"><span class="keyword">function</span> NXTTest()
+</pre><pre class="codeinput"><span class="comment">% NXTTest</span>
+<span class="comment">% This function connects to the NXT and plays a tone to confirm it is working.</span>
+<span class="comment">%</span>
+<span class="comment">% Signature</span>
+<span class="comment">%   Author: Alexander Behrens (see AUTHORS)</span>
+<span class="comment">%   Date: 2010/08/03</span>
+<span class="comment">%   Copyright: 2007-2010, RWTH Aachen University</span>
+<span class="comment">%</span>
+<span class="comment">%</span>
+<span class="comment">% ***********************************************************************************************</span>
+<span class="comment">% *  This file is part of the RWTH - Mindstorms NXT Toolbox.                                    *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  The RWTH - Mindstorms NXT Toolbox is free software: you can redistribute it and/or modify  *</span>
+<span class="comment">% *  it under the terms of the GNU General Public License as published by the Free Software     *</span>
+<span class="comment">% *  Foundation, either version 3 of the License, or (at your option) any later version.        *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  The RWTH - Mindstorms NXT Toolbox is distributed in the hope that it will be useful,       *</span>
+<span class="comment">% *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  *</span>
+<span class="comment">% *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.             *</span>
+<span class="comment">% *                                                                                             *</span>
+<span class="comment">% *  You should have received a copy of the GNU General Public License along with the           *</span>
+<span class="comment">% *  RWTH - Mindstorms NXT Toolbox. If not, see &lt;http://www.gnu.org/licenses/&gt;.                 *</span>
+<span class="comment">% ***********************************************************************************************</span>
+</pre><h2>Clean up previous handles<a name="3"></a></h2><pre class="codeinput">    COM_CloseNXT <span class="string">all</span>
+</pre><h2>Set up Matlab<a name="4"></a></h2><pre class="codeinput">    clear <span class="string">all</span> <span class="comment">% if you use clear all, call COM_CloseNXT all before, as we did!</span>
+</pre><h2>Connect to NXT<a name="5"></a></h2><pre class="codeinput">    fprintf(<span class="string">'    Connecting...'</span>)
+
+    handle = COM_OpenNXTEx(<span class="string">'Any'</span>, <span class="string">''</span>, <span class="string">'bluetooth.ini'</span>);
+
+    <span class="keyword">if</span> isempty(handle)
+        fprintf(<span class="string">'    error! Unable to connect to NXT!\n'</span>)
+        <span class="keyword">return</span>;
+    <span class="keyword">else</span>
+        fprintf(<span class="string">'   ...done.\n'</span>)
+    <span class="keyword">end</span>
+</pre><h2>Play tone<a name="6"></a></h2><pre class="codeinput">    reply = <span class="string">'Y'</span>;
+    <span class="keyword">while</span> strcmpi(reply,<span class="string">'Y'</span>);
+        fprintf(<span class="string">'    Play tone...'</span>)
+        NXT_PlayTone(800,500, handle);
+        fprintf(<span class="string">'    ...done.\n'</span>)
+
+        reply = input(<span class="string">'    Play tone again? Y/N [Y]: '</span>, <span class="string">'s'</span>);
+        <span class="keyword">if</span> isempty(reply)
+            reply = <span class="string">'Y'</span>;
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+</pre><h2>Close NXT connection.<a name="7"></a></h2><pre class="codeinput">    fprintf(<span class="string">'    Disconnecting...'</span>)
+    COM_CloseNXT(handle);
+    fprintf(<span class="string">'    ...done.\n'</span>)
+</pre><pre class="codeinput"><span class="keyword">end</span>
+</pre><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+function NXTTest()
+% NXTTest
+% This function connects to the NXT and plays a tone to confirm it is working.
+%
+% Signature
+%   Author: Alexander Behrens (see AUTHORS)
+%   Date: 2010/08/03
+%   Copyright: 2007-2010, RWTH Aachen University
+%
+%
+% ***********************************************************************************************
+% *  This file is part of the RWTH - Mindstorms NXT Toolbox.                                    *
+% *                                                                                             *
+% *  The RWTH - Mindstorms NXT Toolbox is free software: you can redistribute it and/or modify  *
+% *  it under the terms of the GNU General Public License as published by the Free Software     *
+% *  Foundation, either version 3 of the License, or (at your option) any later version.        *
+% *                                                                                             *
+% *  The RWTH - Mindstorms NXT Toolbox is distributed in the hope that it will be useful,       *
+% *  but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS  *
+% *  FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.             *
+% *                                                                                             *
+% *  You should have received a copy of the GNU General Public License along with the           *
+% *  RWTH - Mindstorms NXT Toolbox. If not, see <http://www.gnu.org/licenses/>.                 *
+% ***********************************************************************************************
+
+    %% Clean up previous handles
+    COM_CloseNXT all
+
+    %% Set up Matlab
+    clear all % if you use clear all, call COM_CloseNXT all before, as we did!
+
+    %% Connect to NXT
+    fprintf('    Connecting...')
+
+    handle = COM_OpenNXTEx('Any', '', 'bluetooth.ini');
+
+    if isempty(handle)
+        fprintf('    error! Unable to connect to NXT!\n')
+        return;
+    else
+        fprintf('   ...done.\n')
+    end
+
+    %% Play tone
+    reply = 'Y';  
+    while strcmpi(reply,'Y');
+        fprintf('    Play tone...')
+        NXT_PlayTone(800,500, handle);
+        fprintf('    ...done.\n')
+        
+        reply = input('    Play tone again? Y/N [Y]: ', 's');
+        if isempty(reply)
+            reply = 'Y';
+        end
+    end
+
+    %% Close NXT connection.
+    fprintf('    Disconnecting...')
+    COM_CloseNXT(handle);
+    fprintf('    ...done.\n')
+end
+
+##### SOURCE END #####
+--></body></html>

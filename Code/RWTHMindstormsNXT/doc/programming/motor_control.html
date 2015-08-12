@@ -1,0 +1,792 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Controlling NXT motors</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="motor_control.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Controlling NXT motors</h1><!--introduction--><p>Being able to control the NXT motors is crucial for most robots. Only very few models work without moving parts. So read on to learn all you need about the class <tt>NXTMotor</tt>.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Getting ready</a></li><li><a href="#3">The basics</a></li><li><a href="#8">Constructing objects and setting properties</a></li><li><a href="#11">Precise moves</a></li><li><a href="#17">Different braking modes</a></li><li><a href="#18">Speed regulation and smooth start</a></li><li><a href="#19">Using two motors</a></li><li><a href="#24">Driving bots the easy way</a></li><li><a href="#28">Reading motor positions</a></li><li><a href="#31">Full example</a></li><li><a href="#32">Limitations of NXTMotor</a></li><li><a href="#36">For experts: DirectMotorCommand</a></li></ul></div><h2>Getting ready<a name="1"></a></h2><p>If you want to execute the examples from this tutorial directly in the command window, I recommend this little sequence of commands to establish a connection to your NXT:</p><pre class="codeinput">COM_CloseNXT <span class="string">all</span>
+h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+COM_SetDefaultNXT(h);
+</pre><p>Now all following examples should work right away by copy-pasting...</p><h2>The basics<a name="3"></a></h2><p>To operate the motors, we need to create motor objects, i.e. instances of the class <tt>NXTMotor</tt>. Those objects are capable of sending various commands to one or two motors, or can be used to retrieve data from them. To create such an object, the simplest way is just</p><pre class="codeinput">mA = NXTMotor(<span class="string">'A'</span>)
+</pre><p>Now the object <tt>mA</tt> provides properties and methods to control the NXT motor on port A. First, we probably just want to see if the motor works at all. Ok then, let's go:</p><pre class="codeinput">mA.Power = 50;  <span class="comment">% let's start with half the maximum power</span>
+mA.SendToNXT(); <span class="comment">% this is actually the moment we start the motor</span>
+</pre><p>Motor A keeps on running... To stop it, we use</p><pre class="codeinput">mA.Stop(<span class="string">'off'</span>);
+</pre><p>This will turn off the power, causing the motor to come to a soft stop (so called "coasting"). If we wanted to brake all of a sudden at once, we'd call</p><pre class="codeinput">mA.Stop(<span class="string">'brake'</span>);
+</pre><p>In this case, the NXT's active brake will be enabled, causing the motor to stop hard at the instance it receives the command. The brake alsp keeps the motor actively at its position. It's surprisingly strong, however it also consumes a lot of power, so we better turn it off again. The motor is now completely turned off just as in the beginning of our tutorial session:</p><pre class="codeinput">mA.Stop(<span class="string">'off'</span>);
+</pre><h2>Constructing objects and setting properties<a name="8"></a></h2><p>You've already seen the basic concept of motor control which consits of these 3 basic steps:</p><div><ol><li>Create an <tt>NXTMotor</tt> object</li><li>Set up the parameters as you need them</li><li>Send the command to the NXT using <tt>SendToMotor()</tt></li></ol></div><p>You've already seen how to specify the motor settings by setting properties.</p><pre class="codeinput">mB1       = NXTMotor();  <span class="comment">% create a blank motor object</span>
+mB1.Port  = MOTOR_B;     <span class="comment">% this is the same as using  mB.Port = 'B';</span>
+mB1.Power = -100;        <span class="comment">% full power backwards</span>
+</pre><p>The example above shows two things:</p><div><ol><li>You can use the old-fashioned motor constants (i.e. <tt>MOTOR_C</tt>) to specify port names, or do it by giving strings (like <tt>'C'</tt>).</li><li>To reverse the direction the motor should turn, set negative power values (as in electronics you'd swap the sign of the current)</li></ol></div><p>A shorter way to create exactly the same object as <tt>mB1</tt> is to use <tt>NXTMotor</tt>'s constructor. The first argument always has to be the port you want to use, followed by combinations of <tt>'Property', value</tt> as you might know from other MATLAB commands:</p><pre class="codeinput">mB2 = NXTMotor(<span class="string">'B'</span>, <span class="string">'Power'</span>, -100, <span class="string">'SpeedRegulation'</span>, false);
+</pre><p>As said before: <tt>mB1</tt> and <tt>mB2</tt> do exactly the same, so use whichever way you prefer. To inspect motor objects on the command line, just type their name:</p><pre class="codeinput">mB1
+mB2
+</pre><h2>Precise moves<a name="11"></a></h2><p>Knowing how we control the motor's speed by setting a certain value to <tt>Power</tt> is not enough in most cases. One could try to move the motor a certain distance by using something like this:</p><pre class="codeinput">mA = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 50);
+mA.SendToNXT();
+pause(3);   <span class="comment">% wait exactly 3 seconds</span>
+mA.Stop(<span class="string">'brake'</span>);
+</pre><p>Using this technique we get the motor running 3 seconds, but due to several influences (for example Bluetooth lag or subtle differences in NXT motors) this won't lead to the same distance travelled by the motor. Also we can't manage different loads on the motors. This is why we have to specify the distance the motor should turn in degrees. The according property is called <tt>TachoLimit</tt>.</p><pre class="codeinput">mA.TachoLimit = 360;
+mA.SendToNXT();
+</pre><p>Now the motor will make exactly 1 whole turn and then stop at about 360 degrees (accurate to +/- 1 degree in most cases). It is very important to understand that the motor does this movement "on its own", while MATLAB can execute the next command right away. If we say:</p><pre class="codeinput">mB = NXTMotor(<span class="string">'B'</span>, <span class="string">'Power'</span>, 50, <span class="string">'TachoLimit'</span>, 1000);
+mB.SendToNXT();
+NXT_PlayTone(440, 500);
+</pre><p>then the NXT will start turning motor B and beep right away! If we want to beep only when the motor has reached its position, we have be patient and wait for the motor:</p><pre class="codeinput">mB.SendToNXT();
+mB.WaitFor();            <span class="comment">% this command will hold MATLAB a while</span>
+NXT_PlayTone(440, 500);  <span class="comment">% now the motor has stopped!</span>
+</pre><p>This brings us to the next important point: <b>In order for a motor to accept a command with <tt>SendToNXT()</tt>, it must be idle</b>, i.e. at rest (and not carrying out a movement already). We can achieve this by either:</p><div><ul><li>Waiting for the last motor command to finish by using <tt>WaitFor()</tt> before calling the next <tt>SendToNXT()</tt>. If the motor is currently idle, <tt>WaitFor()</tt> won't wait at all and continue with the next statement right away.</li><li>Abort the current motor movement using the <tt>Stop()</tt> method.</li></ul></div><p>If we don't follow this rule, the NXT will ignore the second motor command and tell you it has just dropped a command by a beeping signal. Example:</p><pre class="codeinput"><span class="comment">% imagine we want our motor to make 2 turns of 360 degrees</span>
+mB = NXTMotor(<span class="string">'B'</span>, <span class="string">'Power'</span>, 50, <span class="string">'TachoLimit'</span>, 360);
+mB.Stop(<span class="string">'off'</span>);  <span class="comment">% Just to make sure motor is ready!</span>
+mB.SendToNXT();  <span class="comment">% Motor is busy now</span>
+mB.SendToNXT();  <span class="comment">% THIS DOES NOT WORK!!! MOTOR IS BUSY</span>
+<span class="comment">% This example is wrong.</span>
+<span class="comment">% We have to use a .WaitFor between the two .SendToNXT()</span>
+</pre><p>To switch back to unlimited movement, just set <tt>TachoLimit</tt> back to 0.</p><h2>Different braking modes<a name="17"></a></h2><p>So setting a value to <tt>TachoLimit</tt> specifies the angle the motor should spin to, and by the sign of <tt>Power</tt> we can decide the turning direction. We still have some more options to control <i>how</i> the motor should brake. The property is called <tt>ActionAtTachoLimit</tt>. Quoting  possible parameters from the documentation of <tt>NXTMotor</tt>:</p><div><ul><li>In <tt>'Coast'</tt>  mode, the motor(s) will simply be turned off when the|TachoLimit| is     reached, leading to free movement until slowly stopping (called     coasting). The <tt>TachoLimit</tt> won't be met, the motor(s) move way too far    (overshooting), depending on their angular momentum.</li><li>Use <tt>'Brake'</tt> mode (default) to let the motor(s) automatically     slow down nice and smoothly just before the <tt>TachoLimit</tt>. This leads     to a very high precision, usually the <tt>TachoLimit</tt> is met within +/- 1     degree (depending on the motor load and speed of course). After this     braking, power to the motor(s) is turned off when they are at     rest.</li><li><tt>'Holdbrake'</tt> is similar to <tt>'Brake'</tt>, but in this case the active brake of     the motors stays enabled (careful, this consumes a lot of battery     power), causing the motor(s) to actively keep holding their     position.</li></ul></div><h2>Speed regulation and smooth start<a name="18"></a></h2><p>There are two more options left we'll shortly discuss here. For further details you should consider the documentation of <tt>NXTMotor</tt>.</p><div><ul><li><tt>SpeedRegulation</tt> - this property is set to <tt>true</tt> by default, but you should carefully evaluate wether you need it or not for every motor object. It basically tries to keep your motor running at a constant speed, no matter how much load you put on it. If a motor has heavy lifting to do, the Firmware will internally increase the power value (if possible) to keep the motor running fast enough. While this is a nice thing to have, be careful: The torque of your motor will be dynamically adjusted. Imagine you've got a robotic arm with a limited area of operation and a sensitive gearing. If you enable speed regulation and somehow your arm get's stuck (for example by a programming error of yours) or moves too far, the Firmware will increase the power value to overcome the obstacle. This behavior could destroy your gears or the arm. Sometimes it's desirable to have a constant torque. In that case, better deactivate speed regulation. Another thing to mention: With low speeds, speed regulation sometimes achieves the opposite of what you want: the motor keeps cogging or stuttering. In these cases, speed regulation should also be turned off.</li><li><tt>SmoothStart</tt> - enable this if you want your motor(s) to accelerate softly. Desirable especially for driving robots so that their wheels won't slip when they start driving. The motor will increase its power value in the beginning of movement stepwise until the full speed is reached. This option does only work when a <tt>TachoLimit &gt; 0</tt> is set. It doesn't work with <tt>ActionAtTachoLimit = 'Coast'</tt> either.</li></ul></div><h2>Using two motors<a name="19"></a></h2><p>Until now we've always talked about motor objects controlling one single motor. You could create two of these objects to start a driving robot (where the wheels are attached to ports B and C):</p><pre class="codeinput">mB = NXTMotor(<span class="string">'B'</span>, <span class="string">'Power'</span>, 50);
+mC = NXTMotor(<span class="string">'C'</span>, <span class="string">'Power'</span>, 50);
+mB.SendToNXT();
+mC.SendToNXT();
+</pre><p>There are two problems with this simple approach:</p><div><ul><li>The commands are sent one after each other to the NXT, causing motor C to start a tiny bit after motor B. This will result in your robot making a little turn in the beginning.</li><li>The motors are running at slightly different speeds, since they aren't perfectly unique. This causes the bot to drive a curve, rather than a straight line. The solution: Use a single motor object to control two motors at the same time. They will be operated in "synchronization mode". This means the NXT makes sure that they run at both the same speed for your bot to drive a straight line. This also means that speed regulation does not work when driving two motors synced. But let's look at an example first:</li></ul></div><pre class="codeinput">mBC = NXTMotor(<span class="string">'BC'</span>, <span class="string">'Power'</span>, 50);
+mBC.SendToNXT();
+</pre><p>Easy, huh? We can also use the commands <tt>WaitFor()</tt> or stop as we're used to. And the property <tt>Port</tt> can of course be accessed as usual. Another example:</p><pre class="codeinput">myMotors             = NXTMotor();
+myMotors.Port        = [MOTOR_B; MOTOR_C];  <span class="comment">% same as  myMotors.Port = 'BC';</span>
+myMotors.Power       = 50;
+myMotors.TachoLimit  = 1000;
+myMotors.SmoothStart = true;
+myMotors.SpeedRegulation = false;  <span class="comment">% don't forget this!</span>
+<span class="comment">% If we tell the constructor that we use two ports, speed regulation will</span>
+<span class="comment">% automatically turned off, i.e.:</span>
+<span class="comment">% m = NXTMotor('BC');  % &lt;-- m.SpeedRegulation = false is set already!</span>
+
+myMotors.Stop(<span class="string">'off'</span>);  <span class="comment">% make sure motors are off before we start.</span>
+myMotors.SendToNXT();
+</pre><p>There is one certain behavior you should get familiar with. Let's assume you use the following code:</p><pre class="codeinput">mBC = NXTMotor(<span class="string">'BC'</span>, <span class="string">'Power'</span>, 50, <span class="string">'TachoLimit'</span>, 1000);
+mBC.ActionAtTachoLimit = <span class="string">'Coast'</span>;
+mBC.SendToNXT();
+mBC.WaitFor();
+pause(3);
+</pre><p>During the final pause of 3 seconds, we can notice a certain high-pitched noise coming from the motors. Also they seem to be powered up and slightly moving or vibrating. This is the motor synchronization in action. If you try to move one wheel, the other will be moved automatically, too. This ensures the wheels are (roughly) in the same position, as if they were connected through an axle. We can manually turn off this synchronization with <tt>Stop()</tt>:</p><pre class="codeinput">mBC.Stop(<span class="string">'off'</span>);
+</pre><h2>Driving bots the easy way<a name="24"></a></h2><p>Using the knowledge we now have about <tt>NXTMotor</tt>, it's time to get used working with multiple motor objects. In the following example, we set up a basic set of objects. To</p><pre class="codeinput"><span class="comment">% Set some parameters:</span>
+leftWheel   = MOTOR_B;
+rightWheel  = MOTOR_C;
+bothWheels  = [leftWheel; rightWheel];
+drivingPower = 60;
+turningPower = 40;
+drivingDist  = 1000; <span class="comment">% in degrees</span>
+turningDist  = 220;  <span class="comment">% in degrees</span>
+
+<span class="comment">% now create the objects for straigt driving:</span>
+mForward = NXTMotor(bothWheels, <span class="string">'Power'</span>, drivingPower, <span class="string">'TachoLimit'</span>, drivingDist);
+mReverse = mForward; <span class="comment">% clone object</span>
+mReverse.Power = -mForward.Power; <span class="comment">% just swap the power sign</span>
+</pre><p>Now we can already drive our bot a certain distance forward or reverse. We just have to send the objects to the NXT and wait until they complete:</p><pre class="codeinput"><span class="comment">% let the bot drive forward</span>
+mForward.SendToNXT();
+mForward.WaitFor();
+<span class="comment">% and now return to the origin</span>
+mReverse.SendToNXT();
+mReverse.WaitFor();
+<span class="comment">% done!</span>
+NXT_PlayTone(440, 500);
+</pre><p>In order to make nice turns (by 90 degrees for example), it's best to use a 2-way motion: First let one wheel spin one direction (now the bot has made half of its turn and faces 45 degrees), then turn the other wheel into the opposite direction. Now the 90-degree-turn should be complete.</p><pre class="codeinput"><span class="comment">% for turning the bot, we have two objects each:</span>
+mTurnLeft1 = NXTMotor(leftWheel, <span class="string">'Power'</span>, -turningPower, <span class="string">'TachoLimit'</span>, turningDist);
+mTurnLeft1.SpeedRegulation = false; <span class="comment">% don't need this for turning</span>
+
+<span class="comment">% for the 2nd part of turning, use first part's settings and modify:</span>
+mTurnLeft2 = mTurnLeft1;                 <span class="comment">% copy object</span>
+mTurnLeft2.Port     = rightWheel;        <span class="comment">% but use other wheel</span>
+mTurnLeft2.Power    = -mTurnLeft1.Power; <span class="comment">% swap power again</span>
+
+<span class="comment">% the right-turn objects are the same, but mirrored:</span>
+mTurnRight1 = mTurnLeft1;               <span class="comment">% first copy...</span>
+mTurnRight2 = mTurnLeft2;
+mTurnRight1.Power = -mTurnRight1.Power; <span class="comment">% now mirror powers</span>
+mTurnRight2.Power = -mTurnRight2.Power;
+<span class="comment">% Instead of mirroring the powers, we could've also changed</span>
+<span class="comment">% the ports (swapped left and right wheels).</span>
+</pre><p>You can now use these objects like this:</p><pre class="codeinput"><span class="comment">% make a left-turn</span>
+mTurnLeft1.SendToNXT();
+mTurnLeft1.WaitFor();
+mTurnLeft2.SendToNXT();
+mTurnLeft2.WaitFor();
+
+<span class="comment">% wait here a moment</span>
+pause(1);
+
+<span class="comment">% turn back to the origin</span>
+mTurnRight1.SendToNXT();
+mTurnRight1.WaitFor();
+mTurnRight2.SendToNXT();
+mTurnRight2.WaitFor();
+</pre><h2>Reading motor positions<a name="28"></a></h2><p>Apart from sending commands to the motors, we can also retrieve information from them, the most important being the current position in degrees. For more documentation on this, see the help texts for <tt>ReadFromNXT</tt> and <tt>ResetPosition</tt>. These are the commands we'll use in this section.</p><p>So, when calling <tt>ReadFromNXT()</tt> on a motor object, a MATLAB struct is returned, containing some useful fields. We'll just focus on <tt>Position</tt>, i.e. where the motor has currently turned to. This rotation counter keeps on tracking every movement, wether you turn the motor by hand or by a commend, it always tells you the exact position of the axle at the time the NXT receives your request. The change of <tt>Position</tt> corresponds to the turning direction: If the motor turns the way as it would if operated with a positive <tt>Power</tt>, <tt>Position</tt> increases. Otherwise (spinning reverse), <tt>Position</tt> decreases (and can become negative). Enough of the theory, a simple example:</p><pre class="codeinput"><span class="comment">% We need a motor object to get access to the methods</span>
+<span class="comment">% also we do a little driving...</span>
+m = NXTMotor(<span class="string">'A'</span>, Power, <span class="string">'50'</span>);
+<span class="comment">% clear position counter:</span>
+m.ResetPosition();
+
+m.SendToNXT();
+pause(1);
+m.Stop(<span class="string">'off'</span>);
+<span class="comment">% motor is still coasting at the moment...</span>
+
+<span class="comment">% now retrieve motor info</span>
+data = m.ReadFromNXT();
+<span class="comment">% show it to the user:</span>
+disp(sprintf(<span class="string">'Motor A is currently at position %d'</span>, data.Position));
+
+<span class="comment">% wait until the motor doesn't move anymore</span>
+pause(2);
+<span class="comment">% and display the position again:</span>
+data = m.ReadFromNXT();
+disp(sprintf(<span class="string">'Motor A is finally at position %d'</span>, data.Position));
+</pre><p>Please note that all other properties of the motor object except <tt>Port</tt> do not matter to use the method the methods <tt>ReadFromNXT()</tt> and <tt>ResetPosition</tt>. Also the returned data-structure from <tt>ReadFromNXT()</tt> only reflects the current state of the NXT motor, and does not necessarily have something to do with the motor object's properties you used to retrieve the data (e.g. <tt>TachoLimit</tt> and <tt>Power</tt> of the retrieved data and of the object can be different).</p><h2>Full example<a name="31"></a></h2><p>Now let's imagine we want to control a robotic arm. For the sake of this example, we want it to move up and down, alternatingly for 10 times. Let the arm just have one joint, so we only control one motor. A little problem is gravity: The arm has a certain weight. So if we aren't careful, moving it downwards will sometimes result in a little lower position than we expect, and moving upwards won't move the motor as far as we hope all the time. After all, the motor control is only accurate to a couple of degrees (+/- 1 most of the time, but not necessarily equally distributed). So without reading the motor's position and accounting for those inaccuracies, the errors would accumulate over time and cause a significant displacement of the arm. By simply retrieving the arm's position and making sure that it moves a bit more upwards if necessary, or a bit less downwards, we can avoid the accumulating errors and have precise movement even after a long period of operation. Here is how its done:</p><pre class="codeinput"><span class="comment">% Example which should move a motor (or robotic arm) 10 times back and</span>
+<span class="comment">% forth (up and down), as precisely as possible without blindly trusting</span>
+<span class="comment">% the motor commands. Very simple error compensation (i.e. trying absolute</span>
+<span class="comment">% movements instead of always relative).</span>
+
+<span class="comment">% Prepare MATLAB</span>
+COM_CloseNXT <span class="string">all</span>
+close <span class="string">all</span>
+clear <span class="string">all</span>
+
+<span class="comment">% Connect to NXT, via USB or BT</span>
+h = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+COM_SetDefaultNXT(h);
+
+<span class="comment">% set params</span>
+power = 30;
+port  = MOTOR_A;
+dist  = 200;    <span class="comment">% distance to move in degrees</span>
+
+<span class="comment">% create motor objects</span>
+<span class="comment">% we use holdbrake, make sense for robotic arms</span>
+mUp    = NXTMotor(port, <span class="string">'Power'</span>,  power, <span class="string">'ActionAtTachoLimit'</span>, <span class="string">'HoldBrake'</span>);
+mDown  = NXTMotor(port, <span class="string">'Power'</span>, -power, <span class="string">'ActionAtTachoLimit'</span>, <span class="string">'HoldBrake'</span>);
+
+<span class="comment">% prepare motor</span>
+mUp.Stop(<span class="string">'off'</span>);
+mUp.ResetPosition();
+
+<span class="comment">% repeat 10 times</span>
+<span class="keyword">for</span> j=1:10
+
+    <span class="comment">% where are we?</span>
+    data = mUp.ReadFromNXT();
+    pos  = data.Position;
+
+    <span class="comment">% where do we want to go?</span>
+    <span class="comment">% account for errors, i.e. if pos is not 0</span>
+    mDown.TachoLimit = dist + pos;
+
+    <span class="comment">% move</span>
+    mDown.SendToNXT();
+    mDown.WaitFor();
+
+    <span class="comment">% now we are at the bottom, repeat the game:</span>
+    <span class="comment">% where are we?</span>
+    data = mUp.ReadFromNXT(); <span class="comment">% doesn't matter which object we use to read!</span>
+    pos  = data.Position;
+
+    <span class="comment">% pos SHOULD be = dist in an ideal world</span>
+    <span class="comment">% but calculate new "real" distance to move</span>
+    <span class="comment">% based on current error...</span>
+    mUp.TachoLimit = pos;
+    <span class="comment">% this looks very simple now, but it comes from</span>
+    <span class="comment">%   TachoLimit = dist + (pos - dist);</span>
+    <span class="comment">% i.e. real distance + error correction</span>
+    <span class="comment">% Imagine it this way: We are currently at pos,</span>
+    <span class="comment">% and want to go back to 0, so this is exactly the distance</span>
+    <span class="comment">% to go!</span>
+
+    mUp.SendToNXT();
+    mUp.WaitFor();
+
+<span class="keyword">end</span><span class="comment">%for</span>
+
+<span class="comment">% mode was HOLDBRAKE, so don't forget this:</span>
+mUp.Stop(<span class="string">'off'</span>)
+<span class="comment">% clean up</span>
+COM_CloseNXT(h);
+</pre><h2>Limitations of NXTMotor<a name="32"></a></h2><p>As nice and easy as working with <tt>NXTMotor</tt> is, the class has its limitations (you can read more about it in the documentation of <tt>NXTMotor</tt>). One minor problem is that you can't change the speed (i.e. setting a different <tt>Power</tt> and then call <tt>SendToNXT()</tt>) of an already running motor. You have to use <tt>WaitFor()</tt> or <tt>Stop()</tt> before updating the power, which might not do what you want (changing the speed smoothly during runtime).</p><p>Well, there is one exception: If a motor is running infinitely with <tt>TachoLimit = 0</tt> set, you actually <i>can</i> send a motor command with a new power, and it will work.</p><p>A sometimes bigger problem is <b>latency</b>: Motor commands are not necessarily sent to the NXT at once. Sometimes <tt>SendToNXT()</tt> takes roughlpy up to 20ms for the actual motor instruction to be executed. Same goes for <tt>WaitFor()</tt> or <tt>Stop()</tt>. This is the price you have to pay for the great accuracy that <tt>NXTMotor</tt> gives you. The reason has to do with the embedded NXC program MotorControl, which is running on the NXT and handles high precision motor movement for you.</p><p>What to do if you need <i>fast</i> motor control instead of high precision (i.e. when building a Segway)? Well, you can trade accuracy for performance. The answer is: Use <tt>DirectMotorCommand</tt>. The last chapter explains how.</p><h2>For experts: DirectMotorCommand<a name="36"></a></h2><p><tt>DirectMotorCommand</tt> is a remainder from previous toolbox versions 1.x and 2.x (it was called <tt>SendMotorSettings</tt> before). It works without a program running the brick by sending "direct commands" (a term from the LEGO NXT Mindstorms communication protocol) only. First of all:</p><p><b>Warning:</b> Do not use <tt>DirectMotorCommand</tt> and <tt>NXTMotor.SendToNXT()</tt> for the same motor at one time together (or only if you know exactly what you're doing). It can mess up your motor control and lead to unexpected results! You can still use <tt>NXTMotor.ReadFromNXT()</tt> if you like.</p><p>Direct motor command gives access to some advanced features:</p><div><ul><li><i>Ramp up &amp; ramp down</i>: You can let motors linearly accelerate or decelerate over a distance of your choice.</li><li><i>TurnRatio</i>: You can run motors synchronized, but with different speeds of each motor. This feature doesn't work reliable however.</li></ul></div><p>There are however more problems:</p><div><ul><li>Movement is not accurate anymore. Basically you only have something like <tt>ActionAtTachoLimit = 'Coast'</tt>, but with even less quality.</li><li>Sometimes the NXT's error correction does changes to your <tt>TachoLimit</tt> which seem hard to understand. Read the section <i>Troubleshooting</i> of this toolbox documentation for more on that.</li></ul></div><p>The big advantage is <b>execution speed</b>: Nothing else is faster than <tt>DirectMotorCommand</tt> or <tt>NXT_SetOutputState</tt>. Latency via USB connections is usually about 3ms, and via Bluetooth it can be between 5ms and 30ms, or even more for synchronized driving.</p><p>Make sure to read the documentation page for <tt>DirectMotorCommand</tt>.</p><p>I might help to also read the documents "Executable File and Bytecode Reference" (LEGO MINDSTORMS NXT Executable File Specification) and "Bluetooth Developer Kit (BDK)" from <a href="http://mindstorms.lego.com/Overview/nxtreme.aspx">http://mindstorms.lego.com/Overview/nxtreme.aspx</a> ; it may help you getting familiar with the communication protocol. Other useful commands are <tt>NXT_GetOutputState</tt> and <tt>NXT_SetOutputState</tt>.</p><p>
+<hr>
+Proceed to <a href="sensor_control.html">next chapter</a>.
+</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Controlling NXT motors
+% Being able to control the NXT motors is crucial for most robots. Only
+% very few models work without moving parts. So read on to learn all you
+% need about the class |NXTMotor|.
+%
+
+%% Getting ready
+% If you want to execute the examples from this tutorial directly in the
+% command window, I recommend this little sequence of commands to establish
+% a connection to your NXT:
+
+COM_CloseNXT all
+h = COM_OpenNXT('bluetooth.ini');
+COM_SetDefaultNXT(h);
+
+%%
+% Now all following examples should work right away by copy-pasting...
+
+%% The basics
+% To operate the motors, we need to create motor objects, i.e. instances of
+% the class |NXTMotor|. Those objects are capable of sending various
+% commands to one or two motors, or can be used to retrieve data from them.
+% To create such an object, the simplest way is just
+
+mA = NXTMotor('A')
+
+%%
+% Now the object |mA| provides properties and methods to control the NXT
+% motor on port A. First, we probably just want to see if the motor works
+% at all. Ok then, let's go:
+
+mA.Power = 50;  % let's start with half the maximum power
+mA.SendToNXT(); % this is actually the moment we start the motor
+
+%%
+% Motor A keeps on running... To stop it, we use
+
+mA.Stop('off'); 
+
+%%
+% This will turn off the power, causing the motor to come to a soft stop
+% (so called "coasting"). If we wanted to brake all of a sudden at once,
+% we'd call
+
+mA.Stop('brake');
+
+%%
+% In this case, the NXT's active brake will be enabled, causing the motor to
+% stop hard at the instance it receives the command. The brake alsp keeps
+% the motor actively at its position. It's surprisingly strong, however it
+% also consumes a lot of power, so we better turn it off again. The motor
+% is now completely turned off just as in the beginning of our tutorial
+% session:
+
+mA.Stop('off'); 
+
+
+%% Constructing objects and setting properties 
+% You've already seen the basic concept of motor control which consits of
+% these 3 basic steps:
+%
+% # Create an |NXTMotor| object
+% # Set up the parameters as you need them
+% # Send the command to the NXT using |SendToMotor()|
+%
+% You've already seen how to specify the motor settings by setting
+% properties.
+
+mB1       = NXTMotor();  % create a blank motor object
+mB1.Port  = MOTOR_B;     % this is the same as using  mB.Port = 'B';
+mB1.Power = -100;        % full power backwards
+
+%%
+% The example above shows two things:
+% 
+% # You can use the old-fashioned motor constants (i.e. |MOTOR_C|) to
+% specify port names, or do it by giving strings (like |'C'|).
+% # To reverse the direction the motor should turn, set negative power
+% values (as in electronics you'd swap the sign of the current)
+%
+% A shorter way to create exactly the same object as |mB1| is to use
+% |NXTMotor|'s constructor. The first argument always has to be the port you
+% want to use, followed by combinations of |'Property', value| as you might know
+% from other MATLAB commands:
+
+mB2 = NXTMotor('B', 'Power', -100, 'SpeedRegulation', false);
+
+%%
+% As said before: |mB1| and |mB2| do exactly the same, so use whichever way
+% you prefer. To inspect motor objects on the command line, just type their
+% name:
+
+mB1
+mB2
+
+
+%% Precise moves
+% Knowing how we control the motor's speed by setting a certain value to
+% |Power| is not enough in most cases. One could try to move the motor a
+% certain distance by using something like this:
+
+mA = NXTMotor('A', 'Power', 50);
+mA.SendToNXT();
+pause(3);   % wait exactly 3 seconds
+mA.Stop('brake');
+
+%%
+% Using this technique we get the motor running 3 seconds, but due to
+% several influences (for example Bluetooth lag or subtle differences in NXT motors)
+% this won't lead to the same distance travelled by the motor. Also we
+% can't manage different loads on the motors. This is why we have to
+% specify the distance the motor should turn in degrees. The according
+% property is called |TachoLimit|.
+
+mA.TachoLimit = 360;
+mA.SendToNXT();
+
+%%
+% Now the motor will make exactly 1 whole turn and then stop at about 360
+% degrees (accurate to +/- 1 degree in most cases). It is very important to
+% understand that the motor does this movement "on its own", while MATLAB
+% can execute the next command right away. If we say:
+
+mB = NXTMotor('B', 'Power', 50, 'TachoLimit', 1000);
+mB.SendToNXT();
+NXT_PlayTone(440, 500);
+
+%%
+% then the NXT will start turning motor B and beep right away! If we want
+% to beep only when the motor has reached its position, we have be patient
+% and wait for the motor:
+
+mB.SendToNXT();
+mB.WaitFor();            % this command will hold MATLAB a while
+NXT_PlayTone(440, 500);  % now the motor has stopped!
+
+
+%% 
+% This brings us to the next important point: 
+% *In order for a motor to accept a command with |SendToNXT()|, it must
+% be idle*, i.e. at rest (and not carrying out a movement already). We can
+% achieve this by either:
+% 
+% * Waiting for the last motor command to finish by using |WaitFor()|
+% before calling the next |SendToNXT()|. If the motor is currently idle,
+% |WaitFor()| won't wait at all and continue with the next statement right
+% away.
+% * Abort the current motor movement using the |Stop()| method.
+% 
+% If we don't follow this rule, the NXT will ignore the second motor
+% command and tell you it has just dropped a command by a beeping signal.
+% Example:
+
+% imagine we want our motor to make 2 turns of 360 degrees
+mB = NXTMotor('B', 'Power', 50, 'TachoLimit', 360);
+mB.Stop('off');  % Just to make sure motor is ready!
+mB.SendToNXT();  % Motor is busy now
+mB.SendToNXT();  % THIS DOES NOT WORK!!! MOTOR IS BUSY
+% This example is wrong.
+% We have to use a .WaitFor between the two .SendToNXT()
+
+%%
+% To switch back to unlimited movement, just set |TachoLimit| back to 0.
+
+%% Different braking modes
+% So setting a value to |TachoLimit| specifies the angle the motor should
+% spin to, and by the sign of |Power| we can decide the turning direction.
+% We still have some more options to control _how_ the motor should brake.
+% The property is called |ActionAtTachoLimit|. Quoting  possible parameters 
+% from the documentation of |NXTMotor|:
+%
+% * In |'Coast'|  mode, the motor(s) will simply be turned off when the|TachoLimit| is
+%     reached, leading to free movement until slowly stopping (called
+%     coasting). The |TachoLimit| won't be met, the motor(s) move way too far
+%    (overshooting), depending on their angular momentum.
+% * Use |'Brake'| mode (default) to let the motor(s) automatically
+%     slow down nice and smoothly just before the |TachoLimit|. This leads
+%     to a very high precision, usually the |TachoLimit| is met within +/- 1
+%     degree (depending on the motor load and speed of course). After this
+%     braking, power to the motor(s) is turned off when they are at
+%     rest.
+% * |'Holdbrake'| is similar to |'Brake'|, but in this case the active brake of
+%     the motors stays enabled (careful, this consumes a lot of battery
+%     power), causing the motor(s) to actively keep holding their
+%     position.
+
+
+%% Speed regulation and smooth start
+% There are two more options left we'll shortly discuss here. For further
+% details you should consider the documentation of |NXTMotor|.
+%
+% * |SpeedRegulation| - this property is set to |true| by default, but you
+% should carefully evaluate wether you need it or not for every motor
+% object. It basically tries to keep your motor running at a constant
+% speed, no matter how much load you put on it. If a motor has heavy
+% lifting to do, the Firmware will internally increase the power value (if
+% possible) to keep the motor running fast enough. While this is a nice
+% thing to have, be careful: The torque of your motor will be dynamically
+% adjusted. Imagine you've got a robotic arm with a limited area of operation
+% and a sensitive gearing. If you enable speed regulation and somehow your
+% arm get's stuck (for example by a programming error of yours) or moves
+% too far, the Firmware will increase the power value to overcome the
+% obstacle. This behavior could destroy your gears or the arm. Sometimes
+% it's desirable to have a constant torque. In that case, better deactivate
+% speed regulation. Another thing to mention: With low speeds, speed
+% regulation sometimes achieves the opposite of what you want: the motor
+% keeps cogging or stuttering. In these cases, speed regulation should also be
+% turned off.
+% * |SmoothStart| - enable this if you want your motor(s) to accelerate
+% softly. Desirable especially for driving robots so that their wheels
+% won't slip when they start driving. The motor will increase its power
+% value in the beginning of movement stepwise until the full speed is
+% reached. This option does only work when a |TachoLimit > 0| is set. It
+% doesn't work with |ActionAtTachoLimit = 'Coast'| either.
+
+
+%% Using two motors
+% Until now we've always talked about motor objects controlling one single
+% motor. You could create two of these objects to start a driving robot
+% (where the wheels are attached to ports B and C):
+
+mB = NXTMotor('B', 'Power', 50);
+mC = NXTMotor('C', 'Power', 50);
+mB.SendToNXT();
+mC.SendToNXT();
+
+%%
+% There are two problems with this simple approach:
+%
+% * The commands are sent one after each other to the NXT, causing
+% motor C to start a tiny bit after motor B. This will result in your robot
+% making a little turn in the beginning.
+% * The motors are running at slightly different speeds, since they aren't
+% perfectly unique. This causes the bot to drive a curve, rather than a
+% straight line.
+% The solution: Use a single motor object to control two motors at the same
+% time. They will be operated in "synchronization mode". This means the NXT
+% makes sure that they run at both the same speed for your bot to drive a
+% straight line. This also means that speed regulation does not work when
+% driving two motors synced. But let's look at an example first:
+
+mBC = NXTMotor('BC', 'Power', 50);
+mBC.SendToNXT();
+
+%%
+% Easy, huh? We can also use the commands |WaitFor()| or stop as we're used to.
+% And the property |Port| can of course be accessed as usual. Another
+% example:
+
+myMotors             = NXTMotor();
+myMotors.Port        = [MOTOR_B; MOTOR_C];  % same as  myMotors.Port = 'BC';
+myMotors.Power       = 50;
+myMotors.TachoLimit  = 1000;
+myMotors.SmoothStart = true;
+myMotors.SpeedRegulation = false;  % don't forget this!
+% If we tell the constructor that we use two ports, speed regulation will
+% automatically turned off, i.e.:
+% m = NXTMotor('BC');  % <REPLACE_WITH_DASH_DASH m.SpeedRegulation = false is set already!
+
+myMotors.Stop('off');  % make sure motors are off before we start.
+myMotors.SendToNXT();
+
+%% 
+% There is one certain behavior you should get familiar with. Let's assume
+% you use the following code:
+
+mBC = NXTMotor('BC', 'Power', 50, 'TachoLimit', 1000);
+mBC.ActionAtTachoLimit = 'Coast';
+mBC.SendToNXT();
+mBC.WaitFor();
+pause(3);
+
+%%
+% During the final pause of 3 seconds, we can notice a certain high-pitched
+% noise coming from the motors. Also they seem to be powered up and
+% slightly moving or vibrating. This is the motor synchronization in
+% action. If you try to move one wheel, the other will be moved
+% automatically, too. This ensures the wheels are (roughly) in the same
+% position, as if they were connected through an axle. We can manually turn
+% off this synchronization with |Stop()|:
+
+mBC.Stop('off');
+
+
+%% Driving bots the easy way
+% Using the knowledge we now have about |NXTMotor|, it's time to get used
+% working with multiple motor objects. In the following example, we set up
+% a basic set of objects. To
+
+% Set some parameters:
+leftWheel   = MOTOR_B;
+rightWheel  = MOTOR_C;
+bothWheels  = [leftWheel; rightWheel];
+drivingPower = 60; 
+turningPower = 40;
+drivingDist  = 1000; % in degrees
+turningDist  = 220;  % in degrees
+
+% now create the objects for straigt driving:
+mForward = NXTMotor(bothWheels, 'Power', drivingPower, 'TachoLimit', drivingDist);
+mReverse = mForward; % clone object
+mReverse.Power = -mForward.Power; % just swap the power sign
+
+%%
+% Now we can already drive our bot a certain distance forward or reverse.
+% We just have to send the objects to the NXT and wait until they complete:
+
+% let the bot drive forward
+mForward.SendToNXT();
+mForward.WaitFor();
+% and now return to the origin
+mReverse.SendToNXT();
+mReverse.WaitFor();
+% done!
+NXT_PlayTone(440, 500);
+
+%%
+% In order to make nice turns (by 90 degrees for example), it's best to use
+% a 2-way motion: First let one wheel spin one direction (now the bot has made half
+% of its turn and faces 45 degrees), then turn the other wheel into the
+% opposite direction. Now the 90-degree-turn should be complete.
+
+% for turning the bot, we have two objects each:
+mTurnLeft1 = NXTMotor(leftWheel, 'Power', -turningPower, 'TachoLimit', turningDist);
+mTurnLeft1.SpeedRegulation = false; % don't need this for turning
+
+% for the 2nd part of turning, use first part's settings and modify:
+mTurnLeft2 = mTurnLeft1;                 % copy object
+mTurnLeft2.Port     = rightWheel;        % but use other wheel
+mTurnLeft2.Power    = -mTurnLeft1.Power; % swap power again
+
+% the right-turn objects are the same, but mirrored:
+mTurnRight1 = mTurnLeft1;               % first copy...
+mTurnRight2 = mTurnLeft2;  
+mTurnRight1.Power = -mTurnRight1.Power; % now mirror powers
+mTurnRight2.Power = -mTurnRight2.Power; 
+% Instead of mirroring the powers, we could've also changed
+% the ports (swapped left and right wheels).
+
+
+%% 
+% You can now use these objects like this:
+
+% make a left-turn
+mTurnLeft1.SendToNXT();
+mTurnLeft1.WaitFor();
+mTurnLeft2.SendToNXT();
+mTurnLeft2.WaitFor();
+
+% wait here a moment
+pause(1);
+
+% turn back to the origin
+mTurnRight1.SendToNXT();
+mTurnRight1.WaitFor();
+mTurnRight2.SendToNXT();
+mTurnRight2.WaitFor();
+
+
+%% Reading motor positions
+% Apart from sending commands to the motors, we can also retrieve
+% information from them, the most important being the current position in
+% degrees. For more documentation on this, see the help texts for
+% |ReadFromNXT| and |ResetPosition|. These are the commands we'll use in
+% this section.
+
+%%
+% So, when calling |ReadFromNXT()| on a motor object, a MATLAB struct is
+% returned, containing some useful fields. We'll just focus on |Position|,
+% i.e. where the motor has currently turned to. This rotation counter keeps
+% on tracking every movement, wether you turn the motor by hand or by a
+% commend, it always tells you the exact position of the axle at the time
+% the NXT receives your request. The change of |Position| corresponds to the
+% turning direction: If the motor turns the way as it would
+% if operated with a positive |Power|, |Position| increases. Otherwise
+% (spinning reverse), |Position| decreases (and can become negative).
+% Enough of the theory, a simple example:
+
+% We need a motor object to get access to the methods
+% also we do a little driving...
+m = NXTMotor('A', Power, '50');
+% clear position counter:
+m.ResetPosition();
+
+m.SendToNXT();
+pause(1); 
+m.Stop('off');
+% motor is still coasting at the moment...
+
+% now retrieve motor info
+data = m.ReadFromNXT();
+% show it to the user:
+disp(sprintf('Motor A is currently at position %d', data.Position));
+
+% wait until the motor doesn't move anymore
+pause(2);
+% and display the position again:
+data = m.ReadFromNXT();
+disp(sprintf('Motor A is finally at position %d', data.Position));
+
+%%
+% Please note that all other properties of the motor object except |Port|
+% do not matter to use the method the methods |ReadFromNXT()| and
+% |ResetPosition|. Also the returned data-structure from |ReadFromNXT()|
+% only reflects the current state of the NXT motor, and does not
+% necessarily have something to do with the motor object's properties you
+% used to retrieve the data (e.g. |TachoLimit| and |Power| of the retrieved
+% data and of the object can be different).
+
+
+%% Full example
+% Now let's imagine we want to control a robotic arm. For the sake of this
+% example, we want it to move up and down, alternatingly for 10 times. Let
+% the arm just have one joint, so we only control one motor. A little
+% problem is gravity: The arm has a certain weight. So if we aren't
+% careful, moving it downwards will sometimes result in a little lower
+% position than we expect, and moving upwards won't move the motor as far
+% as we hope all the time. After all, the motor control is only accurate to
+% a couple of degrees (+/- 1 most of the time, but not necessarily equally
+% distributed). So without reading the motor's position and accounting for
+% those inaccuracies, the errors would accumulate over time and cause a
+% significant displacement of the arm. By simply retrieving the arm's
+% position and making sure that it moves a bit more upwards if necessary,
+% or a bit less downwards, we can avoid the accumulating errors and have
+% precise movement even after a long period of operation. Here is how its
+% done:
+
+% Example which should move a motor (or robotic arm) 10 times back and
+% forth (up and down), as precisely as possible without blindly trusting
+% the motor commands. Very simple error compensation (i.e. trying absolute
+% movements instead of always relative).
+
+% Prepare MATLAB
+COM_CloseNXT all
+close all
+clear all
+
+% Connect to NXT, via USB or BT
+h = COM_OpenNXT('bluetooth.ini');
+COM_SetDefaultNXT(h);
+
+% set params
+power = 30;
+port  = MOTOR_A;
+dist  = 200;    % distance to move in degrees
+
+% create motor objects
+% we use holdbrake, make sense for robotic arms
+mUp    = NXTMotor(port, 'Power',  power, 'ActionAtTachoLimit', 'HoldBrake');
+mDown  = NXTMotor(port, 'Power', -power, 'ActionAtTachoLimit', 'HoldBrake');
+
+% prepare motor
+mUp.Stop('off');
+mUp.ResetPosition();
+
+% repeat 10 times
+for j=1:10
+    
+    % where are we?
+    data = mUp.ReadFromNXT();
+    pos  = data.Position;
+    
+    % where do we want to go?
+    % account for errors, i.e. if pos is not 0
+    mDown.TachoLimit = dist + pos;
+    
+    % move
+    mDown.SendToNXT();
+    mDown.WaitFor();
+    
+    % now we are at the bottom, repeat the game:
+    % where are we?
+    data = mUp.ReadFromNXT(); % doesn't matter which object we use to read!
+    pos  = data.Position;
+    
+    % pos SHOULD be = dist in an ideal world
+    % but calculate new "real" distance to move
+    % based on current error...    
+    mUp.TachoLimit = pos;
+    % this looks very simple now, but it comes from
+    %   TachoLimit = dist + (pos - dist);
+    % i.e. real distance + error correction
+    % Imagine it this way: We are currently at pos,
+    % and want to go back to 0, so this is exactly the distance
+    % to go!
+    
+    mUp.SendToNXT();
+    mUp.WaitFor();
+    
+end%for
+
+% mode was HOLDBRAKE, so don't forget this:
+mUp.Stop('off')
+% clean up
+COM_CloseNXT(h);
+
+%% Limitations of NXTMotor
+% As nice and easy as working with |NXTMotor| is, the class has its
+% limitations (you can read more about it in the documentation of
+% |NXTMotor|). One minor problem is that you can't change the speed (i.e. setting a different
+% |Power| and then call |SendToNXT()|) of an already running motor. You
+% have to use |WaitFor()| or |Stop()| before updating the power, which
+% might not do what you want (changing the speed smoothly during runtime).
+
+%%
+% Well, there is one exception: If a motor is running infinitely with
+% |TachoLimit = 0| set, you actually _can_ send a motor command with a new
+% power, and it will work. 
+
+%%
+% A sometimes bigger problem is *latency*: Motor commands are not necessarily
+% sent to the NXT at once. Sometimes |SendToNXT()| takes roughlpy up to 20ms
+% for the actual motor instruction to be executed. Same goes for
+% |WaitFor()| or |Stop()|. This is the price you have to pay for the great
+% accuracy that |NXTMotor| gives you. The reason has to do with the
+% embedded NXC program MotorControl, which is running on the NXT and
+% handles high precision motor movement for you.
+
+%%
+% What to do if you need _fast_ motor control instead of high precision
+% (i.e. when building a Segway)? Well, you can trade accuracy for
+% performance. The answer is: Use |DirectMotorCommand|. The last chapter
+% explains how.
+
+%% For experts: DirectMotorCommand
+% |DirectMotorCommand| is a remainder from previous toolbox versions
+% 1.x and 2.x (it was called |SendMotorSettings| before). It works without
+% a program running the brick by sending "direct commands"
+% (a term from the LEGO NXT Mindstorms communication
+% protocol) only. First of all:
+
+%%
+% *Warning:* Do not use |DirectMotorCommand| and |NXTMotor.SendToNXT()|
+% for the same motor at one time together (or only if you know exactly what
+% you're doing). It can mess up your motor control and lead to
+% unexpected results! You can still use |NXTMotor.ReadFromNXT()| if you
+% like.
+
+%%
+% Direct motor command gives access to some advanced features:
+%
+% * _Ramp up & ramp down_: You can let motors linearly accelerate or decelerate over a
+% distance of your choice.
+% * _TurnRatio_: You can run motors synchronized, but with different speeds
+% of each motor. This feature doesn't work reliable however.
+%
+% There are however more problems:
+%
+% * Movement is not accurate anymore. Basically you only have something
+% like |ActionAtTachoLimit = 'Coast'|, but with even less quality. 
+% * Sometimes the NXT's error correction does changes to your |TachoLimit|
+% which seem hard to understand. Read the section _Troubleshooting_ of this
+% toolbox documentation for more on that.
+%
+% The big advantage is *execution speed*: Nothing else is faster than
+% |DirectMotorCommand| or |NXT_SetOutputState|. Latency via USB connections
+% is usually about 3ms, and via Bluetooth it can be between 5ms and 30ms, or even more for
+% synchronized driving.
+%
+% Make sure to read the documentation page for |DirectMotorCommand|.
+%
+% I might help to also read the documents "Executable File and Bytecode Reference"
+% (LEGO MINDSTORMS NXT Executable File Specification) and "Bluetooth
+% Developer Kit (BDK)" from
+% http://mindstorms.lego.com/Overview/nxtreme.aspx ; it may help you
+% getting
+% familiar with the communication protocol. Other useful commands are
+% |NXT_GetOutputState| and |NXT_SetOutputState|. 
+%
+
+%%
+%
+% <html>
+% <hr>
+% Proceed to <a href="sensor_control.html">next chapter</a>.
+% </html>
+##### SOURCE END #####
+--></body></html>

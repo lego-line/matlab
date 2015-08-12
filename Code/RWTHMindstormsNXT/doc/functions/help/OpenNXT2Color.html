@@ -1,0 +1,113 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OpenNXT2Color</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_OpenNXT2Color.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>OpenNXT2Color</h1><!--introduction--><p>Initializes the LEGO color sensor from the NXT 2.0 set, sets correct sensor mode</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#16">Limitations</a></li><li><a href="#19">Examples</a></li><li><a href="#22">See also</a></li><li><a href="#24">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OpenNXT2Color(port, mode)</tt></p><p><tt>OpenNXT2Color(port, mode, handle)</tt></p><h2>Description<a name="5"></a></h2><p>This function initializes the input mode of the LEGO NXT 2.0 Color sensor specified by the sensor port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick. This function is intended for the Color sensor that comes with the NXT 2.0 set. It has the label "RGB" written on the front, 3 LED openings (1 black empty spot, the light sensor and a clear lens with tiny red, green, blue LEDs behind it). It is not to be confused with the HiTechnic Color sensors (V1 and V2), for those please see the functions <tt>OpenColor</tt> and <tt>GetColor</tt>.</p><p>With <tt>GetNXT2Color(port)</tt> you can receive the detected brightness or color.</p><p><tt>mode</tt> specifies the operating mode of the sensor, the following values are allowed:</p><div><ul><li><tt>'FULL'</tt> - The red, green, and blue LEDs are constantly on (actually flashing at a high frequency), and the sensor will try to detect one of 6 predefined colors.</li></ul></div><div><ul><li><tt>'RED'</tt> - The red LED is constantly on, the sensor outputs reflected light / brightness. This is similar to the LEGO Light sensor mode <tt>'ACTIVE'</tt>. See <tt>OpenLight</tt>.</li></ul></div><div><ul><li><tt>'GREEN'</tt> - The green LED is constantly on, the sensor outputs reflected light / brightness.</li></ul></div><div><ul><li><tt>'BLUE'</tt> - The blue LED is constantly on, the sensor outputs reflected light / brightness.</li></ul></div><div><ul><li><tt>'NONE'</tt> - All LEDs are constantly off, the sensor outputs ambient light / brightness. This is similar to the LEGO Light sensor mode <tt>'INACTIVE'</tt>. See <tt>OpenLight</tt>.</li></ul></div><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><h2>Limitations<a name="16"></a></h2><p>The sensor is influenced by ambient light. It reacts differently on daylight than on artificial light. The modes <tt>'RED'</tt> and <tt>'NONE'</tt> are similar to the Light sensor's modes <tt>'ACTIVE'</tt> and <tt>'INACTIVE'</tt>, but the sensors are not perfectly compatible.</p><h2>Examples<a name="19"></a></h2><pre class="codeinput">  port = SENSOR_1;
+  OpenNXT2Color(port, <span class="string">'FULL'</span>);
+  color = GetNXT2Color(port);
+  <span class="keyword">if</span> strcmp(color, <span class="string">'BLUE'</span>)
+      disp(<span class="string">'Blue like the ocean'</span>);
+  <span class="keyword">else</span>
+      disp([<span class="string">'The detected color is '</span> color]);
+  <span class="keyword">end</span><span class="comment">%if</span>
+  CloseSensor(port);
+</pre><pre class="codeinput">  port = SENSOR_2;
+  OpenNXT2Color(port, <span class="string">'NONE'</span>);
+  colorVal = GetNXT2Color(port);
+  <span class="keyword">if</span> colorVal &gt; 700
+      disp(<span class="string">'It''s quite bright!'</span>)
+  <span class="keyword">end</span><span class="comment">%if</span>
+  CloseSensor(port);
+</pre><h2>See also<a name="22"></a></h2><p><a href="GetNXT2Color.html">GetNXT2Color</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="OpenColor.html">OpenColor</a>, <a href="GetColor.html">GetColor</a>, <a href="OpenLight.html">OpenLight</a>, <a href="GetLight.html">GetLight</a>, <a href="COM_ReadI2C.html">COM_ReadI2C</a>, </p><h2>Signature<a name="24"></a></h2><div><ul><li><b>Author:</b> Nick Watts, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2010/09/21</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% OpenNXT2Color
+% Initializes the LEGO color sensor from the NXT 2.0 set, sets correct sensor mode
+%%
+%% Syntax
+% |OpenNXT2Color(port, mode)|
+%%
+% |OpenNXT2Color(port, mode, handle)|
+%%
+%% Description
+% This function initializes the input mode of the LEGO NXT 2.0 Color sensor specified by the sensor
+% port. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick.
+% This function is intended for the Color sensor that comes with the NXT 2.0
+% set. It has the label "RGB" written on the front, 3 LED openings (1 black
+% empty spot, the light sensor and a clear lens with tiny red, green, blue LEDs behind it).
+% It is not to be confused with the HiTechnic Color sensors (V1 and V2),
+% for those please see the functions |OpenColor| and |GetColor|.
+%%
+% With |GetNXT2Color(port)| you can receive the detected brightness or color.
+%%
+% |mode| specifies the operating mode of the sensor, the following values
+% are allowed:
+%%
+% * |'FULL'| - The red, green, and blue LEDs are constantly on (actually
+% flashing at a high frequency), and the sensor will try to detect one of
+% 6 predefined colors.
+%%
+% * |'RED'| - The red LED is constantly on, the sensor outputs reflected
+% light / brightness. This is similar to the LEGO Light sensor mode
+% |'ACTIVE'|. See |OpenLight|.
+%%
+% * |'GREEN'| - The green LED is constantly on, the sensor outputs reflected
+% light / brightness.
+%%
+% * |'BLUE'| - The blue LED is constantly on, the sensor outputs reflected
+% light / brightness.
+%%
+% * |'NONE'| - All LEDs are constantly off, the sensor outputs ambient
+% light / brightness. This is similar to the LEGO Light sensor mode
+% |'INACTIVE'|. See |OpenLight|.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%%
+%% Limitations
+% The sensor is influenced by ambient light. It reacts differently on
+% daylight than on artificial light. The modes |'RED'| and |'NONE'| are
+% similar to the Light sensor's modes |'ACTIVE'| and |'INACTIVE'|, but the
+% sensors are not perfectly compatible.
+%%
+%%
+%% Examples
+  port = SENSOR_1;
+  OpenNXT2Color(port, 'FULL');
+  color = GetNXT2Color(port);
+  if strcmp(color, 'BLUE')
+      disp('Blue like the ocean');
+  else
+      disp(['The detected color is ' color]);
+  end%if
+  CloseSensor(port);
+%%
+  port = SENSOR_2;
+  OpenNXT2Color(port, 'NONE');
+  colorVal = GetNXT2Color(port);
+  if colorVal > 700
+      disp('It''s quite bright!')
+  end%if
+  CloseSensor(port);
+%%
+%% See also
+% GetNXT2Color, CloseSensor, OpenColor, GetColor, OpenLight, GetLight, COM_ReadI2C
+%%
+%% Signature
+%%
+% * *Author:* Nick Watts, Linus Atorf (see AUTHORS)
+% * *Date:* 2010/09/21
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

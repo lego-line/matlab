@@ -1,0 +1,121 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>WaitFor</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_WaitFor.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>WaitFor</h1><!--introduction--><p>Wait for motor(s) to stop (busy waiting)</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#6">Description</a></li><li><a href="#13">Examples:</a></li><li><a href="#17">See also</a></li><li><a href="#20">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OBJ.WaitFor</tt> <tt>TIMEDOUT = OBJ.WaitFor(TIMEOUT)</tt></p><p><tt>OBJ.WaitFor(TIMEOUT, HANDLE)</tt> <tt>TIMEDOUT = OBJ.WaitFor(TIMEOUT, HANDLE)</tt></p><h2>Description<a name="6"></a></h2><p><tt>OBJ.WaitFor</tt> waits for motor specified by <tt>OBJ</tt> to stop. We do this by reading the motor state from the NXT brick repeatedly until controlled movement is finished. If the motor is set to run infinitely, the method returns immediately and displays a warning.</p><p><tt>TIMEDOUT = OBJ.WaitFor(TIMEOUT)</tt> does the same as described above but has an additional timeout <tt>TIMEOUT</tt> (given in seconds). After this time the function stops waiting and returns <tt>true</tt>. Otherwise it returns <tt>false</tt>. This functionality is useful to avoid that your robot (and your program) get stuck in case the motor should somehow get stalled (e.g.by  driving against a wall). Use <tt>TIMEOUT = 0</tt> to wait infinitely (i.e. no time out desired).</p><p>Use <tt>HANDLE</tt> (optional) to identify the connection to use for this command. In this case, you also have to pass <tt>TIMEOUT</tt>. Use <tt>TIMEOUT = 0</tt> if this functionality is not needed.</p><p><b>Note:</b></p><p>If you specify <tt>TIMEOUT</tt> and the motor is not able to finish its current movement command in time (maybe because the motor is blocked?), waiting will be aborted. The motor is probably still busy in this case, so you have to make sure it is ready to accept commands before using it again (i.e. by calling <tt>.Stop()</tt>).</p><h2>Examples:<a name="13"></a></h2><pre class="codeinput">        <span class="comment">% If a |SendToNXT| command is immediately followed by a |Stop|</span>
+        <span class="comment">% command without using |WaitFor| MATLAB does not wait to send</span>
+        <span class="comment">% the stop command until the motor has finished its rotation.</span>
+        <span class="comment">% Thus, the motor does not rotate at all, since the stop command</span>
+        <span class="comment">% reaches the NXT before the motor starts its rotation due to</span>
+        <span class="comment">% its mechanical inertia.</span>
+        motorA = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 60, <span class="string">'TachoLimit'</span>, 1000);
+        motorA.SendToNXT();
+        motorA.Stop(<span class="string">'off'</span>);
+        <span class="comment">% motor A barely moved at all...</span>
+
+        <span class="comment">% To avoid this issue, WaitFor has to be used!</span>
+        motorC = NXTMotor(<span class="string">'C'</span>, <span class="string">'Power'</span>, -20, <span class="string">'TachoLimit'</span>, 120);
+        motorC.SendToNXT();
+        motorC.WaitFor();
+        data = motorC.ReadFromNXT();
+</pre><pre class="codeinput">        <span class="comment">% Instantiate motor A and run it</span>
+        m = NXTMotor(<span class="string">'A'</span>, <span class="string">'Power'</span>, 50, <span class="string">'TachoLimit'</span>, 1000);
+        m.SendToNXT();
+        <span class="comment">% Wait for the motor, try waiting for max. 10 seconds</span>
+        timedOut = WaitFor(m, 10);
+        <span class="keyword">if</span> timedOut
+            disp(<span class="string">'Motor timed out, is it stalled?'</span>)
+            m.Stop(<span class="string">'off'</span>); <span class="comment">% this needed to "unlock" the motor</span>
+        <span class="keyword">end</span><span class="comment">%if</span>
+        <span class="comment">% now we can send new motor commands again...</span>
+</pre><h2>See also<a name="17"></a></h2><p><a href="NXTMotor.html">NXTMotor</a>, <a href="ReadFromNXT.html">ReadFromNXT</a>, <a href="SendToNXT.html">SendToNXT</a>, <a href="Stop.html">Stop</a>, <a href="StopMotor.html">StopMotor</a>, </p><h2>Signature<a name="20"></a></h2><div><ul><li><b>Author:</b> Aulis Telle, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/07/20</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% WaitFor
+% Wait for motor(s) to stop (busy waiting)
+%%
+%% Syntax
+% |OBJ.WaitFor|
+% |TIMEDOUT = OBJ.WaitFor(TIMEOUT)|
+%%
+% |OBJ.WaitFor(TIMEOUT, HANDLE)|
+% |TIMEDOUT = OBJ.WaitFor(TIMEOUT, HANDLE)|
+%%
+%%
+%% Description
+% |OBJ.WaitFor| waits for motor specified by |OBJ| to stop.
+% We do this by reading the motor state from the NXT
+% brick repeatedly until controlled movement is finished. If the motor
+% is set to run infinitely, the method returns immediately and displays a
+% warning.
+%%
+% |TIMEDOUT = OBJ.WaitFor(TIMEOUT)| does the
+% same as described above but has an additional timeout |TIMEOUT| (given
+% in seconds). After this time the function stops waiting and
+% returns |true|. Otherwise it returns |false|. This functionality is
+% useful to avoid that your robot (and your program) get stuck in case
+% the motor should somehow get stalled (e.g.by  driving against a wall).
+% Use |TIMEOUT = 0| to wait infinitely (i.e. no time out desired).
+%%
+% Use |HANDLE| (optional) to identify the connection to use for this command.
+% In this case, you also have to pass |TIMEOUT|. Use |TIMEOUT = 0| if
+% this functionality is not needed.
+%%
+%%
+% *Note:*
+%%
+% If you specify |TIMEOUT| and the motor is not able to finish its
+% current movement command in time (maybe because the motor is blocked?),
+% waiting will be aborted. The motor is probably still busy in this
+% case, so you have to make sure it is ready to accept commands before
+% using it again (i.e. by calling |.Stop()|).
+%%
+%% Examples:
+%%
+        % If a |SendToNXT| command is immediately followed by a |Stop|
+        % command without using |WaitFor| MATLAB does not wait to send
+        % the stop command until the motor has finished its rotation.
+        % Thus, the motor does not rotate at all, since the stop command
+        % reaches the NXT before the motor starts its rotation due to
+        % its mechanical inertia.
+        motorA = NXTMotor('A', 'Power', 60, 'TachoLimit', 1000);
+        motorA.SendToNXT();
+        motorA.Stop('off');
+        % motor A barely moved at all...
+
+        % To avoid this issue, WaitFor has to be used!
+        motorC = NXTMotor('C', 'Power', -20, 'TachoLimit', 120);
+        motorC.SendToNXT();
+        motorC.WaitFor();
+        data = motorC.ReadFromNXT();
+%%
+        % Instantiate motor A and run it
+        m = NXTMotor('A', 'Power', 50, 'TachoLimit', 1000);
+        m.SendToNXT();
+        % Wait for the motor, try waiting for max. 10 seconds
+        timedOut = WaitFor(m, 10);
+        if timedOut
+            disp('Motor timed out, is it stalled?')
+            m.Stop('off'); % this needed to "unlock" the motor
+        end%if
+        % now we can send new motor commands again...
+%%
+%% See also
+% NXTMotor, ReadFromNXT, SendToNXT, Stop, StopMotor
+%%
+%%
+%% Signature
+%%
+% * *Author:* Aulis Telle, Linus Atorf (see AUTHORS)
+% * *Date:* 2009/07/20
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

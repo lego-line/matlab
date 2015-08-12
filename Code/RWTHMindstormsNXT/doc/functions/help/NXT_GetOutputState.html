@@ -1,0 +1,88 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>NXT_GetOutputState</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_NXT_GetOutputState.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>NXT_GetOutputState</h1><!--introduction--><p>Requests and retrieves an output motor state reading</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#27">Examples</a></li><li><a href="#30">See also</a></li><li><a href="#32">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>data = NXT_GetOutputState(port)</tt></p><p><tt>data = NXT_GetOutputState(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>data = NXT_GetOutputState(port)</tt> requests and retrieves an output motor state reading of the given motor <tt>port</tt>. The value <tt>port</tt> can be addressed by the symbolic constants <tt>MOTOR_A</tt>, <tt>MOTOR_B</tt> and <tt>MOTOR_C</tt> analog to the labeling on the NXT Brick.  The return value <tt>data</tt> is a struct variable. It contains several motor settings and information.</p><p><tt>data = NXT_GetOutputState(port, handle)</tt> uses the given Bluetooth connection <tt>handle</tt>. This should be a serial handle on a PC system and a file handle on a Linux system.</p><p>If no Bluetooth handle is specified the default one (<tt>COM_GetDefaultNXT</tt>) is used.</p><p><b>Output:</b></p><p><tt>data.Port</tt>               % current port number (<tt>0..3</tt>)</p><p><tt>data.Power</tt>              % current motor power</p><p><tt>data.Mode</tt>               % motor mode byte</p><p><tt>data.ModeIsMOTORON</tt>      % flag: "motor is on"</p><p><tt>data.ModeIsBRAKE</tt>        % flag: "motor uses the advanced brake mode (PVM)"</p><p><tt>data.ModeIsREGULATED</tt>    % flag: "motor uses a regulation"</p><p><tt>data.RegModeByte</tt>        % motor regulation byte</p><p><tt>data.RegModeName</tt>        % name of regulation mode</p><p><tt>data.TurnRatio</tt>          % turn ratio value</p><p><tt>data.RunStateByte</tt>       % motor run state byte</p><p><tt>data.RunStateName</tt>       % name of run state</p><p><tt>data.TachoLimit</tt>         % tacho / angle limit</p><p><tt>data.TachoCount</tt>         % current absolute tacho count</p><p><tt>data.BlockTachoCount</tt>    % current relative tacho count</p><p><tt>data.RotationCount</tt>      % current second relative tacho count</p><p>For more details see the official LEGO Mindstorms communication protocol.</p><h2>Examples<a name="27"></a></h2><pre class="codeinput">   data = NXT_GetOutputState(MOTOR_B);
+</pre><pre class="codeinput">   handle = COM_OpenNXT(<span class="string">'bluetooth.ini'</span>);
+   data = NXT_GetOutputState(MOTOR_A, handle);
+</pre><h2>See also<a name="30"></a></h2><p><a href="ReadFromNXT.html">ReadFromNXT</a>, <a href="NXT_SetOutputState.html">NXT_SetOutputState</a>, <a href="DirectMotorCommand.html">DirectMotorCommand</a>, <a href="MOTOR_A.html">MOTOR_A</a>, <a href="MOTOR_B.html">MOTOR_B</a>, <a href="MOTOR_C.html">MOTOR_C</a>, </p><h2>Signature<a name="32"></a></h2><div><ul><li><b>Author:</b> Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2007/10/15</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% NXT_GetOutputState
+% Requests and retrieves an output motor state reading
+%%
+%% Syntax
+% |data = NXT_GetOutputState(port)|
+%%
+% |data = NXT_GetOutputState(port, handle)|
+%%
+%% Description
+% |data = NXT_GetOutputState(port)| requests and retrieves an output motor state reading of the
+% given motor |port|. The value |port| can be addressed by the symbolic constants |MOTOR_A|,
+% |MOTOR_B| and |MOTOR_C| analog to the labeling on the NXT Brick.  The return value |data| is a
+% struct variable. It contains several motor settings and information.
+%%
+% |data = NXT_GetOutputState(port, handle)| uses the given Bluetooth connection |handle|. This should be a
+% serial handle on a PC system and a file handle on a Linux system.
+%%
+% If no Bluetooth handle is specified the default one (|COM_GetDefaultNXT|) is used.
+%%
+%%
+% *Output:*
+%%
+% |data.Port|               % current port number (|0..3|)
+%%
+% |data.Power|              % current motor power
+%%
+% |data.Mode|               % motor mode byte
+%%
+% |data.ModeIsMOTORON|      % flag: "motor is on"
+%%
+% |data.ModeIsBRAKE|        % flag: "motor uses the advanced brake mode (PVM)"
+%%
+% |data.ModeIsREGULATED|    % flag: "motor uses a regulation"
+%%
+% |data.RegModeByte|        % motor regulation byte
+%%
+% |data.RegModeName|        % name of regulation mode
+%%
+% |data.TurnRatio|          % turn ratio value
+%%
+% |data.RunStateByte|       % motor run state byte
+%%
+% |data.RunStateName|       % name of run state
+%%
+% |data.TachoLimit|         % tacho / angle limit
+%%
+% |data.TachoCount|         % current absolute tacho count
+%%
+% |data.BlockTachoCount|    % current relative tacho count
+%%
+% |data.RotationCount|      % current second relative tacho count
+%%
+% For more details see the official LEGO Mindstorms communication protocol.
+%%
+%% Examples
+   data = NXT_GetOutputState(MOTOR_B);
+%%
+   handle = COM_OpenNXT('bluetooth.ini');
+   data = NXT_GetOutputState(MOTOR_A, handle);
+%%
+%% See also
+% ReadFromNXT, NXT_SetOutputState, DirectMotorCommand, MOTOR_A, MOTOR_B, MOTOR_C
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf (see AUTHORS)
+% * *Date:* 2007/10/15
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

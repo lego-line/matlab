@@ -1,0 +1,2017 @@
+Completed Generating Temporary Store
+Data File Accepted
+{Error using <a href="matlab:helpUtils.errorDocCallback('textscan')" style="font-weight:bold">textscan</a>
+Invalid file identifier.  Use fopen to generate a valid
+file identifier.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('Generate_Upstream_Times', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m', 121)" style="font-weight:bold">Generate_Upstream_Times</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m',121,0)">line 121</a>)
+       data_text = textscan(data_id,'%s %s %s %s %s');
+
+Error in <a href="matlab:helpUtils.errorDocCallback('run', 'C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m', 57)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m',57,0)">line 57</a>)
+          evalin('caller', [s ';']);
+} 
+Completed Generating Temporary Store
+{Undefined function or variable 'Number_of_Feedlines'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('Upstream_Simulation_Interface/Redraw', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m', 271)" style="font-weight:bold">Upstream_Simulation_Interface/Redraw</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',271,0)">line
+271</a>)
+            options(12)=
+            str2num(data_text{(1+Number_of_Feedlines+options(9)),4});
+            
+Error in
+<a href="matlab:helpUtils.errorDocCallback('Upstream_Simulation_Interface/popup_menu_Callback_feedline_number', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m', 168)" style="font-weight:bold">Upstream_Simulation_Interface/popup_menu_Callback_feedline_number</a>
+(<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',168,0)">line 168</a>)
+         Redraw(0,0)
+} 
+Error using <a href="matlab:helpUtils.errorDocCallback('waitfor')" style="font-weight:bold">waitfor</a>
+Error while evaluating uicontrol Callback
+
+{Error using <a href="matlab:helpUtils.errorDocCallback('fprintf')" style="font-weight:bold">fprintf</a>
+Invalid file identifier.  Use fopen to generate a valid
+file identifier.
+
+Error in
+<a href="matlab:helpUtils.errorDocCallback('Upstream_Simulation_Interface/create_file_callback', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m', 178)" style="font-weight:bold">Upstream_Simulation_Interface/create_file_callback</a>
+(<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',178,0)">line 178</a>)
+                fprintf(fout,lineformat5,data_text{1,1}{index_feedlines,1},data_text{1,2}{index_feedlines,1},data_text{1,3}{index_feedlines,1},data_text{1,4}{index_feedlines,1},data_text{1,5}{index_f} 
+Error using <a href="matlab:helpUtils.errorDocCallback('waitfor')" style="font-weight:bold">waitfor</a>
+Error while evaluating uicontrol Callback
+
+Completed Generating Temporary Store
+{Error using <a href="matlab:helpUtils.errorDocCallback('fprintf')" style="font-weight:bold">fprintf</a>
+Invalid file identifier.  Use fopen to generate a valid
+file identifier.
+
+Error in
+<a href="matlab:helpUtils.errorDocCallback('Upstream_Simulation_Interface/create_file_callback', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m', 178)" style="font-weight:bold">Upstream_Simulation_Interface/create_file_callback</a>
+(<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',178,0)">line 178</a>)
+                fprintf(fout,lineformat5,data_text{1,1}{index_feedlines,1},data_text{1,2}{index_feedlines,1},data_text{1,3}{index_feedlines,1},data_text{1,4}{index_feedlines,1},data_text{1,5}{index_f} 
+Error using <a href="matlab:helpUtils.errorDocCallback('waitfor')" style="font-weight:bold">waitfor</a>
+Error while evaluating uicontrol Callback
+
+{Operation terminated by user during <a href="matlab:helpUtils.errorDocCallback('uiwait', 'C:\Program Files\MATLAB\R2011b\toolbox\matlab\uitools\uiwait.m', 82)" style="font-weight:bold">uiwait</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2011b\toolbox\matlab\uitools\uiwait.m',82,0)">line 82</a>)
+
+In <a href="matlab:helpUtils.errorDocCallback('Generate_Upstream_Times', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m', 114)" style="font-weight:bold">Generate_Upstream_Times</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m',114,0)">line 114</a>)
+       uiwait(Handle_figure);
+
+In <a href="matlab:helpUtils.errorDocCallback('run', 'C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m', 57)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m',57,0)">line 57</a>)
+          evalin('caller', [s ';']);
+} 
+Data_File_Location
+
+Data_File_Location =
+
+D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Code\GUI\Temporary_Upstream_Config.txt
+
+Completed Generating Temporary Store
+
+fout =
+
+     3
+
+
+ans =
+
+     0
+
+Data accepted successfully, runnign the simualtion
+Data accepted successfully, runnign the simualtion
+Data File Accepted
+The File Provided Did Not Contain Suitable Information - No List Generated
+Starting Evaluating The State at Time  0
+{Error using <a href="matlab:helpUtils.errorDocCallback('eval')" style="font-weight:bold">eval</a>
+Undefined function or variable 'Line_1_Distribution'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('Generate_Upstream_Times', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m', 175)" style="font-weight:bold">Generate_Upstream_Times</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m',175,0)">line 175</a>)
+        if eval(['Line_',num2str(J),'_Distribution'])==
+        'P'
+
+Error in <a href="matlab:helpUtils.errorDocCallback('run', 'C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m', 57)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m',57,0)">line 57</a>)
+          evalin('caller', [s ';']);
+} 
+Completed Generating Temporary Store
+
+fout =
+
+     3
+
+
+ans =
+
+     0
+
+Data accepted successfully, runnign the simualtion
+Data accepted successfully, runnign the simualtion
+Data File Accepted
+The File Provided Did Not Contain Suitable Information - No List Generated
+Starting Evaluating The State at Time  0
+{Error using <a href="matlab:helpUtils.errorDocCallback('eval')" style="font-weight:bold">eval</a>
+Undefined function or variable 'Line_1_Distribution'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('Generate_Upstream_Times', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m', 175)" style="font-weight:bold">Generate_Upstream_Times</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m',175,0)">line 175</a>)
+        if eval(['Line_',num2str(J),'_Distribution'])==
+        'P'
+
+Error in <a href="matlab:helpUtils.errorDocCallback('run', 'C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m', 57)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m',57,0)">line 57</a>)
+          evalin('caller', [s ';']);
+} 
+{Error: <a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',177,76)">File: Upstream_Simulation_Interface.m Line: 177
+Column: 76</a>
+Expression or statement is incorrect--possibly
+unbalanced (, {, or [.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('Generate_Upstream_Times', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m', 112)" style="font-weight:bold">Generate_Upstream_Times</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Generate_Upstream_Times.m',112,0)">line 112</a>)
+       Upstream_Simulation_Interface(0,0,Data_File_Location,No_of_Feedlines,Handle_figure)
+       
+Error in <a href="matlab:helpUtils.errorDocCallback('run', 'C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m', 57)" style="font-weight:bold">run</a> (<a href="matlab: opentoline('C:\Program Files\MATLAB\R2011b\toolbox\matlab\lang\run.m',57,0)">line 57</a>)
+          evalin('caller', [s ';']);
+} 
+Completed Generating Temporary Store
+
+ans =
+
+     0
+
+Data accepted successfully, runnign the simualtion
+Data accepted successfully, runnign the simualtion
+Data File Accepted
+Added Line 1 Data
+Added Line 2 Data
+Added Line 3 Data
+The List of Times was Generated Successfully
+Starting Evaluating The State at Time  0
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  0
+Starting Evaluating The State at Time  0.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  0.5
+Starting Evaluating The State at Time  1
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  1
+Starting Evaluating The State at Time  1.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  1.5
+Starting Evaluating The State at Time  2
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  2
+Starting Evaluating The State at Time  2.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  2.5
+Starting Evaluating The State at Time  3
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  3
+Starting Evaluating The State at Time  3.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  3.5
+Starting Evaluating The State at Time  4
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  4
+Starting Evaluating The State at Time  4.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  4.5
+Starting Evaluating The State at Time  5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  5
+Starting Evaluating The State at Time  5.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  5.5
+Starting Evaluating The State at Time  6
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  6
+Starting Evaluating The State at Time  6.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  6.5
+Starting Evaluating The State at Time  7
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  7
+Starting Evaluating The State at Time  7.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  7.5
+Starting Evaluating The State at Time  8
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  8
+Starting Evaluating The State at Time  8.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  8.5
+Starting Evaluating The State at Time  9
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  9
+Starting Evaluating The State at Time  9.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  9.5
+Starting Evaluating The State at Time  10
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  10
+Starting Evaluating The State at Time  10.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  10.5
+Starting Evaluating The State at Time  11
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  11
+Starting Evaluating The State at Time  11.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  11.5
+Starting Evaluating The State at Time  12
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  12
+Starting Evaluating The State at Time  12.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  12.5
+Starting Evaluating The State at Time  13
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  13
+Starting Evaluating The State at Time  13.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  13.5
+Starting Evaluating The State at Time  14
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  14
+Starting Evaluating The State at Time  14.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  14.5
+Starting Evaluating The State at Time  15
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  15
+Starting Evaluating The State at Time  15.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  15.5
+Starting Evaluating The State at Time  16
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  16
+Starting Evaluating The State at Time  16.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  16.5
+Starting Evaluating The State at Time  17
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  17
+Starting Evaluating The State at Time  17.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  17.5
+Starting Evaluating The State at Time  18
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  18
+Starting Evaluating The State at Time  18.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  18.5
+Starting Evaluating The State at Time  19
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  19
+Starting Evaluating The State at Time  19.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  19.5
+Starting Evaluating The State at Time  20
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  20
+Starting Evaluating The State at Time  20.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  20.5
+Starting Evaluating The State at Time  21
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  21
+Starting Evaluating The State at Time  21.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  21.5
+Starting Evaluating The State at Time  22
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  22
+Starting Evaluating The State at Time  22.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  22.5
+Starting Evaluating The State at Time  23
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  23
+Starting Evaluating The State at Time  23.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  23.5
+Starting Evaluating The State at Time  24
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  24
+Starting Evaluating The State at Time  24.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  24.5
+Starting Evaluating The State at Time  25
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  25
+Starting Evaluating The State at Time  25.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  25.5
+Starting Evaluating The State at Time  26
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  26
+Starting Evaluating The State at Time  26.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  26.5
+Starting Evaluating The State at Time  27
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  27
+Starting Evaluating The State at Time  27.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  27.5
+Starting Evaluating The State at Time  28
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  28
+Starting Evaluating The State at Time  28.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  28.5
+Starting Evaluating The State at Time  29
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  29
+Starting Evaluating The State at Time  29.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  29.5
+Starting Evaluating The State at Time  30
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  30
+Starting Evaluating The State at Time  30.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  30.5
+Starting Evaluating The State at Time  31
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  31
+Starting Evaluating The State at Time  31.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  31.5
+Starting Evaluating The State at Time  32
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  32
+Starting Evaluating The State at Time  32.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  32.5
+Starting Evaluating The State at Time  33
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  33
+Starting Evaluating The State at Time  33.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  33.5
+Starting Evaluating The State at Time  34
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  34
+Starting Evaluating The State at Time  34.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  34.5
+Starting Evaluating The State at Time  35
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  35
+Starting Evaluating The State at Time  35.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  35.5
+Starting Evaluating The State at Time  36
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  36
+Starting Evaluating The State at Time  36.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  36.5
+Starting Evaluating The State at Time  37
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  37
+Starting Evaluating The State at Time  37.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  37.5
+Starting Evaluating The State at Time  38
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  38
+Starting Evaluating The State at Time  38.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  38.5
+Starting Evaluating The State at Time  39
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  39
+Starting Evaluating The State at Time  39.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  39.5
+Starting Evaluating The State at Time  40
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  40
+Starting Evaluating The State at Time  40.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  40.5
+Starting Evaluating The State at Time  41
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  41
+Starting Evaluating The State at Time  41.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  41.5
+Starting Evaluating The State at Time  42
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  42
+Starting Evaluating The State at Time  42.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  42.5
+Starting Evaluating The State at Time  43
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  43
+Starting Evaluating The State at Time  43.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  43.5
+Starting Evaluating The State at Time  44
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  44
+Starting Evaluating The State at Time  44.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  44.5
+Starting Evaluating The State at Time  45
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  45
+Starting Evaluating The State at Time  45.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  45.5
+Starting Evaluating The State at Time  46
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  46
+Starting Evaluating The State at Time  46.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  46.5
+Starting Evaluating The State at Time  47
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  47
+Starting Evaluating The State at Time  47.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  47.5
+Starting Evaluating The State at Time  48
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  48
+Starting Evaluating The State at Time  48.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  48.5
+Starting Evaluating The State at Time  49
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  49
+Starting Evaluating The State at Time  49.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  49.5
+Starting Evaluating The State at Time  50
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  50
+Starting Evaluating The State at Time  50.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  50.5
+Starting Evaluating The State at Time  51
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  51
+Starting Evaluating The State at Time  51.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  51.5
+Starting Evaluating The State at Time  52
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  52
+Starting Evaluating The State at Time  52.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  52.5
+Starting Evaluating The State at Time  53
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  53
+Starting Evaluating The State at Time  53.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  53.5
+Starting Evaluating The State at Time  54
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  54
+Starting Evaluating The State at Time  54.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  54.5
+Starting Evaluating The State at Time  55
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  55
+Starting Evaluating The State at Time  55.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  55.5
+Starting Evaluating The State at Time  56
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  56
+Starting Evaluating The State at Time  56.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  56.5
+Starting Evaluating The State at Time  57
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  57
+Starting Evaluating The State at Time  57.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  57.5
+Starting Evaluating The State at Time  58
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  58
+Starting Evaluating The State at Time  58.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  58.5
+Starting Evaluating The State at Time  59
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  59
+Starting Evaluating The State at Time  59.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  59.5
+Starting Evaluating The State at Time  60
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  60
+Starting Evaluating The State at Time  60.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  60.5
+Starting Evaluating The State at Time  61
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  61
+Starting Evaluating The State at Time  61.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  61.5
+Starting Evaluating The State at Time  62
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  62
+Starting Evaluating The State at Time  62.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  62.5
+Starting Evaluating The State at Time  63
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  63
+Starting Evaluating The State at Time  63.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  63.5
+Starting Evaluating The State at Time  64
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  64
+Starting Evaluating The State at Time  64.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  64.5
+Starting Evaluating The State at Time  65
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  65
+Starting Evaluating The State at Time  65.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  65.5
+Starting Evaluating The State at Time  66
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  66
+Starting Evaluating The State at Time  66.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  66.5
+Starting Evaluating The State at Time  67
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  67
+Starting Evaluating The State at Time  67.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  67.5
+Starting Evaluating The State at Time  68
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  68
+Starting Evaluating The State at Time  68.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  68.5
+Starting Evaluating The State at Time  69
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  69
+Starting Evaluating The State at Time  69.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  69.5
+Starting Evaluating The State at Time  70
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  70
+Starting Evaluating The State at Time  70.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  70.5
+Starting Evaluating The State at Time  71
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  71
+Starting Evaluating The State at Time  71.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  71.5
+Starting Evaluating The State at Time  72
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  72
+Starting Evaluating The State at Time  72.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  72.5
+Starting Evaluating The State at Time  73
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  73
+Starting Evaluating The State at Time  73.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  73.5
+Starting Evaluating The State at Time  74
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  74
+Starting Evaluating The State at Time  74.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  74.5
+Starting Evaluating The State at Time  75
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  75
+Starting Evaluating The State at Time  75.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  75.5
+Starting Evaluating The State at Time  76
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  76
+Starting Evaluating The State at Time  76.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  76.5
+Starting Evaluating The State at Time  77
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  77
+Starting Evaluating The State at Time  77.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  77.5
+Starting Evaluating The State at Time  78
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  78
+Starting Evaluating The State at Time  78.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  78.5
+Starting Evaluating The State at Time  79
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  79
+Starting Evaluating The State at Time  79.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  79.5
+Starting Evaluating The State at Time  80
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  80
+Starting Evaluating The State at Time  80.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  80.5
+Starting Evaluating The State at Time  81
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  81
+Starting Evaluating The State at Time  81.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  81.5
+Starting Evaluating The State at Time  82
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  82
+Starting Evaluating The State at Time  82.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  82.5
+Starting Evaluating The State at Time  83
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  83
+Starting Evaluating The State at Time  83.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  83.5
+Starting Evaluating The State at Time  84
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  84
+Starting Evaluating The State at Time  84.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  84.5
+Starting Evaluating The State at Time  85
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  85
+Starting Evaluating The State at Time  85.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  85.5
+Starting Evaluating The State at Time  86
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  86
+Starting Evaluating The State at Time  86.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  86.5
+Starting Evaluating The State at Time  87
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  87
+Starting Evaluating The State at Time  87.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  87.5
+Starting Evaluating The State at Time  88
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  88
+Starting Evaluating The State at Time  88.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  88.5
+Starting Evaluating The State at Time  89
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  89
+Starting Evaluating The State at Time  89.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  89.5
+Starting Evaluating The State at Time  90
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  90
+Starting Evaluating The State at Time  90.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  90.5
+Starting Evaluating The State at Time  91
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  91
+Starting Evaluating The State at Time  91.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  91.5
+Starting Evaluating The State at Time  92
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  92
+Starting Evaluating The State at Time  92.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  92.5
+Starting Evaluating The State at Time  93
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  93
+Starting Evaluating The State at Time  93.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  93.5
+Starting Evaluating The State at Time  94
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  94
+Starting Evaluating The State at Time  94.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  94.5
+Starting Evaluating The State at Time  95
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  95
+Starting Evaluating The State at Time  95.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  95.5
+Starting Evaluating The State at Time  96
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  96
+Starting Evaluating The State at Time  96.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  96.5
+Starting Evaluating The State at Time  97
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  97
+Starting Evaluating The State at Time  97.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  97.5
+Starting Evaluating The State at Time  98
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  98
+Starting Evaluating The State at Time  98.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  98.5
+Starting Evaluating The State at Time  99
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  99
+Starting Evaluating The State at Time  99.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  99.5
+Starting Evaluating The State at Time  100
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  100
+Starting Evaluating The State at Time  100.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  100.5
+Starting Evaluating The State at Time  101
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  101
+Starting Evaluating The State at Time  101.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  101.5
+Starting Evaluating The State at Time  102
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  102
+Starting Evaluating The State at Time  102.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  102.5
+Starting Evaluating The State at Time  103
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  103
+Starting Evaluating The State at Time  103.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  103.5
+Starting Evaluating The State at Time  104
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  104
+Starting Evaluating The State at Time  104.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  104.5
+Starting Evaluating The State at Time  105
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  105
+Starting Evaluating The State at Time  105.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  105.5
+Starting Evaluating The State at Time  106
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  106
+Starting Evaluating The State at Time  106.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  106.5
+Starting Evaluating The State at Time  107
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  107
+Starting Evaluating The State at Time  107.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  107.5
+Starting Evaluating The State at Time  108
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  108
+Starting Evaluating The State at Time  108.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  108.5
+Starting Evaluating The State at Time  109
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  109
+Starting Evaluating The State at Time  109.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  109.5
+Starting Evaluating The State at Time  110
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  110
+Starting Evaluating The State at Time  110.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  110.5
+Starting Evaluating The State at Time  111
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  111
+Starting Evaluating The State at Time  111.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  111.5
+Starting Evaluating The State at Time  112
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  112
+Starting Evaluating The State at Time  112.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  112.5
+Starting Evaluating The State at Time  113
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  113
+Starting Evaluating The State at Time  113.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  113.5
+Starting Evaluating The State at Time  114
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  114
+Starting Evaluating The State at Time  114.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  114.5
+Starting Evaluating The State at Time  115
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  115
+Starting Evaluating The State at Time  115.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  115.5
+Starting Evaluating The State at Time  116
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  116
+Starting Evaluating The State at Time  116.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  116.5
+Starting Evaluating The State at Time  117
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  117
+Starting Evaluating The State at Time  117.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  117.5
+Starting Evaluating The State at Time  118
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  118
+Starting Evaluating The State at Time  118.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  118.5
+Starting Evaluating The State at Time  119
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  119
+Starting Evaluating The State at Time  119.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  119.5
+Starting Evaluating The State at Time  120
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  120
+Starting Evaluating The State at Time  120.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  120.5
+Starting Evaluating The State at Time  121
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  121
+Starting Evaluating The State at Time  121.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  121.5
+Starting Evaluating The State at Time  122
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  122
+Starting Evaluating The State at Time  122.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  122.5
+Starting Evaluating The State at Time  123
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  123
+Starting Evaluating The State at Time  123.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  123.5
+Starting Evaluating The State at Time  124
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  124
+Starting Evaluating The State at Time  124.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  124.5
+Starting Evaluating The State at Time  125
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  125
+Starting Evaluating The State at Time  125.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  125.5
+Starting Evaluating The State at Time  126
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  126
+Starting Evaluating The State at Time  126.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  126.5
+Starting Evaluating The State at Time  127
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  127
+Starting Evaluating The State at Time  127.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  127.5
+Starting Evaluating The State at Time  128
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  128
+Starting Evaluating The State at Time  128.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  128.5
+Starting Evaluating The State at Time  129
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  129
+Starting Evaluating The State at Time  129.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  129.5
+Starting Evaluating The State at Time  130
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  130
+Starting Evaluating The State at Time  130.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  130.5
+Starting Evaluating The State at Time  131
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  131
+Starting Evaluating The State at Time  131.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  131.5
+Starting Evaluating The State at Time  132
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  132
+Starting Evaluating The State at Time  132.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  132.5
+Starting Evaluating The State at Time  133
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  133
+Starting Evaluating The State at Time  133.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  133.5
+Starting Evaluating The State at Time  134
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  134
+Starting Evaluating The State at Time  134.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  134.5
+Starting Evaluating The State at Time  135
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  135
+Starting Evaluating The State at Time  135.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  135.5
+Starting Evaluating The State at Time  136
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  136
+Starting Evaluating The State at Time  136.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  136.5
+Starting Evaluating The State at Time  137
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  137
+Starting Evaluating The State at Time  137.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  137.5
+Starting Evaluating The State at Time  138
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  138
+Starting Evaluating The State at Time  138.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  138.5
+Starting Evaluating The State at Time  139
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  139
+Starting Evaluating The State at Time  139.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  139.5
+Starting Evaluating The State at Time  140
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  140
+Starting Evaluating The State at Time  140.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  140.5
+Starting Evaluating The State at Time  141
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  141
+Starting Evaluating The State at Time  141.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  141.5
+Starting Evaluating The State at Time  142
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  142
+Starting Evaluating The State at Time  142.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  142.5
+Starting Evaluating The State at Time  143
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  143
+Starting Evaluating The State at Time  143.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  143.5
+Starting Evaluating The State at Time  144
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  144
+Starting Evaluating The State at Time  144.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  144.5
+Starting Evaluating The State at Time  145
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  145
+Starting Evaluating The State at Time  145.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  145.5
+Starting Evaluating The State at Time  146
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  146
+Starting Evaluating The State at Time  146.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  146.5
+Starting Evaluating The State at Time  147
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  147
+Starting Evaluating The State at Time  147.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  147.5
+Starting Evaluating The State at Time  148
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  148
+Starting Evaluating The State at Time  148.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  148.5
+Starting Evaluating The State at Time  149
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  149
+Starting Evaluating The State at Time  149.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  149.5
+Starting Evaluating The State at Time  150
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  150
+Starting Evaluating The State at Time  150.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  150.5
+Starting Evaluating The State at Time  151
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  151
+Starting Evaluating The State at Time  151.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  151.5
+Starting Evaluating The State at Time  152
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  152
+Starting Evaluating The State at Time  152.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  152.5
+Starting Evaluating The State at Time  153
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  153
+Starting Evaluating The State at Time  153.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  153.5
+Starting Evaluating The State at Time  154
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  154
+Starting Evaluating The State at Time  154.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  154.5
+Starting Evaluating The State at Time  155
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  155
+Starting Evaluating The State at Time  155.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  155.5
+Starting Evaluating The State at Time  156
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  156
+Starting Evaluating The State at Time  156.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  156.5
+Starting Evaluating The State at Time  157
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  157
+Starting Evaluating The State at Time  157.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  157.5
+Starting Evaluating The State at Time  158
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  158
+Starting Evaluating The State at Time  158.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  158.5
+Starting Evaluating The State at Time  159
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  159
+Starting Evaluating The State at Time  159.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  159.5
+Starting Evaluating The State at Time  160
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  160
+Starting Evaluating The State at Time  160.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  160.5
+Starting Evaluating The State at Time  161
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  161
+Starting Evaluating The State at Time  161.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  161.5
+Starting Evaluating The State at Time  162
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  162
+Starting Evaluating The State at Time  162.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  162.5
+Starting Evaluating The State at Time  163
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  163
+Starting Evaluating The State at Time  163.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  163.5
+Starting Evaluating The State at Time  164
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  164
+Starting Evaluating The State at Time  164.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  164.5
+Starting Evaluating The State at Time  165
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  165
+Starting Evaluating The State at Time  165.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  165.5
+Starting Evaluating The State at Time  166
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  166
+Starting Evaluating The State at Time  166.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  166.5
+Starting Evaluating The State at Time  167
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  167
+Starting Evaluating The State at Time  167.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  167.5
+Starting Evaluating The State at Time  168
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  168
+Starting Evaluating The State at Time  168.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  168.5
+Starting Evaluating The State at Time  169
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  169
+Starting Evaluating The State at Time  169.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  169.5
+Starting Evaluating The State at Time  170
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  170
+Starting Evaluating The State at Time  170.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  170.5
+Starting Evaluating The State at Time  171
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  171
+Starting Evaluating The State at Time  171.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  171.5
+Starting Evaluating The State at Time  172
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  172
+Starting Evaluating The State at Time  172.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  172.5
+Starting Evaluating The State at Time  173
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  173
+Starting Evaluating The State at Time  173.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  173.5
+Starting Evaluating The State at Time  174
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  174
+Starting Evaluating The State at Time  174.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  174.5
+Starting Evaluating The State at Time  175
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  175
+Starting Evaluating The State at Time  175.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  175.5
+Starting Evaluating The State at Time  176
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  176
+Starting Evaluating The State at Time  176.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  176.5
+Starting Evaluating The State at Time  177
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  177
+Starting Evaluating The State at Time  177.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  177.5
+Starting Evaluating The State at Time  178
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  178
+Starting Evaluating The State at Time  178.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  178.5
+Starting Evaluating The State at Time  179
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  179
+Starting Evaluating The State at Time  179.5
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  179.5
+Starting Evaluating The State at Time  180
+Finished Evaluating The Current Time For Line 1
+Finished Evaluating The Current Time For Line 2
+Finished Evaluating The Current Time For Line 3
+Finished Evaluating The State at Time  180
+
+Arrival_Times_Line_1 =
+
+    20
+    40
+    60
+    80
+   100
+   120
+   140
+   160
+   180
+
+
+Arrival_Times_Line_2 =
+
+    20
+    40
+    60
+    80
+   100
+   120
+   140
+   160
+   180
+
+
+Arrival_Times_Line_3 =
+
+    20
+    40
+    60
+    80
+   100
+   120
+   140
+   160
+   180
+
+Finished Generating Individual Feed Times
+Finished Evaluating The Additional Time For Line 1
+Finished Evaluating The Additional Time For Line 2
+Finished Evaluating The Additional Time For Line 3
+Finished Adding Extra Time
+Beginning Vector Concatenation of Times
+Added Line 1 Data to the list
+Added Line 2 Data to the list
+Added Line 3 Data to the list
+Finished Vector Concatenation of Times
+Duplicate Times Removed
+Completed Generating Temporary Store
+{Undefined function or variable 'Number_of_Feedlines'.
+
+Error in <a href="matlab:helpUtils.errorDocCallback('Upstream_Simulation_Interface/Redraw', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m', 277)" style="font-weight:bold">Upstream_Simulation_Interface/Redraw</a> (<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',277,0)">line
+277</a>)
+            options(12)=
+            str2num(data_text{(1+Number_of_Feedlines+options(9)),4});
+            
+Error in
+<a href="matlab:helpUtils.errorDocCallback('Upstream_Simulation_Interface/popup_menu_Callback_feedline_number', 'D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m', 168)" style="font-weight:bold">Upstream_Simulation_Interface/popup_menu_Callback_feedline_number</a>
+(<a href="matlab: opentoline('D:\Users\Thomas\Documents\MATLAB\Legoline_Final_Update_Uncommented_April_13_prelinuxing\Code\GUI\Upstream_Simulation_Interface.m',168,0)">line 168</a>)
+         Redraw(0,0)
+} 
+Error using <a href="matlab:helpUtils.errorDocCallback('waitfor')" style="font-weight:bold">waitfor</a>
+Error while evaluating uicontrol Callback
+
+Completed Generating Temporary Store
+Completed Generating Temporary Store
+Completed Generating Temporary Store
+Completed Generating Temporary Store
+Completed Generating Temporary Store

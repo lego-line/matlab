@@ -1,0 +1,56 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>GetSwitch</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_GetSwitch.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>GetSwitch</h1><!--introduction--><p>Reads the current value of the NXT switch / touch sensor</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#10">Example</a></li><li><a href="#12">See also</a></li><li><a href="#14">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>switch = GetSwitch(port)</tt></p><p><tt>switch = GetSwitch(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>switch = GetSwitch(port)</tt> returns the current switch value <tt>switch</tt> of the NXT switch / touch sensor. The measurement value <tt>switch</tt> represents the pressing mode of the switch / touch sensor. <tt>true</tt> is returned if the switch / touch sensor is being pressed and <tt>false</tt> if it is being released. The given <tt>port</tt> number specifies the connection port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt>, <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p>For more complex settings the function <tt>NXT_GetInputValues</tt> can be used.</p><h2>Example<a name="10"></a></h2><pre class="codeinput">   OpenSwitch(SENSOR_4);
+   switchState = GetSwitch(SENSOR_4);
+   CloseSensor(SENSOR_4);
+</pre><h2>See also<a name="12"></a></h2><p><a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, <a href="OpenSwitch.html">OpenSwitch</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="SENSOR_1.html">SENSOR_1</a>, <a href="SENSOR_2.html">SENSOR_2</a>, <a href="SENSOR_3.html">SENSOR_3</a>, <a href="SENSOR_4.html">SENSOR_4</a>, </p><h2>Signature<a name="14"></a></h2><div><ul><li><b>Author:</b> Linus Atorf, Alexander Behrens (see AUTHORS)</li><li><b>Date:</b> 2010/09/14</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% GetSwitch
+% Reads the current value of the NXT switch / touch sensor
+%%
+%% Syntax
+% |switch = GetSwitch(port)|
+%%
+% |switch = GetSwitch(port, handle)|
+%%
+%% Description
+% |switch = GetSwitch(port)| returns the current switch value |switch| of the NXT switch / touch
+% sensor. The measurement value |switch| represents the pressing mode of the switch / touch
+% sensor. |true| is returned if the switch / touch sensor is being pressed and |false| if it is
+% being released. The given |port| number specifies the connection port. The value |port| can be
+% addressed by the symbolic constants |SENSOR_1|, |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to
+% the labeling on the NXT Brick.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+% For more complex settings the function |NXT_GetInputValues| can be used.
+%%
+%%
+%% Example
+   OpenSwitch(SENSOR_4);
+   switchState = GetSwitch(SENSOR_4);
+   CloseSensor(SENSOR_4);
+%%
+%% See also
+% NXT_GetInputValues, OpenSwitch, CloseSensor, SENSOR_1, SENSOR_2, SENSOR_3, SENSOR_4
+%%
+%% Signature
+%%
+% * *Author:* Linus Atorf, Alexander Behrens (see AUTHORS)
+% * *Date:* 2010/09/14
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

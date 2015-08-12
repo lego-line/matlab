@@ -1,0 +1,52 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>Preparing the workspace</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="prepare.m">
+<link type="text/css" rel="stylesheet" href="../style.css">
+  </head><body><div class="content"><h1>Preparing the workspace</h1><p>Before you develop a new robot control application you should make sure that all NXT handles, global variables and settings are resetted and the old figures are closed. To make sure you are working with a clean workspace use:</p><pre class="codeinput">COM_CloseNXT(<span class="string">'all'</span>)
+close <span class="string">all</span>
+clear <span class="string">all</span>
+</pre><p>at the beginning of your main robot application. The important thing here is that <tt>clear all</tt> comes <i>after</i> <tt>COM_CloseNXT</tt>, otherwise it won't work.</p><p>If you also want a clean command window (which helps cleaning previous error messages when tracking bugs), you can optionally use</p><pre class="codeinput">clc <span class="comment">% clear old messages from command line</span>
+</pre><p>This leavey your command history fully untouched by the way. Now you should have a clean environment for your program.</p><p>
+<hr>
+Proceed to <a href="pc_nxt_communication.html">next chapter</a>.
+</p><p class="footer"><br>
+      Published with MATLAB&reg; 7.13<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Preparing the workspace
+% Before you develop a new robot control application you should make sure that all NXT handles,
+% global variables and settings are resetted and the old figures are closed.
+% To make sure you are working with a clean workspace use: 
+
+COM_CloseNXT('all')
+close all
+clear all
+
+%%
+% at the beginning of your main robot application. The important thing here
+% is that |clear all| comes _after_ |COM_CloseNXT|, otherwise it won't work.
+
+%%
+% If you also want a clean
+% command window (which helps cleaning previous error messages when
+% tracking bugs), you can optionally use
+
+clc % clear old messages from command line
+
+%%
+% This leavey your command history fully untouched by the way.
+% Now you should have a clean environment for your program.
+
+%%
+%
+% <html>
+% <hr>
+% Proceed to <a href="pc_nxt_communication.html">next chapter</a>.
+% </html>
+##### SOURCE END #####
+--></body></html>

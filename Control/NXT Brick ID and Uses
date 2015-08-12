@@ -1,0 +1,55 @@
+Green:
+  Main:     001653118B91    
+  Transfer: 0016530A6F56	
+  Feed:     001653118A50	
+
+------------------------
+
+Yellow:
+  Main:     001653118AC9	
+  Transfer: 0016530EE129	
+  Feed:     0016530D6831	
+
+------------------------
+
+Red:
+  Main:     		
+  Transfer: 00165308F4BB	
+  Feed:     001653118A50	
+
+------------------------
+
+Black:
+  Main:     0016530EE594	
+  Transfer: 0016530AABDF	
+  Feed:     00165308F4EC   	
+
+------------------------
+
+Blue:
+  Main:     001653132DC2	
+  Transfer: 0016530BDDD1	
+  Feed:     00165308EDFB    	
+
+------------------------
+
+White:
+
+  Main:     001653118B41	
+  Transfer: 001653101A8A		
+  Feed:     001653132A35		
+
+------------------------
+
+Blue/White: 
+ 
+Splitter:   001653101A7F
+Upstream:   00165308F0AC
+
+------------------------
+
+Green/White:
+
+Splitter:  0016530BDCD2
+Upstream:  001653132A78
+

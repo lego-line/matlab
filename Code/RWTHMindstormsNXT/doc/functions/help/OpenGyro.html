@@ -1,0 +1,63 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML was auto-generated from MATLAB code.
+To make changes, update the MATLAB code and republish this document.
+      --><title>OpenGyro</title><meta name="generator" content="MATLAB 7.13"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2012-02-08"><meta name="DC.source" content="script_OpenGyro.m">
+<link type="text/css" rel="stylesheet" href="../../style.css">
+  </head><body><div class="content"><h1>OpenGyro</h1><!--introduction--><p>Initializes the HiTechnic Gyroscopic sensor, sets correct sensor mode</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#2">Syntax</a></li><li><a href="#5">Description</a></li><li><a href="#13">Examples</a></li><li><a href="#15">See also</a></li><li><a href="#17">Signature</a></li></ul></div><h2>Syntax<a name="2"></a></h2><p><tt>OpenGyro(port)</tt></p><p><tt>OpenGyro(port, handle)</tt></p><h2>Description<a name="5"></a></h2><p><tt>OpenGyro(port)</tt> initializes the HiTechnic Gyro sensor on the specified sensor port. The value <tt>port</tt> can be addressed by the symbolic constants <tt>SENSOR_1</tt> , <tt>SENSOR_2</tt>, <tt>SENSOR_3</tt> and <tt>SENSOR_4</tt> analog to the labeling on the NXT Brick.</p><p>Before the sensor can be used, <tt>CalibrateGyro</tt> has to be called.</p><p>With <tt>GetGyro(port)</tt> you can receive Gyro values up to a max. of +/- 360&deg; rotation rate per sec.</p><p>The last optional argument can be a valid NXT handle. If none is specified, the default handle will be used (call <tt>COM_SetDefaultNXT</tt> to set one).</p><p><b>Note:</b></p><p>For more details on calibration, see help text and examples of <tt>CalibrateGyro</tt>.</p><h2>Examples<a name="13"></a></h2><pre class="codeinput">   OpenGyro(SENSOR_2);
+   CalibrateGyro(SENSOR_2, <span class="string">'AUTO'</span>);
+   speed = GetGyro(SENSOR_2);
+   CloseSensor(SENSOR_2);
+</pre><h2>See also<a name="15"></a></h2><p><a href="CalibrateGyro.html">CalibrateGyro</a>, <a href="GetGyro.html">GetGyro</a>, <a href="CloseSensor.html">CloseSensor</a>, <a href="NXT_SetInputMode.html">NXT_SetInputMode</a>, <a href="NXT_GetInputValues.html">NXT_GetInputValues</a>, </p><h2>Signature<a name="17"></a></h2><div><ul><li><b>Author:</b> Rainer Schnitzler, Linus Atorf (see AUTHORS)</li><li><b>Date:</b> 2009/08/31</li><li><b>Copyright:</b> 2007-2011, RWTH Aachen University</li></ul></div><p class="footer"><br>
+      Published with wg_publish; V1.0<br></p></div><!--
+##### SOURCE BEGIN #####
+%% OpenGyro
+% Initializes the HiTechnic Gyroscopic sensor, sets correct sensor mode
+%%
+%% Syntax
+% |OpenGyro(port)|
+%%
+% |OpenGyro(port, handle)|
+%%
+%% Description
+% |OpenGyro(port)| initializes the HiTechnic Gyro sensor on the specified sensor
+% port. The value |port| can be addressed by the symbolic constants
+% |SENSOR_1| , |SENSOR_2|, |SENSOR_3| and |SENSOR_4| analog to the labeling on the NXT Brick.
+%%
+% Before the sensor can be used, |CalibrateGyro| has to be called.
+%%
+% With |GetGyro(port)| you can receive Gyro values up to a max. of +/- 360°
+% rotation rate per sec.
+%%
+% The last optional argument can be a valid NXT handle. If none is
+% specified, the default handle will be used (call |COM_SetDefaultNXT| to
+% set one).
+%%
+%%
+% *Note:*
+%%
+% For more details on calibration, see help text and examples of
+% |CalibrateGyro|.
+%%
+%% Examples
+   OpenGyro(SENSOR_2);
+   CalibrateGyro(SENSOR_2, 'AUTO');
+   speed = GetGyro(SENSOR_2);
+   CloseSensor(SENSOR_2);
+%%
+%% See also
+% CalibrateGyro, GetGyro, CloseSensor, NXT_SetInputMode, NXT_GetInputValues
+%%
+%% Signature
+%%
+% * *Author:* Rainer Schnitzler, Linus Atorf (see AUTHORS)
+% * *Date:* 2009/08/31
+% * *Copyright:* 2007-2011, RWTH Aachen University
+%
+
+##### SOURCE END #####
+--></body></html>

@@ -1,0 +1,84 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%Configuration Settings%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+If running the line using the start command these are the fixed operating parameters
+If Running the Line in experiment mode then these represent the conditions of the first run 
+If Running an experiment further parameters such as start and end values, as well as step sizes need to be set in the experiments section at the bottom of this file. 
+
+% Control Type
+Control_Method Local_Control
+Run_Downstream_Units 1
+
+% Line Configuration 
+Feed = 1 if line is to run, 0 if line is to remain off
+TBuffer- The number of pallets which can be bufered on the transfer line for that section (0 to 5)
+Present - If lien is present but not to feed pallet = 1. if line is not at all present = 0.
+LBuffer- Type of buffering for the mainline to run
+0= no buffering on mainline; 100 = mainline runs constantly without buffering 
+
+Line Configuration:
+Line Present Feed TBuffer	LBuffer
+Line1   1     1     4       100	
+Line2   1     1     4       100	
+Line3   1     1     4       100
+Line4   1     1     1       0
+Line5   1     1     1       0
+
+
+% Variables to set the presence or absense of the splitter and upstream feed units, 1 = present,0=not present
+% for the splitter the modes of operation are Code(seperates out pallets with a specified code), Colour ( seperates pallets with a specified color)
+and Quality ( specifya table of colours and codes, any pallets not matching this table are removed from the line). 
+
+
+Splitter1 	1	Colour
+Splitter2 	0 	Code
+Upstream	0	Main
+
+
+
+% Feed Schedule 
+
+Feed rates:
+% for each active line a feed rate must be set according to the following parameters
+P(n)=Periodic(time n)
+N(m,sd)=Normal Distribution(mean, standard deviation)
+R(L,M)=Rectangular Distribution(Lowest Value, Max Value)
+T(L,P,M)=Triangular Distribution(Lowest Value, Value at Peak, Max Value)
+
+		Feed
+ControlLine1	L 20 0 0 
+ControlLine2	P 20 0 0
+ControlLine3	P 20 0 0
+ControlLine4	P 25 0 0
+ControlLine5	P 25 0 0
+ControlUpstr	P 30 0 0
+
+
+%% Splitter Section
+%This gives the code of the pallet type which is to be seperated off the mainline for teh first splitter
+PalletCode1	0	0	0
+ColourCode1	Red
+
+PalletCode2	0	0	0
+ColourCode2	Yellow
+
+Quality Control Table
+Colour		Code1 	Code2 	Code3
+redcode1        1       0   	0
+yellowcode1 	0       0       0
+bluecode1       0       1       1
+lightgreycode1 	0       1       0
+darkgreycode1 	0       0       1
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%EXPERIMENTS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Pass_Time 240
+%value in seconds of the time required for the run to terminate successfully
+
+%Paramters For The Feed rate experiment
+Rate_Step 2
+Minimum_Rate 20
+Initial_Rate 30
+
+%Parameters For The Pallet Rate Experiment 
+Buffer_Step 1
+Minimum_Size 1
+Maximum_Size 4
